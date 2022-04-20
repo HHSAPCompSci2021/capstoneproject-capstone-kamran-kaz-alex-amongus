@@ -23,11 +23,15 @@ public class Database {
 	}
 	
 	public void addAssignment(String classroom, String assignment) {
-		
+		ArrayList<ArrayList<String>> classrm = database.get(database.indexOf(classroom));
+		for (int i = 0; i < classrm.size(); i++) {
+			classrm.get(i).add(assignment);
+		}
 	}
 	
 	public void addStudent(String classroom, String student) {
-		
+		ArrayList<String> stdnt = new ArrayList();
+		database.get(database.indexOf(classroom)).add(stdnt);
 	}
 	
 	public void addClassroom(String classroom, String[] students) {
