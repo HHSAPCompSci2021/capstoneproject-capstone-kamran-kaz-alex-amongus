@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Database {
 	
 	private final String rootPath = "/user/apps/GradeMe/";
-	private ArrayList<ArrayList<ArrayList<String>>> database;
+	@SuppressWarnings("unused")
+	private ArrayList<ArrayList<ArrayList<String>>> database = new ArrayList<>();
 	
 	public Database() {
 		
@@ -13,7 +14,7 @@ public class Database {
 	
 	public String fetchStudent(String classroom, String student) {
 		String path = rootPath + "/" + classroom + "/" + student;
-		return student;
+		return path;
 	}
 
 	public String fetch(String classroom, String student, String assignment) {
