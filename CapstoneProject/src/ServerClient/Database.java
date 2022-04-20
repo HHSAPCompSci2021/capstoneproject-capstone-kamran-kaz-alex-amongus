@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Database {
 	
 	private final String rootPath = "/user/apps/GradeMe/";
+	
 	@SuppressWarnings("unused")
 	private ArrayList<ArrayList<ArrayList<String>>> database = new ArrayList<>();
 	
