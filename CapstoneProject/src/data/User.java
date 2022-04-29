@@ -19,5 +19,13 @@ public class User {
 	public String toString() {
 		return "Username " + username;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		User compare = (User)obj;
+		if (compare.getUsername().equals(username))
+			return true;
+		return false;
+	}
 
 }
