@@ -1,29 +1,36 @@
 package data;
-
+/**
+ * The User class models a user of the program. The user object will have a name. 
+ * This class is immutable.
+ * @author Kaz Nakao
+ *
+ */
 public class User {
 	
-	private String username;
-	
-	public User(String username) {
-		if (username == null || username.isEmpty() || username.isBlank()) {
+	private String name;
+	/**
+	 * 
+	 * @param username name of the user
+	 */
+	public User(String name) {
+		if (StringChecker.isEmpty(name)) 
 			throw new IllegalArgumentException("Username cannot be blank");
-		}
-		this.username = username;
+		this.name = name;
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 	
 	@Override
 	public String toString() {
-		return "Username " + username;
+		return name;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		User compare = (User)obj;
-		if (compare.getUsername().equals(username))
+		if (compare.getName().equals(name))
 			return true;
 		return false;
 	}

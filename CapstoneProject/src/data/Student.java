@@ -1,29 +1,35 @@
 package data;
 
 import java.util.ArrayList;
-
+/**
+ * The Student class models a student in the online classroom.
+ * A student will have a list of the submissions that they have made to all classrooms. 
+ * A student will be able to make submissions to a classroom. 
+ * @author Kaz Nakao
+ *
+ */
 public class Student extends User{
 
-	private ArrayList<String> submissionNames;
-	private ArrayList<String> submissions;
-	
+	private ArrayList<Submission> submissions;
+	/**
+	 * 
+	 * @param username Name of the student
+	 */
 	public Student(String username) {
 		super(username);
+		submissions = new ArrayList<Submission>();
 		
 	}
 
 	public void add(String submissionName, String submission) {
-		if (submissionName == null) {
-			throw new IllegalArgumentException();
-		}
-		if (submission == null) {
-			throw new IllegalArgumentException();
-		}
-		submissionNames.add(submissionName);
-		submissions.add(submission);
+		if (StringChecker.isEmpty(submissionName)) 
+			throw new IllegalArgumentException("Submission name cannot be null or be blank");
+		if (StringChecker.isEmpty(submission)) 
+			throw new IllegalArgumentException("Submission cannot be null or be blank");
+		submissions.add(new Submission(submissionName, submission));
 	}
 	
-	public String getSubmission(String name) {
+	public Submission getSubmission(String name) {
 		int index = getIndex(name);
 		if (index > 1) {
 			return submissions.get(index);
@@ -31,13 +37,13 @@ public class Student extends User{
 		return null;
 	}
 	
-	public String getSubmissionName(int index) {
-		return submissionNames.get(index);
+	public Submission getSubmission(int index) {
+		return submissions.get(index);
 	}
 	
 	private int getIndex(String name) {
-		for (int i = 0; i < submissionNames.size(); i++) {
-			if (submissionNames.get(i).equals(name)) {
+		for (int i = 0; i < submissions.size(); i++) {
+			if (submissions.get(i).getName().equals(name)) {
 				return i;
 			}
 		}
