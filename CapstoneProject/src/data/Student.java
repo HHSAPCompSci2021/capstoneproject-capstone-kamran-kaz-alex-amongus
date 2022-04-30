@@ -6,7 +6,6 @@ import java.util.ArrayList;
  * A student will have a list of the submissions that they have made to all classrooms. 
  * A student will be able to make submissions to a classroom. 
  * @author Kaz Nakao
- *
  */
 public class Student extends User{
 
