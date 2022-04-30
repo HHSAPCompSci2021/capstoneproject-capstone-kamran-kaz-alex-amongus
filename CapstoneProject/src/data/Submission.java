@@ -1,4 +1,7 @@
 package data;
+
+import java.util.Date;
+
 /**
  * The Submission class models a submission that a student makes to the teacher. A submission will contain 
  * the names of the submission as well as the content inside.
@@ -9,7 +12,10 @@ package data;
 public class Submission {
 	
 	private String name;
+	private char grade;
 	private String content;
+	private String submission_date = new Date().toString();
+	
 	/**
 	 * Creates a new submission object.
 	 * @param name Name of the submission
@@ -20,8 +26,10 @@ public class Submission {
 			throw new IllegalArgumentException("Submission must have a name");
 		if (StringChecker.isEmpty(content)) 
 			throw new IllegalArgumentException("Submission cannot be empty");
+		
 		this.name = name;
 		this.content = content;
+		this.grade = 0;
 	}
 	
 	public String getName() {
@@ -31,5 +39,16 @@ public class Submission {
 	public String getContent() {
 		return content;
 	}
-
+	
+	public char getGrade() {
+		return grade;
+	}
+	
+	public void setGrade(char g) {
+		grade = g;
+	}
+	
+	public String getDate() {
+		return submission_date;
+	}
 }

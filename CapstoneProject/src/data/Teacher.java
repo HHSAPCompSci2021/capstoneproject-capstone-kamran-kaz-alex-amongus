@@ -1,6 +1,8 @@
 package data;
 
-public class Teacher extends User{
+public class Teacher {
+	
+	private String name;
 
 	
 	/**
@@ -8,7 +10,10 @@ public class Teacher extends User{
 	 * @param username Name of the teacher
 	 */
 	public Teacher(String username) {
-		super(username);
+		name = username;
 	}
 	
+	public String getName() {
+		return name;
+	}
 }

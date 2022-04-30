@@ -7,17 +7,21 @@ import java.util.ArrayList;
  * A student will be able to make submissions to a classroom. 
  * @author Kaz Nakao
  */
-public class Student extends User{
 
+public class Student {
+	
 	private ArrayList<Submission> submissions;
+	private String name;
+	private String id;
+	
 	/**
-	 * 
+	 * Creates a new student
 	 * @param username Name of the student
 	 */
-	public Student(String username) {
-		super(username);
+	public Student(String username, String idnum) {
 		submissions = new ArrayList<Submission>();
-		
+		name = username;
+		id = idnum;
 	}
 
 	public void add(String submissionName, String submission) {
@@ -30,7 +34,7 @@ public class Student extends User{
 	
 	public Submission getSubmission(String name) {
 		int index = getIndex(name);
-		if (index > 1) {
+		if (index > 0) {
 			return submissions.get(index);
 		}
 		return null;
@@ -47,5 +51,13 @@ public class Student extends User{
 			}
 		}
 		return -1;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getId() {
+		return id;
 	}
 }

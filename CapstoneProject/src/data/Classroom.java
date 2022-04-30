@@ -46,10 +46,10 @@ public class Classroom {
 	 * @Precondition student name should be initialized
 	 * @param name The name of the new student
 	 */
-	public void addStudent(String name) {
+	public void addStudent(String name, String id) {
 		if (StringChecker.isEmpty(name))
 			throw new IllegalArgumentException("student name must be initialized and not be blank");
-		students.add(new Student(name));
+		students.add(new Student(name, id));
 	}
 	/**
 	 * Adds a Student object to the list of students in the classroom
