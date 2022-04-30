@@ -14,7 +14,7 @@ public class Submission {
 	private String name;
 	private char grade;
 	private String content;
-	private String submission_date = new Date().toString();
+	private String submissionDate = new Date().toString();
 	
 	/**
 	 * Creates a new submission object.
@@ -49,6 +49,6 @@ public class Submission {
 	}
 	
 	public String getDate() {
-		return submission_date;
+		return submissionDate;
 	}
 }
