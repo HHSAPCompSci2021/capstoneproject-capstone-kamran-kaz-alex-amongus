@@ -1,5 +1,7 @@
 package client;
 
-public class TeacherScreen {
+import javax.swing.JPanel;
+
+public class TeacherScreen extends JPanel{
 
 }

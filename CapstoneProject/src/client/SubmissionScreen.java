@@ -1,5 +1,7 @@
 package client;
 
-public class SubmissionScreen {
+import javax.swing.JPanel;
+
+public class SubmissionScreen extends JPanel{
 
 }
