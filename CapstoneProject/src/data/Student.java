@@ -14,6 +14,12 @@ public class Student {
 	private String name;
 	private String id;
 	
+	public Student() {
+		submissions = new ArrayList<Submission>();
+		name = "";
+		id = "";
+	}
+	
 	/**
 	 * Creates a new student
 	 * @param username Name of the student
@@ -32,25 +38,8 @@ public class Student {
 		submissions.add(new Submission(submissionName, submission));
 	}
 	
-	public Submission getSubmission(String name) {
-		int index = getIndex(name);
-		if (index > 0) {
-			return submissions.get(index);
-		}
-		return null;
-	}
-	
-	public Submission getSubmission(int index) {
-		return submissions.get(index);
-	}
-	
-	private int getIndex(String name) {
-		for (int i = 0; i < submissions.size(); i++) {
-			if (submissions.get(i).getName().equals(name)) {
-				return i;
-			}
-		}
-		return -1;
+	public ArrayList<Submission> getSubmissions() {
+		return submissions;
 	}
 	
 	public String getName() {

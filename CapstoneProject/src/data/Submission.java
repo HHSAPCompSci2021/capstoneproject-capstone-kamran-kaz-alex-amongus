@@ -14,7 +14,16 @@ public class Submission {
 	private String name;
 	private char grade;
 	private String content;
-	private String submissionDate = new Date().toString();
+	private String submissionDate;
+	/**
+	 * No args constructor, will initialize the name and content to a blank string.
+	 */
+	public Submission() {
+		name = "";
+		grade = 0;
+		content = "";
+		submissionDate = new Date().toString();
+	}
 	
 	/**
 	 * Creates a new submission object.
@@ -29,6 +38,7 @@ public class Submission {
 		
 		this.name = name;
 		this.content = content;
+		this.submissionDate = new Date().toString();
 		this.grade = 0;
 	}
 	
