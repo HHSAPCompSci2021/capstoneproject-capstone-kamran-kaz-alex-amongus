@@ -12,7 +12,7 @@ import java.util.Date;
 public class Submission {
 	
 	private String name;
-	private char grade;
+	private String grade;
 	private String content;
 	private String submissionDate;
 	/**
@@ -20,7 +20,7 @@ public class Submission {
 	 */
 	public Submission() {
 		name = "";
-		grade = 0;
+		grade = "";
 		content = "";
 		submissionDate = new Date().toString();
 	}
@@ -39,7 +39,7 @@ public class Submission {
 		this.name = name;
 		this.content = content;
 		this.submissionDate = new Date().toString();
-		this.grade = 0;
+		this.grade = "";
 	}
 	
 	public String getName() {
@@ -50,15 +50,24 @@ public class Submission {
 		return content;
 	}
 	
-	public char getGrade() {
+	public String getGrade() {
 		return grade;
 	}
 	
-	public void setGrade(char g) {
+	public void setGrade(String g) {
 		grade = g;
 	}
 	
 	public String getDate() {
 		return submissionDate;
+	}
+	
+	@Override
+	public String toString() {
+		String output = name + "\n";
+		output += content + "\n";
+		output += submissionDate + "\n";
+		output += grade + "\n";
+		return output;
 	}
 }

@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import data.Student;
 
@@ -33,6 +34,21 @@ public class StudentScreen extends JPanel {
 		
 		String name = JOptionPane.showInputDialog("What is your name?");
 		
+		String id = null;
+		
+		while (id == null) {
+			id = JOptionPane.showInputDialog("What is your id number?");
+			char[] chars = id.toCharArray();
+			for (char c : chars) {
+				if (!Character.isDigit(c)) {
+					id = null;
+					String[] options = { "OK" };
+					JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
+				    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+				}
+			}
+		}
+		
 		FileInputStream refreshToken;
 		try {
 
@@ -45,7 +61,7 @@ public class StudentScreen extends JPanel {
 
 			FirebaseApp.initializeApp(options);
 			DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-			classRef = database.child("arcade");
+			classRef = database.child("classroom");
 
 			classRef.addChildEventListener(new DatabaseChangeListener());
 
@@ -54,14 +70,30 @@ public class StudentScreen extends JPanel {
 			e.printStackTrace();
 		}
 		
+		
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference("server/classrooms/classroom");
+		
+		ref.addValueEventListener(new ValueEventListener() {
+			  @Override
+			  public void onDataChange(DataSnapshot dataSnapshot) {
+			    Student student = dataSnapshot.getValue(Student.class);
+			    System.out.println(student);
+			  }
+
+			  @Override
+			  public void onCancelled(DatabaseError databaseError) {
+			    System.out.println("The read failed: " + databaseError.getCode());
+			  }
+		});
+		
+		
+		
+
+		
 	}
 	
-	private Student getStudent(ArrayList<Student> students) {
-		
-		
-		
-		return null;
-	}
+	
 
 	
 	/**
