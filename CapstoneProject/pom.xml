@@ -36,7 +36,7 @@
     <dependency>
         <groupId>ai.djl.mxnet</groupId>
         <artifactId>mxnet-native-mkl</artifactId>
-        <version>0.16.0</version>
+        <version>1.6.0</version>
         <classifier>osx-x86_64</classifier>
         <scope>runtime</scope>
     </dependency>
