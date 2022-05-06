@@ -13,11 +13,11 @@ public class Classroom {
 	private ArrayList<Teacher> teachers;
 	/**
 	 * Will create a new classroom with no students and no teachers
-	 * @Precondition Name of the classroom should have characters in it and be properly initialized
+	 * @pre Name of the classroom should have characters in it and be properly initialized
 	 * @param name Name of the classroom
 	 */
 	public Classroom(String name) {
-		if (StringChecker.isEmpty(name))
+		if (name == null || name.trim().isEmpty())
 			throw new IllegalArgumentException("Classroom name should be properly initialized and not be blank");
 		this.name = name;
 		students = new ArrayList<Student>();
@@ -25,13 +25,13 @@ public class Classroom {
 	}
 	/**
 	 * Creates a new classroom with predetermined students and teachers
-	 * @Precondition Name of the classroom should have characters in it and be properly initialized. Parameters should not be null
+	 * @pre Name of the classroom should have characters in it and be properly initialized. Parameters should not be null
 	 * @param name Name of the classroom
 	 * @param students A list of students
 	 * @param teachers A list of teachers in the classroom
 	 */
 	public Classroom(String name, ArrayList<Student> students, ArrayList<Teacher> teachers) {
-		if (StringChecker.isEmpty(name))
+		if (name == null || name.trim().isEmpty())
 			throw new IllegalArgumentException("Classroom name must not be blank or null");
 		if (students == null) 
 			throw new IllegalArgumentException("List of Students must be properly initialized");
@@ -78,6 +78,10 @@ public class Classroom {
 		teachers.add(teacher);
 	}
 	
+	/**
+	 * 
+	 * @return Name of the classroom
+	 */
 	public String getName() {
 		return name;
 	}

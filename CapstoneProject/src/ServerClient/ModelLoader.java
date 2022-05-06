@@ -6,7 +6,7 @@ public class ModelLoader {
 	
 	/**
 	 * loads the model from the specified path
-	 * @param path The path to the directory containing the model
+	 * @param ModelPath The path to the directory containing the model
 	 */
 	public ModelLoader(String ModelPath) {
 		path = ModelPath;

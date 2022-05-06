@@ -38,7 +38,10 @@ public class SubmissionScreen extends JPanel implements ActionListener{
 	private DatabaseReference postsRef;
 	
 	
-	
+	/**
+	 * Will create a system to upload a new submission for the user
+	 * @param name name of the submission
+	 */
 	public SubmissionScreen(String name) {
 		super(new BorderLayout());
 		

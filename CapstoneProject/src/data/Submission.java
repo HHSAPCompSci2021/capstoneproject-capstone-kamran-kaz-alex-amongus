@@ -31,9 +31,9 @@ public class Submission {
 	 * @param content The essay material that is in the submission
 	 */
 	public Submission(String name, String content) {
-		if (StringChecker.isEmpty(name)) 
+		if (name == null || name.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission must have a name");
-		if (StringChecker.isEmpty(content)) 
+		if (content == null || content.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission cannot be empty");
 		
 		this.name = name;

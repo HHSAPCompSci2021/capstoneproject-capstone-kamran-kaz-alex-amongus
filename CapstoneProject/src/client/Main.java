@@ -22,8 +22,8 @@ public class Main {
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
 	    if (user == 0) {
-	    	//screen = new StudentScreen();
-	    	screen = new SubmissionScreen("test");
+	    	screen = new StudentScreen();
+	    	//screen = new SubmissionScreen("test");
 	    }
 	    else if (user == 1) {
 	    	

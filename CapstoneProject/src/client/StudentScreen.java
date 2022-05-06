@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import com.google.auth.oauth2.GoogleCredentials;
@@ -20,8 +22,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import client.SubmissionScreen.DatabaseChangeListener;
 import data.Student;
-
+import data.Submission;
+/**
+ * The screen for the students 
+ * @author Kaz Nakao
+ *
+ */
 public class StudentScreen extends JPanel {
 	
 	
@@ -29,6 +37,12 @@ public class StudentScreen extends JPanel {
 
 	private DatabaseReference classRef;
 	
+	private Student student;
+	ArrayList<Submission> submissions;
+	
+	/** 
+	 * Sets up the submission screen as a JPanel
+	 */
 	public StudentScreen() {
 		super(new BorderLayout());
 		
@@ -49,117 +63,33 @@ public class StudentScreen extends JPanel {
 			}
 		}
 		
-		FileInputStream refreshToken;
-		try {
-
-			refreshToken = new FileInputStream("grademe-e5a48-firebase-adminsdk-wmfna-32b875a640.json");
-
-			FirebaseOptions options = new FirebaseOptions.Builder()
-					.setCredentials(GoogleCredentials.fromStream(refreshToken))
-					.setDatabaseUrl("https://grademe-e5a48-default-rtdb.firebaseio.com/")
-					.build();
-
-			FirebaseApp.initializeApp(options);
-			DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-			classRef = database.child("classroom");
-
-			classRef.addChildEventListener(new DatabaseChangeListener());
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		final FirebaseDatabase database = FirebaseDatabase.getInstance();
-		DatabaseReference ref = database.getReference("server/classrooms/classroom");
-		
-		ref.addValueEventListener(new ValueEventListener() {
-			  @Override
-			  public void onDataChange(DataSnapshot dataSnapshot) {
-			    Student student = dataSnapshot.getValue(Student.class);
-			    System.out.println(student);
-			  }
-
-			  @Override
-			  public void onCancelled(DatabaseError databaseError) {
-			    System.out.println("The read failed: " + databaseError.getCode());
-			  }
-		});
+		final String idnum = id; //use this string for when you intialize the student if needed
 		
 		
 		
-
 		
-	}
-	
-	
-
-	
-	/**
-	 * 
-	 * Handles all changes to the database reference. Because Firebase uses a separate thread than most other processes we're using (both Swing and Processing),
-	 * we need to have a strategy for ensuring that code is executed somewhere besides these methods.
-	 * 
-	 * @author john_shelby
-	 *
-	 */
-	class DatabaseChangeListener implements ChildEventListener {
-
-
-		@Override
-		public void onCancelled(DatabaseError arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-
-		@Override
-		public void onChildAdded(DataSnapshot dataSnapshot, String arg1) {
-			
-			SwingUtilities.invokeLater(new Runnable() {  // This threading strategy will work with Swing programs. Just put whatever code you want inside of one of these "runnable" wrappers.
-
-				public void run() {
-					
-					String name = dataSnapshot.child("name").getValue(String.class);
-					model.add(0,name);
-					
-				}
+		
+		
+		//submissions = student.getSubmissions();
+		submissions = new ArrayList<Submission>();
+		submissions.add(new Submission("hamlet", "Shakespear did a thing"));
+		submissions.add(new Submission("romeo and juliet", "love and stuff ig"));
+		submissions.add(new Submission("test submission", "testing testing testing"));
+		
+		
+		JLabel title = new JLabel("Submissions");
+		add(title, BorderLayout.NORTH);
+		
+		JScrollPane scroll = new JScrollPane();
+		
+		
+		if (submissions != null) {
+			for (Submission s : submissions) {
 				
-			});
-			
-			
+			}
 		}
-
-
-		@Override
-		public void onChildChanged(DataSnapshot dataSnapshot, String arg1) {
-			// TODO Auto-generated method stub
-
-		}
-
-
-		@Override
-		public void onChildMoved(DataSnapshot dataSnapshot, String arg1) {
-			// TODO Auto-generated method stub
-
-		}
-
-
-		@Override
-		public void onChildRemoved(DataSnapshot dataSnapshot) {
-			
-			SwingUtilities.invokeLater(new Runnable() {
-			    public void run() {
-			    	String name = dataSnapshot.child("name").getValue(String.class);
-			    	model.removeElement(name);
-			    }
-			});
-
-		}
-
-	}
-
-
-	
+		
+		
+		
+	}	
 }

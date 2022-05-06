@@ -23,6 +23,7 @@ public class Student {
 	/**
 	 * Creates a new student
 	 * @param username Name of the student
+	 * @param idnum ID number of the student
 	 */
 	public Student(String username, String idnum) {
 		submissions = new ArrayList<Submission>();
@@ -30,23 +31,48 @@ public class Student {
 		id = idnum;
 	}
 
+	/**
+	 * Adds a new submission for the student
+	 * @param submissionName The name of the new submission being created
+	 * @param submission The content that will be inside the submission
+	 */
 	public void add(String submissionName, String submission) {
-		if (StringChecker.isEmpty(submissionName)) 
+		if (submissionName == null || submission.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission name cannot be null or be blank");
-		if (StringChecker.isEmpty(submission)) 
+		if (submission == null || submission.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission cannot be null or be blank");
 		submissions.add(new Submission(submissionName, submission));
 	}
 	
+	
+	/**
+	 * 
+	 * @return An ArrayList of the submissions that the student has
+	 */
 	public ArrayList<Submission> getSubmissions() {
 		return submissions;
 	}
 	
+	/**
+	 * 
+	 * @return The name of the student
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * 
+	 * @return The id number of the student as a String
+	 */
 	public String getId() {
 		return id;
+	}
+	
+	@Override
+	public String toString() {
+		String output = "Name: " + name + ", ";
+		output += "ID: " + id;
+		return output;
 	}
 }
