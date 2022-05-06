@@ -27,6 +27,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * An example of inference using BertQA.
+ * 
+ * @author Amazon.com - DeepJavaLibrary
+ * @
  *
  * <p>See:
  *
