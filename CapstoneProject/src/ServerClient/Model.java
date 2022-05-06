@@ -53,8 +53,16 @@ public final class Model {
         logger.info("Answer: {}", answer);
     }
 
+    /**
+     * Answers a question based on the input essay.
+     * @param paragraph The document as a string
+     * @param question The question that needs to be answered
+     * @return The model generated answer String
+     * @throws IOException If the resource directory is not found
+     * @throws TranslateException If the translation layer fails
+     * @throws ModelException If the model cannot be loaded
+     */
     public static String predict(String paragraph, String question) throws IOException, TranslateException, ModelException {
-
         QAInput input = new QAInput(question, paragraph);
         logger.info("Paragraph: {}", input.getParagraph());
         logger.info("Question: {}", input.getQuestion());
