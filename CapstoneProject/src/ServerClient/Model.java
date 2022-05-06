@@ -12,7 +12,6 @@ package ServerClient;
  * OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
  * and limitations under the License.
  */
-
 import ai.djl.Application;
 import ai.djl.ModelException;
 import ai.djl.engine.Engine;
@@ -45,18 +44,16 @@ public final class Model {
     private static final Logger logger = LoggerFactory.getLogger(Model.class);
 
     public static void main(String[] args) throws IOException, TranslateException, ModelException {
-        String answer = Model.predict();
-        logger.info("Answer: {}", answer);
-    }
-
-    public static String predict() throws IOException, TranslateException, ModelException {
-        //        String question = "How is the weather";
-        //        String paragraph = "The weather is nice, it is beautiful day";
         String question = "When did BBC Japan start broadcasting?";
         String paragraph =
                 "BBC Japan was a general entertainment Channel. "
                         + "Which operated between December 2004 and April 2006. "
                         + "It ceased operations after its Japanese distributor folded.";
+        String answer = Model.predict(paragraph, question);
+        logger.info("Answer: {}", answer);
+    }
+
+    public static String predict(String paragraph, String question) throws IOException, TranslateException, ModelException {
 
         QAInput input = new QAInput(question, paragraph);
         logger.info("Paragraph: {}", input.getParagraph());
