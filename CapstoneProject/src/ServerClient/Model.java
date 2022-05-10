@@ -22,10 +22,6 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
 import java.io.IOException;
-import java.util.Scanner;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An example of inference using BertQA.
@@ -46,21 +42,6 @@ import org.slf4j.LoggerFactory;
  */
 public final class Model {
 
-    private static final Logger logger = LoggerFactory.getLogger(Model.class);
-
-    public static void main(String[] args) throws IOException, TranslateException, ModelException {
-    	System.out.print("Enter Question: ");
-    	Scanner kboard = new Scanner(System.in);
-        String question = kboard.nextLine();
-        String paragraph =
-                "BBC Japan was a general entertainment Channel. "
-                        + "Which operated between December 2004 and April 2006. "
-                        + "It ceased operations after its Japanese distributor folded.";
-        String answer = Model.predict(paragraph, question);
-        logger.info("Answer: {}", answer);
-        System.out.println(answer);
-    }
-
     /**
      * Answers a question based on the input essay.
      * @param paragraph The document as a string
@@ -72,8 +53,6 @@ public final class Model {
      */
     public static String predict(String paragraph, String question) throws IOException, TranslateException, ModelException {
         QAInput input = new QAInput(question, paragraph);
-        logger.info("Paragraph: {}", input.getParagraph());
-        logger.info("Question: {}", input.getQuestion());
 
         Criteria<QAInput, String> criteria =
                 Criteria.builder()
