@@ -20,11 +20,11 @@ import data.Submission;
  *
  */
 public class DatabaseTester extends JPanel implements ActionListener {
-	private JTextField nameField, contentField;
+	private JTextField nameField, contentField, usernameField, idField;
 	private DatabaseModifier m;
 	
 	public DatabaseTester() {
-		super(new GridLayout(3,1));
+		super(new GridLayout(4,1));
 		
 		JFrame frame = new JFrame("DatabaseTester");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,6 +40,15 @@ public class DatabaseTester extends JPanel implements ActionListener {
 		this.add(contentLabel);
 		contentField = new JTextField(20);
 		this.add(contentField);
+		
+		JLabel usernameLabel = new JLabel("Student Username:");
+		this.add(usernameLabel);
+		usernameField = new JTextField(20);
+		this.add(usernameLabel);
+		
+		JLabel idLabel = new JLabel("Student ID:");
+		this.add(idLabel);
+		idField = new JTextField(20);
 		
 		
 		
