@@ -70,8 +70,6 @@ public class DatabaseModifier {
 		return postID;
 	}
 	
-	public 
-	
 	/**
 	 * METHOD FOR TESTING ONLY - DO NOT JAVADOC OR INCLUDE IN DISTRIBUTED VERSIONS
 	 */
@@ -80,7 +78,6 @@ public class DatabaseModifier {
 	    root.setLevel(ch.qos.logback.classic.Level.DEBUG);  // This only shows us firebase errors. Change "ERROR" to "DEBUG" to see lots of database info.
 	    
 		DatabaseModifier m = new DatabaseModifier();
-		m.setupDatabase();
 		
 		Submission s = new Submission("name", "content");
 		m.submitToDatabase(s);
