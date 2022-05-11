@@ -41,7 +41,7 @@ public class Student {
 			throw new IllegalArgumentException("Submission name cannot be null or be blank");
 		if (submission == null || submission.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission cannot be null or be blank");
-		submissions.add(new Submission(submissionName, submission));
+		submissions.add(new Submission(submissionName, submission, this));
 	}
 	
 	

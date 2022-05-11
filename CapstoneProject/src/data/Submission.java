@@ -15,6 +15,8 @@ public class Submission {
 	private String grade;
 	private String content;
 	private String submissionDate;
+	private Student student;
+	
 	/**
 	 * No args constructor, will initialize the name and content to a blank string.
 	 */
@@ -30,7 +32,7 @@ public class Submission {
 	 * @param name Name of the submission
 	 * @param content The essay material that is in the submission
 	 */
-	public Submission(String name, String content) {
+	public Submission(String name, String content, Student student) {
 		if (name == null || name.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission must have a name");
 		if (content == null || content.trim().isEmpty()) 
@@ -38,6 +40,7 @@ public class Submission {
 		
 		this.name = name;
 		this.content = content;
+		this.student = student;
 		this.submissionDate = new Date().toString();
 		this.grade = "";
 	}
