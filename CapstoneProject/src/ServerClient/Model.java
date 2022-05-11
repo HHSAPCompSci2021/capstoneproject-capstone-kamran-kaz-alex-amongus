@@ -22,6 +22,11 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
 import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
+
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.*;
 
 /**
  * An example of inference using BertQA.
@@ -41,6 +46,15 @@ import java.io.IOException;
  * </ul>
  */
 public final class Model {
+	
+	private Properties props;
+	private StanfordCoreNLP nlp;
+	
+	public Model() {
+		props = new Properties();
+		props.setProperty("annotators", "tokenize,ssplit");
+		nlp = new StanfordCoreNLP(props);
+	}
 
     /**
      * Answers a question based on the input essay.
@@ -51,7 +65,7 @@ public final class Model {
      * @throws TranslateException If the translation layer fails
      * @throws ModelException If the model cannot be loaded
      */
-    public static String predict(String paragraph, String question) throws IOException, TranslateException, ModelException {
+    public String predict(String paragraph, String question) throws IOException, TranslateException, ModelException {
         QAInput input = new QAInput(question, paragraph);
 
         Criteria<QAInput, String> criteria =
@@ -68,5 +82,12 @@ public final class Model {
                 return predictor.predict(input);
             }
         }
+    }
+    
+    public List<CoreLabel> tokenize(String document) {
+    	CoreDocument doc = new CoreDocument(document);
+    	
+    	nlp.annotate(doc);
+    	return doc.tokens();
     }
 }

@@ -20,9 +20,10 @@ public class Main {
 				        "BBC Japan was a general entertainment Channel. "
 				                + "Which operated between December 2004 and April 2006. "
 				                + "It ceased operations after its Japanese distributor folded.";
-				String answer = Model.predict(paragraph, question);
+				Model mdl = new Model();
+				System.out.println(mdl.tokenize(paragraph).toString());
+				String answer = mdl.predict(paragraph, question);
 				System.out.println(answer);
 			}
 	    }
-
 }
