@@ -6,6 +6,8 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import data.Submission;
+
 /**
  * Handles changes with Firebase database reference
  * @author Alex Wang, John Shelby for assistance in Firebase logic
@@ -38,18 +40,20 @@ public class DatabaseChangeListener implements ChildEventListener {
 	 * someone else). It is also called at the beginning of the program for all existing database posts. 
 	 */
 	public void onChildAdded(DataSnapshot dataSnapshot, String arg1) {
-//		tasks.add(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				Post post = dataSnapshot.getValue(Post.class);
-//				currentDrawing.addDotSet(post.dots, new Color(post.r,post.g,post.b));
-//			}
-//			
-//		});
-		
-		// get value of stored information and turn back to Java object
 		System.out.println("onChildAdded() called");
+		tasks.add(new Runnable() {
+
+			@Override
+			public void run() {
+				// get value of stored information and turn back to Java object
+				Submission studentSubmission = dataSnapshot.getValue(Submission.class);
+				
+				// transfer to appropriate GUI components
+			}
+			
+		});
+		
+		
 	}
 
 	@Override
