@@ -1,12 +1,14 @@
 package ServerClient;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.Scanner;
-
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import data.Submission;
 
@@ -17,23 +19,34 @@ import data.Submission;
  * @author Alex Wang
  *
  */
-public class DatabaseTester extends JPanel {
+public class DatabaseTester extends JPanel implements ActionListener {
+	private JTextField nameField, contentField;
+	private DatabaseModifier m;
+	
 	public DatabaseTester() {
-		super();
-		
-		JLabel title = new JLabel("DatabaseTester");
-		add(title, BorderLayout.NORTH);
+		super(new GridLayout(3,1));
 		
 		JFrame frame = new JFrame("DatabaseTester");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(900, 500));
 		
-		
 		// text field
 		JLabel nameLabel = new JLabel("Name:");
 		this.add(nameLabel);
+		nameField = new JTextField(20);
+		this.add(nameField);
+		
 		JLabel contentLabel = new JLabel("Content:");
 		this.add(contentLabel);
+		contentField = new JTextField(20);
+		this.add(contentField);
+		
+		
+		
+		JButton updateButton = new JButton();
+		updateButton.setText("Post to Firebase");
+		updateButton.addActionListener(this);
+		this.add(updateButton);
 		
 		
 		frame.add(this);
@@ -48,25 +61,20 @@ public class DatabaseTester extends JPanel {
 	    root.setLevel(ch.qos.logback.classic.Level.DEBUG);  // This only shows us firebase errors. Change "ERROR" to "DEBUG" to see lots of database info.
 	    
 	    DatabaseTester tester = new DatabaseTester();
-	    
-	    
-//	    DatabaseModifier m = new DatabaseModifier();
-//	    Scanner input = new Scanner(System.in);
-//	    
-//	    boolean exit = false;
-//	    
-//	    while (!exit) {
-//	    	System.out.println("Input name: ");
-//	    	String name = input.nextLine();
-//	    	
-//	    	System.out.println("Input content: ");
-//	    	String content = input.nextLine();
-//	    	
-//	    	Submission s = new Submission(name, content);
-//	    	m.submitToDatabase(s);
-//	    	System.out.println("submission initiated.");
-//	    }
-//	    
 		
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("button pressed");
+		
+	    if (m == null) {
+	    	m = new DatabaseModifier();	
+	    }
+	    
+	    Submission s = new Submission(nameField.getText(), contentField.getText());
+	    m.submitToDatabase(s);
+	    System.out.println("submission initiated.");
+	    		
 	}
 }
