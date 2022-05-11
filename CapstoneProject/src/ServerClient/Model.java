@@ -31,7 +31,7 @@ import edu.stanford.nlp.pipeline.*;
 /**
  * An example of inference using BertQA.
  * 
- * @author Amazon.com - DeepJavaLibrary
+ * @author Amazon.com - DeepJavaLibrary, Kamran Hussain
  * 
  *
  * <p>See:
