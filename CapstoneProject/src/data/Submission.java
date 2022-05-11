@@ -58,7 +58,7 @@ public class Submission {
 		grade = g;
 	}
 	
-	public String getDate() {
+	public String getSubmissionDate() {
 		return submissionDate;
 	}
 	
