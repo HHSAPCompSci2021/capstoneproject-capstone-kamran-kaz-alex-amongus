@@ -19,6 +19,10 @@ public class DatabaseModifier {
 	
 	private DatabaseReference postsRef;
 
+	public DatabaseModifier() {
+		setupDatabase();
+	}
+	
 	/**
 	 * Creates a Database Reference and sets up necessary Firebase options
 	 */
@@ -66,7 +70,7 @@ public class DatabaseModifier {
 		return postID;
 	}
 	
-	
+	public 
 	
 	/**
 	 * METHOD FOR TESTING ONLY - DO NOT JAVADOC OR INCLUDE IN DISTRIBUTED VERSIONS

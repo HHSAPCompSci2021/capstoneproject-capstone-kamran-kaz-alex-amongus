@@ -30,8 +30,8 @@ public class DatabaseChangeListener implements ChildEventListener {
 	
 	
 	@Override
-	public void onCancelled(DatabaseError arg0) {
-
+	public void onCancelled(DatabaseError err) {
+		System.out.println("Database read failed. Code: " + err.getCode());
 	}
 
 	@Override
