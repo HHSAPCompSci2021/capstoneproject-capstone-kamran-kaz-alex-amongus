@@ -50,10 +50,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 				
 				// transfer to appropriate GUI components
 			}
-			
 		});
-		
-		
 	}
 
 	@Override
