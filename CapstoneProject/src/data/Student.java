@@ -14,6 +14,9 @@ public class Student {
 	private String name;
 	private String id;
 	
+	/**
+	 * No args Constructor. The submissions for the student will be set to an empty list and the name and id will be set to an empty string.
+	 */
 	public Student() {
 		submissions = new ArrayList<Submission>();
 		name = "";
@@ -41,7 +44,7 @@ public class Student {
 			throw new IllegalArgumentException("Submission name cannot be null or be blank");
 		if (submission == null || submission.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission cannot be null or be blank");
-		submissions.add(new Submission(submissionName, submission, this));
+		submissions.add(new Submission(submissionName, submission));
 	}
 	
 	
@@ -68,6 +71,18 @@ public class Student {
 	public String getId() {
 		return id;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Student other = null;
+		if (obj instanceof Student) 
+			other = (Student)obj;
+		else 
+			throw new IllegalArgumentException("Must be type Student");
+		
+		return name.equals(other.getName()) && submissions.equals(other.getSubmissions()) && id.equals(other.getId());
+	}
+	
 	
 	@Override
 	public String toString() {

@@ -15,10 +15,9 @@ public class Submission {
 	private String grade;
 	private String content;
 	private String submissionDate;
-	private Student student;
 	
 	/**
-	 * No args constructor, will initialize the name and content to a blank string.
+	 * No args constructor, will initialize the name and content to an empty string.
 	 */
 	public Submission() {
 		name = "";
@@ -32,7 +31,7 @@ public class Submission {
 	 * @param name Name of the submission
 	 * @param content The essay material that is in the submission
 	 */
-	public Submission(String name, String content, Student student) {
+	public Submission(String name, String content) {
 		if (name == null || name.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission must have a name");
 		if (content == null || content.trim().isEmpty()) 
@@ -40,19 +39,29 @@ public class Submission {
 		
 		this.name = name;
 		this.content = content;
-		this.student = student;
 		this.submissionDate = new Date().toString();
 		this.grade = "";
 	}
 	
+	/**
+	 *
+	 * @return The title of the submission.
+	 */
 	public String getName() {
 		return name;
 	}
-	
+	/**
+	 * 
+	 * @return The content of the submission.
+	 */
 	public String getContent() {
 		return content;
 	}
 	
+	/**
+	 * 
+	 * @return The grade that has been given to the submission. If no grade has been given yet, the method will return an empty string.
+	 */
 	public String getGrade() {
 		return grade;
 	}
@@ -65,8 +74,16 @@ public class Submission {
 		return submissionDate;
 	}
 	
-	public Student getStudent() {
-		return student;
+	@Override 
+	public boolean equals(Object obj) {
+		Submission other = null;
+		if (obj instanceof Submission)
+			other = (Submission)obj;
+		else
+			throw new IllegalArgumentException("Must be type Submission");
+		
+		return name.equals(other.getName()) && grade.equals(other.getGrade()) && content.equals(other.getContent()) 
+				&& submissionDate.equals(other.getSubmissionDate());
 	}
 	
 	@Override
