@@ -7,9 +7,11 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import com.google.auth.oauth2.GoogleCredentials;
@@ -22,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import client.SubmissionScreen.DatabaseChangeListener;
+
 import data.Student;
 import data.Submission;
 /**
@@ -65,11 +67,6 @@ public class StudentScreen extends JPanel {
 		
 		final String idnum = id; //use this string for when you intialize the student if needed
 		
-		
-		
-		
-		
-		
 		//submissions = student.getSubmissions();
 		submissions = new ArrayList<Submission>();
 		submissions.add(new Submission("hamlet", "Shakespear did a thing", new Student("Kaz Nakao", "1234567")));
@@ -78,18 +75,22 @@ public class StudentScreen extends JPanel {
 		
 		
 		JLabel title = new JLabel("Submissions");
-		add(title, BorderLayout.NORTH);
+		add(title, BorderLayout.PAGE_START);
 		
 		JScrollPane scroll = new JScrollPane();
-		
-		
+		String[] options = null;
 		if (submissions != null) {
-			for (Submission s : submissions) {
-				
+			options = new String[submissions.size()];
+			for (int i = 0; i < submissions.size(); i++) {
+				options[i] = submissions.get(i).getName();
 			}
 		}
 		
-		
+		JList<String> list = new JList<String>(options);
+		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
+		scroll.add(list);
+		add(list, BorderLayout.CENTER);
 		
 	}	
 }
