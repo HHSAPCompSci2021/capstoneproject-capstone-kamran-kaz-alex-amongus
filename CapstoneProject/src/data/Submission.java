@@ -65,6 +65,10 @@ public class Submission {
 		return submissionDate;
 	}
 	
+	public Student getStudent() {
+		return student;
+	}
+	
 	@Override
 	public String toString() {
 		String output = name + "\n";

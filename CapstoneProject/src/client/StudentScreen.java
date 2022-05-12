@@ -72,9 +72,9 @@ public class StudentScreen extends JPanel {
 		
 		//submissions = student.getSubmissions();
 		submissions = new ArrayList<Submission>();
-		submissions.add(new Submission("hamlet", "Shakespear did a thing"));
-		submissions.add(new Submission("romeo and juliet", "love and stuff ig"));
-		submissions.add(new Submission("test submission", "testing testing testing"));
+		submissions.add(new Submission("hamlet", "Shakespear did a thing", new Student("Kaz Nakao", "1234567")));
+		submissions.add(new Submission("romeo and juliet", "love and stuff ig", new Student("Alex Wang", "5100000")));
+		submissions.add(new Submission("test submission", "testing testing testing", new Student("Kamran Hussain", "9876543")));
 		
 		
 		JLabel title = new JLabel("Submissions");

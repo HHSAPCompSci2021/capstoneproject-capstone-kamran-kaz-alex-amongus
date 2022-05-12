@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import data.Student;
 import data.Submission;
 
 /**
@@ -24,7 +25,7 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	private DatabaseModifier m;
 	
 	public DatabaseTester() {
-		super(new GridLayout(4,1));
+		super(new GridLayout(6,1));
 		
 		JFrame frame = new JFrame("DatabaseTester");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,12 +45,12 @@ public class DatabaseTester extends JPanel implements ActionListener {
 		JLabel usernameLabel = new JLabel("Student Username:");
 		this.add(usernameLabel);
 		usernameField = new JTextField(20);
-		this.add(usernameLabel);
+		this.add(usernameField);
 		
 		JLabel idLabel = new JLabel("Student ID:");
 		this.add(idLabel);
 		idField = new JTextField(20);
-		
+		this.add(idField);
 		
 		
 		JButton updateButton = new JButton();
@@ -75,15 +76,13 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("button pressed");
-		
 	    if (m == null) {
 	    	m = new DatabaseModifier();	
 	    }
 	    
-	    Submission s = new Submission(nameField.getText(), contentField.getText());
-	    m.submitToDatabase(s);
-	    System.out.println("submission initiated.");
+	    Submission s = new Submission(nameField.getText(), contentField.getText(), new Student(usernameField.getText(), idField.getText()));
+	    String submissionID = m.submitToDatabase(s);
+	    System.out.println("SUBMISSION ID = " + submissionID);
 	    		
 	}
 }
