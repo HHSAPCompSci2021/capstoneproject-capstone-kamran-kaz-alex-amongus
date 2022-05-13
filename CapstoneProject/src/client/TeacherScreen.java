@@ -15,7 +15,12 @@ import javax.swing.event.ListSelectionListener;
 
 import data.Submission;
 import data.Teacher;
-
+/**
+ * 
+ * Models the Teacher GUI. Will be able to click on an assignment and be able to view the 
+ * @author Kaz Nakao
+ *
+ */
 public class TeacherScreen extends JPanel implements ListSelectionListener{
 	
 	private ArrayList<Submission> submissions;
