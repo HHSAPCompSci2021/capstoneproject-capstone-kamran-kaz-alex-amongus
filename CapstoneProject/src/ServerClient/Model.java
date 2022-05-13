@@ -5,7 +5,6 @@ import ai.djl.ModelException;
 import ai.djl.engine.Engine;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.nlp.qa.QAInput;
-import ai.djl.ndarray.NDArray;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
@@ -19,7 +18,6 @@ import java.util.Properties;
 
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
-import org.deeplearning4j.models.word2vec.Word2Vec;
 
 import edu.stanford.nlp.pipeline.*;
 
