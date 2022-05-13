@@ -135,6 +135,9 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 	}
 	
+	/**
+	 * sets the student field of the student screen to the proper one. 
+	 */
 	public void getStudent() {
 		
 	}
