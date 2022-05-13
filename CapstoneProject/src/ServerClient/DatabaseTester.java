@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import data.Classroom;
 import data.Rubric;
 import data.Student;
+import data.Teacher;
 /**
  * TEST CLASS FOR DatabaseModifier.java and DatabaseChangeListener.java
  * REMOVE IN FINAL PRODUCTION
@@ -83,23 +84,32 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	    
 //	    DatabaseTester tester = new DatabaseTester();
 	    
-	    ArrayList<Student> studentList = new ArrayList<Student>();
-	    studentList.add(new Student("name", "2324"));
-	    
-	    ArrayList<Teacher> teacherList = new ArrayList<Teacher>();
-	    teacherList.add(new Teacher("joe", 3432));
-	    
-	    ArrayList<Rubric> rubricList = new ArrayList<Rubric>();
-	    rubricList.add(new Rubric("rubricTest"));
-	    
-	    Classroom c = new Classroom("testClassroom", studentList, teacherList, rubricList);
+	    // SUBMITCLASSROOMTODATABASE() TESTER
+//	    ArrayList<Student> studentList = new ArrayList<Student>();
+//	    studentList.add(new Student("name", "2324"));
+//	    
+//	    ArrayList<Teacher> teacherList = new ArrayList<Teacher>();
+//	    teacherList.add(new Teacher("joe", 3432));
+//	    
+//	    ArrayList<Rubric> rubricList = new ArrayList<Rubric>();
+//	    rubricList.add(new Rubric("rubricTest"));
+//	    
+//	    Classroom c = new Classroom("testClassroom", studentList, teacherList, rubricList);
 	    
 	    if (staticM == null) {
 	    	staticM = new DatabaseModifier();
 	    }
 	    
-	    staticM.submitClassroomToDatabase(c);
+//	    staticM.submitClassroomToDatabase(c);
 	    
+	    // UPDATING EXISTING CLASSROOM W MORE STUDENTS CODE
+	    String existingClassroomName = "-N1yo5LEfnBtU0Ehcx0D";
+	    
+	    Student stu = new Student("NEW_STUDENT_3", "9999");
+	    staticM.addStudentToClassroom(stu, existingClassroomName);
+	    
+	    
+	    // allow program to keep running
 	    Scanner sc = new Scanner(System.in);
 	    String x = sc.next();
 		
@@ -111,7 +121,7 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	    	m = new DatabaseModifier();	
 	    }
 
-	    Submission s = new Submission(nameField.getText(), contentField.getText());
+//	    Submission s = new Submission(nameField.getText(), contentField.getText());
 //	    String submissionID = m.submitToDatabase(s);
 //	    System.out.println("SUBMISSION ID = " + submissionID);	
 	}

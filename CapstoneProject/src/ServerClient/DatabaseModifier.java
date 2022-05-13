@@ -81,13 +81,16 @@ public class DatabaseModifier {
 	 * Submit Student object to known Classroom in Database
 	 * @param student Student object to be added
 	 * @param classroomID postID of the classroom (returned by submitClassroomToDatabase())
-	 * @return postID from new data path (DatabaseReference) used to retrieve data
 	 */
-//	public String submitStudentToClassroom(Student student, String classroomID) {
-////		DatabaseReference classroomRef = classroomsRef.child(classroomID);
-//		
-//		
-//	}
+	public void addStudentToClassroom(Student student, String classroomID) {
+		DatabaseReference classroomRef = classroomsRef.child(classroomID);
+		Map<String, Object> studentAddition = new HashMap<>();
+		studentAddition.put("students/0", student);
+		
+		// current bug - code does not add student obejct to a list of students -- instead it replaces all under students/
+		
+		classroomRef.updateChildrenAsync(studentAddition);	
+	}
 	
 	
 }
