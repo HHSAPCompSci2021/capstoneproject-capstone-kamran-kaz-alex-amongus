@@ -98,7 +98,7 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		JFrame window = new SubmissionScreen();
+		JFrame window = new SubmissionScreen(student);
 		window.setBounds(100, 100, 800, 600);
 		window.setResizable(true);
 		window.setVisible(true);
