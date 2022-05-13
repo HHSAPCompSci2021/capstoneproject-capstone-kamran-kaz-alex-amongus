@@ -11,8 +11,20 @@ public class Classroom {
 	private String name;
 	private ArrayList<Student> students;
 	private ArrayList<Teacher> teachers;
+	private ArrayList<Rubric> assignments;
+	
 	/**
-	 * Will create a new classroom with no students and no teachers
+	 * No args constructor to create a new Classroom with empty properties.
+	 */
+	public Classroom() {
+		name = "";
+		students = new ArrayList<Student>();
+		teachers = new ArrayList<Teacher>();
+		assignments = new ArrayList<Rubric>();
+	}
+	
+	/**
+	 * Will create a new classroom with no students and no teachers. Useful for creating a blank classroom with just a name.
 	 * @pre Name of the classroom should have characters in it and be properly initialized
 	 * @param name Name of the classroom
 	 */
@@ -22,6 +34,7 @@ public class Classroom {
 		this.name = name;
 		students = new ArrayList<Student>();
 		teachers = new ArrayList<Teacher>();
+		assignments = new ArrayList<Rubric>();
 	}
 	/**
 	 * Creates a new classroom with predetermined students and teachers
@@ -30,16 +43,20 @@ public class Classroom {
 	 * @param students A list of students
 	 * @param teachers A list of teachers in the classroom
 	 */
-	public Classroom(String name, ArrayList<Student> students, ArrayList<Teacher> teachers) {
+	public Classroom(String name, ArrayList<Student> students, ArrayList<Teacher> teachers, ArrayList<Rubric> assignments) {
 		if (name == null || name.trim().isEmpty())
 			throw new IllegalArgumentException("Classroom name must not be blank or null");
 		if (students == null) 
 			throw new IllegalArgumentException("List of Students must be properly initialized");
 		if (teachers == null) 
 			throw new IllegalArgumentException("List of Teachers must be properly initialized");
+		if (assignments == null) 
+			throw new IllegalArgumentException("List of Rubrics must be properly initialized");
+		
 		this.name = name;
 		this.students = students;
 		this.teachers = teachers;
+		this.assignments = assignments;
 	}
 	
 	/**
@@ -59,7 +76,16 @@ public class Classroom {
 	}
 	
 	/**
+	 * 
+	 * @return A list of Rubric objects that represent the assignments in the classroom.
+	 */
+	public ArrayList<Rubric> getAssignments() {
+		return assignments;
+	}
+	
+	/**
 	 * Adds a Student object to the list of students in the classroom
+	 * @pre Student must be initialized.
 	 * @param student
 	 */
 	public void addStudent(Student student) {
@@ -70,12 +96,23 @@ public class Classroom {
 	
 	/**
 	 * Adds a Teacher object to the list of teachers in the classroom
+	 * @pre Teacher must be initialized.
 	 * @param teacher
 	 */
 	public void addTeacher(Teacher teacher) {
 		if (teacher == null) 
 			throw new IllegalArgumentException();
 		teachers.add(teacher);
+	}
+	/**
+	 * Adds a Rubric object to the list of assignments. Will be displayed as being an "assignment"
+	 * @pre Rubric must be initialized
+	 * @param rubric The new assignment to be added to the classroom
+	 */
+	public void addAssignment(Rubric rubric) {
+		if (rubric == null) 
+			throw new IllegalArgumentException();
+		assignments.add(rubric);
 	}
 	
 	/**
