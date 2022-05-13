@@ -77,10 +77,18 @@ public class Submission {
 		return grade;
 	}
 	
+	/** 
+	 * Changes the grade of the submission to a set grade.
+	 * @param g The grade that you want to assign. 
+	 */
 	public void setGrade(String g) {
 		grade = g;
 	}
 	
+	/**
+	 * 
+	 * @return The date and time that the submission was made.
+	 */
 	public String getSubmissionDate() {
 		return submissionDate;
 	}
