@@ -30,7 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
+import ServerClient.DatabaseModifier;
+import ServerClient.DatabaseReader;
 import data.Student;
 import data.Submission;
 /**
@@ -73,12 +74,13 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 		final String idnum = id; //use this string for when you intialize the student if needed
 		
-		//submissions = student.getSubmissions();
+		DatabaseReader reader = new DatabaseReader();
+		submissions = reader.getSubmissions();
 		
-		submissions = new ArrayList<Submission>();
-		submissions.add(new Submission("hamlet", "Shakespear did a thing"));
-		submissions.add(new Submission("romeo and juliet", "love and stuff ig"));
-		submissions.add(new Submission("test submission", "testing testing testing"));
+		//submissions = new ArrayList<Submission>();
+		//submissions.add(new Submission("hamlet", "Shakespear did a thing"));
+		//submissions.add(new Submission("romeo and juliet", "love and stuff ig"));
+		//submissions.add(new Submission("test submission", "testing testing testing"));
 		
 		
 		JLabel title = new JLabel("Submissions");
@@ -131,6 +133,10 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		window.setResizable(true);
 		window.setVisible(true);
 		
+		
+	}
+	
+	public void getStudent() {
 		
 	}
 

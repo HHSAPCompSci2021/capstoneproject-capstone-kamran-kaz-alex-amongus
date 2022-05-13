@@ -26,7 +26,7 @@ public class Main {
 	    	//screen = new SubmissionScreen("test");
 	    }
 	    else if (user == 1) {
-	    	
+	    	screen = new TeacherScreen();
 	    }
 	    w.add(screen);
 		w.setResizable(true);
