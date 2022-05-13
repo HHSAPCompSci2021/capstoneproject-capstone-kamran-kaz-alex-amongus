@@ -53,6 +53,8 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 	public StudentScreen() {
 		super(new BorderLayout());
 		
+		setupStudent();
+		
 		JLabel title = new JLabel("Submissions");
 		add(title, BorderLayout.PAGE_START);
 		
