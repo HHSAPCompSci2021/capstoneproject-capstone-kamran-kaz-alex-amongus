@@ -13,7 +13,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import ServerClient.DatabaseReader;
 import data.Submission;
 import data.Teacher;
 
@@ -32,8 +31,7 @@ public class TeacherScreen extends JPanel implements ListSelectionListener{
 		
 		teacher = new Teacher();
 		
-		DatabaseReader reader = new DatabaseReader();
-		submissions = reader.getSubmissions();
+		
 		
 		submissions = new ArrayList<Submission>();
 		submissions.add(new Submission("hamlet", "Shakespear did a thing"));
