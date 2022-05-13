@@ -16,9 +16,6 @@ import javax.swing.JTextField;
 import data.Classroom;
 import data.Rubric;
 import data.Student;
-import data.Submission;
-import data.Teacher;
-
 /**
  * TEST CLASS FOR DatabaseModifier.java and DatabaseChangeListener.java
  * REMOVE IN FINAL PRODUCTION
@@ -26,8 +23,9 @@ import data.Teacher;
  * @author Alex Wang
  *
  */
+@SuppressWarnings("serial")
 public class DatabaseTester extends JPanel implements ActionListener {
-	private JTextField nameField, contentField, usernameField, idField;
+	private JTextField nameField, contentField, usernameField, idField, gradeField;
 	private DatabaseModifier m;
 	private static DatabaseModifier staticM;
 	
@@ -48,6 +46,11 @@ public class DatabaseTester extends JPanel implements ActionListener {
 		this.add(contentLabel);
 		contentField = new JTextField(20);
 		this.add(contentField);
+		
+		JLabel gradeLabel = new JLabel("Grade:");
+		this.add(gradeLabel);
+		gradeField = new JTextField(20);
+		this.add(gradeField);
 		
 		JLabel usernameLabel = new JLabel("Student Username:");
 		this.add(usernameLabel);
@@ -73,6 +76,7 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	}
 	
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 	    root.setLevel(ch.qos.logback.classic.Level.DEBUG);  // This only shows us firebase errors. Change "ERROR" to "DEBUG" to see lots of database info.
@@ -106,10 +110,9 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	    if (m == null) {
 	    	m = new DatabaseModifier();	
 	    }
-	    
+
 	    Submission s = new Submission(nameField.getText(), contentField.getText());
 //	    String submissionID = m.submitToDatabase(s);
-//	    System.out.println("SUBMISSION ID = " + submissionID);
-	    		
+//	    System.out.println("SUBMISSION ID = " + submissionID);	
 	}
 }

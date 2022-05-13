@@ -22,10 +22,8 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
 
-import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.*;
 
 /**
@@ -84,10 +82,15 @@ public final class Model {
         }
     }
     
-    public List<CoreLabel> tokenize(String document) {
+    /**
+     * Tokenizes and splits the input document
+     * @param document Document or Essay as a string
+     * @return A CoreDocument Object containing all pre-processing annotations
+     */
+    public CoreDocument tokenize(String document) {
     	CoreDocument doc = new CoreDocument(document);
-    	
     	nlp.annotate(doc);
-    	return doc.tokens();
+    	System.out.println(doc.annotation().toString());
+    	return doc;
     }
 }
