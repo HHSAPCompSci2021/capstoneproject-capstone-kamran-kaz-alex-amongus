@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -37,7 +38,7 @@ import data.Submission;
  * @author Kaz Nakao
  *
  */
-public class StudentScreen extends JPanel implements ListSelectionListener{
+public class StudentScreen extends JPanel implements ListSelectionListener, ActionListener{
 	
 	
 	private Student student;
@@ -99,13 +100,16 @@ public class StudentScreen extends JPanel implements ListSelectionListener{
 		scroll.add(list);
 		add(list, BorderLayout.CENTER);
 		
+		JButton submit = new JButton("Submit a new Submission");
+		submit.addActionListener(this);
+		add(submit, BorderLayout.PAGE_END);
+		
 	}
 
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("Selected");
 		int index = list.getMinSelectionIndex();
 		if (index >= 0) {
 			Submission submission = submissions.get(index);
@@ -116,6 +120,18 @@ public class StudentScreen extends JPanel implements ListSelectionListener{
 			
 			
 		}
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		JFrame window = new SubmissionScreen();
+		window.setBounds(100, 100, 800, 600);
+		window.setResizable(true);
+		window.setVisible(true);
+		
+		
 	}
 
 
