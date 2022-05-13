@@ -94,9 +94,9 @@ public final class Model {
     		rub.add(tokenize(str));
     	}
     	
-    	float[] tokens = vectorize(doc);
+    	ArrayList<double[]> tokens = vectorize(doc);
     	
-    	System.out.println(this.predict(doc.toString(), rub.toString()) + tokens);
+    	System.out.println(this.predict(doc.toString(), rub.toString()) + tokens.toString());
     }
     
     /**
