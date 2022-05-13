@@ -30,7 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import ServerClient.DatabaseChangeListener;
 import ServerClient.DatabaseModifier;
+import data.Classroom;
 import data.Student;
 import data.Submission;
 /**
@@ -50,37 +52,6 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 	 */
 	public StudentScreen() {
 		super(new BorderLayout());
-		
-		student = new Student("Dummy Student", "1234");
-		
-		
-		String name = JOptionPane.showInputDialog("What is your name?");
-		
-		String id = null;
-		
-		while (id == null) {
-			id = JOptionPane.showInputDialog("What is your id number?");
-			char[] chars = id.toCharArray();
-			for (char c : chars) {
-				if (!Character.isDigit(c)) {
-					id = null;
-					String[] options = { "OK" };
-					JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
-				    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-				}
-			}
-		}
-		
-		final String idnum = id; //use this string for when you intialize the student if needed
-		
-		
-		
-		
-		submissions = new ArrayList<Submission>();
-		submissions.add(new Submission("hamlet", "Shakespear did a thing"));
-		submissions.add(new Submission("romeo and juliet", "love and stuff ig"));
-		submissions.add(new Submission("test submission", "testing testing testing"));
-		
 		
 		JLabel title = new JLabel("Submissions");
 		add(title, BorderLayout.PAGE_START);
@@ -135,12 +106,55 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 	}
 	
-	/**
-	 * sets the student field of the student screen to the proper one. 
-	 */
-	public void getStudent() {
+	private void setupStudent() {
+		
+
+		String name = JOptionPane.showInputDialog("What is your name?");
+		
+		String id = null;
+		
+		while (id == null) {
+			id = JOptionPane.showInputDialog("What is your id number?");
+			char[] chars = id.toCharArray();
+			for (char c : chars) {
+				if (!Character.isDigit(c)) {
+					id = null;
+					String[] options = { "OK" };
+					JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
+				    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+				}
+			}
+		}
+		
+		final String idnum = id; //use this string for when you intialize the student if needed
+		
+		Student check = new Student(name, id);
+		
+		
+		DatabaseModifier m = new DatabaseModifier();
+		Classroom classroom = m.getClassroom();
+		
+		
+		ArrayList<Student> students = classroom.getStudents();
+		
+		boolean found = false;
+		
+		for (Student s : students) {
+			if (check.equals(s)) {
+				student = s;
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found) {
+			student = new Student(name, id);
+		}
+		
+		classroom.addStudent(student);
+		
+		m.submitClassroomToDatabase(classroom);
 		
 	}
-
 
 }
