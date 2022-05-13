@@ -85,33 +85,41 @@ public class DatabaseTester extends JPanel implements ActionListener {
 //	    DatabaseTester tester = new DatabaseTester();
 	    
 	    // SUBMITCLASSROOMTODATABASE() TESTER
-//	    ArrayList<Student> studentList = new ArrayList<Student>();
-//	    studentList.add(new Student("name", "2324"));
-//	    
-//	    ArrayList<Teacher> teacherList = new ArrayList<Teacher>();
-//	    teacherList.add(new Teacher("joe", 3432));
-//	    
-//	    ArrayList<Rubric> rubricList = new ArrayList<Rubric>();
-//	    rubricList.add(new Rubric("rubricTest"));
-//	    
-//	    Classroom c = new Classroom("testClassroom", studentList, teacherList, rubricList);
+	    ArrayList<Student> studentList = new ArrayList<Student>();
+	    studentList.add(new Student("name", "2324"));
+	    
+	    ArrayList<Teacher> teacherList = new ArrayList<Teacher>();
+	    teacherList.add(new Teacher("joe", 3432));
+	    
+	    ArrayList<Rubric> rubricList = new ArrayList<Rubric>();
+	    rubricList.add(new Rubric("rubricTest"));
+	    
+	    Classroom c = new Classroom("testClassroom", studentList, teacherList, rubricList);
 	    
 	    if (staticM == null) {
 	    	staticM = new DatabaseModifier();
 	    }
 	    
-//	    staticM.submitClassroomToDatabase(c);
+	    staticM.submitClassroomToDatabase(c);
 	    
 	    // UPDATING EXISTING CLASSROOM W MORE STUDENTS CODE
-	    String existingClassroomName = "-N1yo5LEfnBtU0Ehcx0D";
+//	    String existingClassroomName = "-N1yo5LEfnBtU0Ehcx0D";
+//	    
+//	    Student stu = new Student("NEW_STUDENT_3", "9999");
+//	    staticM.addStudentToClassroom(stu, existingClassroomName);
 	    
-	    Student stu = new Student("NEW_STUDENT_3", "9999");
-	    staticM.addStudentToClassroom(stu, existingClassroomName);
 	    
 	    
-	    // allow program to keep running
+	    String response = "";
 	    Scanner sc = new Scanner(System.in);
-	    String x = sc.next();
+	    while (!response.equals("quit")) {
+	    	
+	    	// GET CLASSROOM OBJECT TEST CODE
+	    	System.out.println("\n\n-------------CLASSROOM OBJECT----------------\n" + DatabaseChangeListener.getClassroom());
+	    	
+	    	response = sc.nextLine();
+	    }
+	    
 		
 	}
 	

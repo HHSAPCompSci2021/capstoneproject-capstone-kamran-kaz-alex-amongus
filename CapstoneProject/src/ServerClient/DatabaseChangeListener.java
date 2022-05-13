@@ -16,7 +16,7 @@ import data.Classroom;
  */
 public class DatabaseChangeListener implements ChildEventListener {
 	private ConcurrentLinkedQueue<Runnable> tasks;
-	private Classroom classroom;
+	private static Classroom classroom;
 
 	public DatabaseChangeListener() { // This threading strategy will work with Processing programs. Just use this
 										// code inside your PApplet.
@@ -81,7 +81,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 
 	}
 
-	public Classroom getClassroom() {
+	public static Classroom getClassroom() {
 		return classroom;
 	}
 }
