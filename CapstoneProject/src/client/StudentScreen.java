@@ -46,7 +46,7 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 	private JList<String> list;
 	
 	/** 
-	 * Sets up the submission screen as a JPanel
+	 * Sets up the submission screen as a JPanel. Shows the screen for student's submissions and an option for submitting a new submission.
 	 */
 	public StudentScreen() {
 		super(new BorderLayout());
@@ -72,6 +72,8 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		}
 		
 		final String idnum = id; //use this string for when you intialize the student if needed
+		
+		
 		
 		
 		submissions = new ArrayList<Submission>();

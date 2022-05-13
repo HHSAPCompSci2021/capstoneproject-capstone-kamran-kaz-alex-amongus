@@ -24,7 +24,7 @@ public class TeacherScreen extends JPanel implements ListSelectionListener{
 	
 	
 	/**
-	 * Creates a screen for teacher screen
+	 * Creates a screen for teacher screen. Will be able to view all submissions.
 	 */
 	public TeacherScreen() {
 		super(new BorderLayout());

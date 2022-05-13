@@ -17,7 +17,12 @@ import javax.swing.JTextField;
 import ServerClient.DatabaseModifier;
 import data.Submission;
 
-
+/**
+ * Models a page to show a screen for submitting an assignment to the classroom. Will prompt the user to select a file to submit. 
+ * The file will be converted to a simple text format and will submit that along with a submission title. 
+ * @author Kaz Nakao
+ *
+ */
 public class SubmissionScreen extends JFrame implements ActionListener{
 	
 	public final static String fileSeparator = System.getProperty("file.separator");
@@ -29,8 +34,8 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	private JTextField title;
 	
 	/**
-	 * Will create a system to upload a new submission for the user
-	 * @param name name of the submission
+	 * Will create a system to upload a new submission for the user. Will have a text field in the center to add a title to the submission.
+	 * 
 	 */
 	public SubmissionScreen() {
 		super("Submission Screen");
@@ -68,7 +73,7 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 		Submission s = new Submission(name, input);
 		DatabaseModifier m = new DatabaseModifier();
 		
-		m.submitToDatabase(s);
+		
 		
 	}
 	
