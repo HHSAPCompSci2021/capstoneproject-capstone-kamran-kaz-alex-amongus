@@ -76,6 +76,9 @@ public class DatabaseChangeListener implements ChildEventListener {
 	}
 
 	public Classroom getClassroom() {
+		if (classroom == null) {
+			
+		}
 		return classroom;
 	}
 }

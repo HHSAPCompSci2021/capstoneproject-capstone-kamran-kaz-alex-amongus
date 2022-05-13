@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.GcpLaunchStage.Deprecated;
 import com.google.firebase.*;
 import com.google.firebase.database.*;
 
 import data.Classroom;
 import data.Student;
-import data.Submission;
 
 /**
  * Creates and interacts with Firebase; handles actions used to submit, fetch, and access essays, submissions, and other parts
@@ -86,6 +86,7 @@ public class DatabaseModifier {
 	 * @param student Student object to be added
 	 * @param classroomID postID of the classroom (returned by submitClassroomToDatabase())
 	 */
+	@Deprecated
 	public void addStudentToClassroom(Student student, String classroomID) {
 		DatabaseReference classroomRef = classroomsRef.child(classroomID);
 		Map<String, Object> studentAddition = new HashMap<>();
@@ -98,6 +99,10 @@ public class DatabaseModifier {
 		classroomRef.updateChildrenAsync(studentAddition);	
 	}
 	
+	/**
+	 * Get the local/cached version of the Classroom object (should be synced with Firebase)
+	 * @return most up-to-date version of Classroom object
+	 */
 	public Classroom getClassroom() {
 		return DBChangeListener.getClassroom();
 	}
