@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import data.Student;
 import data.Submission;
 
 /**
@@ -72,6 +71,7 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	}
 	
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 	    root.setLevel(ch.qos.logback.classic.Level.DEBUG);  // This only shows us firebase errors. Change "ERROR" to "DEBUG" to see lots of database info.
