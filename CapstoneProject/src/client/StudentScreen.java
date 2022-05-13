@@ -1,11 +1,14 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -13,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -32,21 +37,21 @@ import data.Submission;
  * @author Kaz Nakao
  *
  */
-public class StudentScreen extends JPanel {
+public class StudentScreen extends JPanel implements ListSelectionListener{
 	
-	
-	private DefaultListModel<String> model;
-
-	private DatabaseReference classRef;
 	
 	private Student student;
-	ArrayList<Submission> submissions;
+	private ArrayList<Submission> submissions;
+	private JList<String> list;
 	
 	/** 
 	 * Sets up the submission screen as a JPanel
 	 */
 	public StudentScreen() {
 		super(new BorderLayout());
+		
+		student = new Student("Dummy Student", "1234");
+		
 		
 		String name = JOptionPane.showInputDialog("What is your name?");
 		
@@ -68,6 +73,7 @@ public class StudentScreen extends JPanel {
 		final String idnum = id; //use this string for when you intialize the student if needed
 		
 		//submissions = student.getSubmissions();
+		
 		submissions = new ArrayList<Submission>();
 		submissions.add(new Submission("hamlet", "Shakespear did a thing"));
 		submissions.add(new Submission("romeo and juliet", "love and stuff ig"));
@@ -86,11 +92,31 @@ public class StudentScreen extends JPanel {
 			}
 		}
 		
-		JList<String> list = new JList<String>(options);
+		list = new JList<String>(options);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
+		list.addListSelectionListener(this);
 		scroll.add(list);
 		add(list, BorderLayout.CENTER);
 		
-	}	
+	}
+
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println("Selected");
+		int index = list.getMinSelectionIndex();
+		if (index >= 0) {
+			Submission submission = submissions.get(index);
+			JFrame window = new ViewSubmissionScreen(submission,student);
+			window.setBounds(100, 100, 800, 600);
+			window.setResizable(true);
+			window.setVisible(true);
+			
+			
+		}
+	}
+
+
 }
