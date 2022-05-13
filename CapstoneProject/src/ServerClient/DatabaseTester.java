@@ -115,7 +115,7 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	    while (!response.equals("quit")) {
 	    	
 	    	// GET CLASSROOM OBJECT TEST CODE
-	    	System.out.println("\n\n-------------CLASSROOM OBJECT----------------\n" + DatabaseChangeListener.getClassroom());
+	    	System.out.println("\n\n-------------CLASSROOM OBJECT----------------\n" + staticM.getClassroom());
 	    	
 	    	response = sc.nextLine();
 	    }
