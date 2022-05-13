@@ -25,6 +25,7 @@ public class DatabaseModifier {
 
 	public DatabaseModifier() {
 		setupDatabase();
+		classroomsRef.addChildEventListener(new DatabaseChangeListener());
 	}
 	
 	/**
@@ -85,7 +86,9 @@ public class DatabaseModifier {
 	public void addStudentToClassroom(Student student, String classroomID) {
 		DatabaseReference classroomRef = classroomsRef.child(classroomID);
 		Map<String, Object> studentAddition = new HashMap<>();
-		studentAddition.put("students/0", student);
+		studentAddition.put("students/1", student);
+		
+//		classroomRef.child("students").child("groupA"). addValueEventListener(...);
 		
 		// current bug - code does not add student obejct to a list of students -- instead it replaces all under students/
 		
