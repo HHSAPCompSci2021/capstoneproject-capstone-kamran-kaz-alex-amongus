@@ -25,7 +25,6 @@ public class DatabaseModifier {
 
 	public DatabaseModifier() {
 		setupDatabase();
-		classroomsRef.addChildEventListener(new DatabaseChangeListener());
 	}
 	
 	/**
@@ -46,8 +45,10 @@ public class DatabaseModifier {
 			
 			DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 			
+			// structure = root/classrooms
 			classroomsRef = database.child("classrooms");
-			// structure = root/submissions
+			
+			// always keep local variables synced up
 			classroomsRef.addChildEventListener(new DatabaseChangeListener());
 		} catch (IOException e) {
 			e.printStackTrace();
