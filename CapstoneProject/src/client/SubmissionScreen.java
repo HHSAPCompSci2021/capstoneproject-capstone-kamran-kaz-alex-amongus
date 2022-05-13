@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import ServerClient.DatabaseModifier;
+import data.Student;
 import data.Submission;
 
 /**
@@ -32,13 +33,15 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	private String input;
 	private DatabaseModifier m;
 	private JTextField title;
+	private Student student;
 	
 	/**
 	 * Will create a system to upload a new submission for the user. Will have a text field in the center to add a title to the submission.
 	 * 
 	 */
-	public SubmissionScreen() {
+	public SubmissionScreen(Student student) {
 		super("Submission Screen");
+		this.student = student;
 		
 		JFileChooser chooser = new JFileChooser(userDir);
 		int returnVal = chooser.showOpenDialog(null);

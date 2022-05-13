@@ -22,6 +22,7 @@ import data.Submission;
 public class DatabaseModifier {
 	
 	private DatabaseReference classroomsRef;
+	private DatabaseChangeListener DBChangeListener;
 
 	public DatabaseModifier() {
 		setupDatabase();
@@ -49,7 +50,8 @@ public class DatabaseModifier {
 			classroomsRef = database.child("classrooms");
 			
 			// always keep local variables synced up
-			classroomsRef.addChildEventListener(new DatabaseChangeListener());
+			DBChangeListener = new DatabaseChangeListener();
+			classroomsRef.addChildEventListener(DBChangeListener);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -94,6 +96,10 @@ public class DatabaseModifier {
 		// current bug - code does not add student obejct to a list of students -- instead it replaces all under students/
 		
 		classroomRef.updateChildrenAsync(studentAddition);	
+	}
+	
+	public Classroom getClassroom() {
+		return DBChangeListener.getClassroom();
 	}
 	
 	
