@@ -24,6 +24,17 @@ public class Submission {
 		grade = "";
 		content = "";
 		submissionDate = new Date().toString();
+		throw new IllegalArgumentException("Submission name may not be null");
+	}
+	
+	/**
+	 * Constructor with arguments for 
+	 */
+	public Submission(String name, String content, String grade) {
+		this.name=name;
+		this.grade=grade;
+		this.content=content;
+		submissionDate = new Date().toString();
 	}
 	
 	/**

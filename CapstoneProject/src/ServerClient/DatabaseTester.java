@@ -20,8 +20,9 @@ import data.Submission;
  * @author Alex Wang
  *
  */
+@SuppressWarnings("serial")
 public class DatabaseTester extends JPanel implements ActionListener {
-	private JTextField nameField, contentField, usernameField, idField;
+	private JTextField nameField, contentField, usernameField, idField, gradeField;
 	private DatabaseModifier m;
 	
 	public DatabaseTester() {
@@ -41,6 +42,11 @@ public class DatabaseTester extends JPanel implements ActionListener {
 		this.add(contentLabel);
 		contentField = new JTextField(20);
 		this.add(contentField);
+		
+		JLabel gradeLabel = new JLabel("Grade:");
+		this.add(gradeLabel);
+		gradeField = new JTextField(20);
+		this.add(gradeField);
 		
 		JLabel usernameLabel = new JLabel("Student Username:");
 		this.add(usernameLabel);
@@ -80,7 +86,7 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	    	m = new DatabaseModifier();	
 	    }
 	    
-	    Submission s = new Submission(nameField.getText(), contentField.getText(), new Student(usernameField.getText(), idField.getText()));
+	    Submission s = new Submission(nameField.getText(), contentField.getText(), gradeField.getText());
 	    String submissionID = m.submitToDatabase(s);
 	    System.out.println("SUBMISSION ID = " + submissionID);
 	    		
