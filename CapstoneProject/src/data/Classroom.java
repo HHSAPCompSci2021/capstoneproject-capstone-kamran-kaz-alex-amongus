@@ -30,7 +30,7 @@ public class Classroom {
 	 */
 	public Classroom(String name) {
 		if (name == null || name.trim().isEmpty())
-			throw new IllegalArgumentException("Classroom name should be properly initialized and not be blank");
+			throw new IllegalArgumentException("Classroom name should be properly initialized and not blank");
 		this.name = name;
 		students = new ArrayList<Student>();
 		teachers = new ArrayList<Teacher>();
