@@ -39,18 +39,12 @@ public class DatabaseChangeListener implements ChildEventListener {
 	/**
 	 * This method is called automatically every time something is added to the
 	 * database (by you or someone else). It is also called at the beginning of the
-	 * program for all existing database ss.
+	 * program for all existing databases.
 	 */
 	public void onChildAdded(DataSnapshot dataSnapshot, String arg1) {
 		System.out.println("onChildAdded() called");
-//		tasks.add(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				// get value of stored information and turn back to Java object
-//				classroom = dataSnapshot.getValue(Classroom.class);
-//			}
-//		});
+		classroom = dataSnapshot.getValue(Classroom.class);
+		System.out.println("SYNCED, PRINT = " + classroom.toString());
 	}
 
 	@Override
