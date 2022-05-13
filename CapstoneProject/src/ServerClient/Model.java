@@ -22,6 +22,7 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import edu.stanford.nlp.pipeline.*;
@@ -80,6 +81,24 @@ public final class Model {
                 return predictor.predict(input);
             }
         }
+    }
+    
+    /**
+     * Procedural code for grading the essay
+     * @param document The Student essay
+     * @param rubric The Rubric for the assignment
+     * @throws ModelException 
+     * @throws TranslateException 
+     * @throws IOException 
+     */
+    public void predict(String document, String[] rubric) throws IOException, TranslateException, ModelException {
+    	CoreDocument doc = tokenize(document);
+    	ArrayList<CoreDocument> rub = new ArrayList<>();
+    	for(String str : rubric) { 
+    		rub.add(tokenize(str));
+    	}
+    	
+    	System.out.println(this.predict(doc.toString(), rub.toString()));
     }
     
     /**
