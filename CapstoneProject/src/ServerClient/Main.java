@@ -17,7 +17,7 @@ public class Main {
 			                + "Which operated between December 2004 and April 2006. "
 			                + "It ceased operations after its Japanese distributor folded.";
 		Model mdl = new Model();
-		System.out.println(mdl.tokenize(paragraph));
+		System.out.println(mdl.predict(paragraph, paragraph));
 //		System.out.print("Enter Question: ");
 //		try (Scanner kboard = new Scanner(System.in)) {
 //			String question = kboard.nextLine();

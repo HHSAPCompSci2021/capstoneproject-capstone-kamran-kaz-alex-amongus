@@ -1,17 +1,5 @@
 package ServerClient;
 
-/*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
- * with the License. A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0/
- *
- * or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
- * OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions
- * and limitations under the License.
- */
 import ai.djl.Application;
 import ai.djl.ModelException;
 import ai.djl.engine.Engine;
@@ -28,12 +16,12 @@ import java.util.Properties;
 import edu.stanford.nlp.pipeline.*;
 
 /**
- * An example of inference using BertQA.
+ * The automatic grading model using BERT via DeepLearningJava and Word2Vec. 
  * 
- * @author Amazon.com - DeepJavaLibrary, Kamran Hussain
+ * @author Kamran Hussain
  * 
  *
- * <p>See:
+ * <p>See for references:
  *
  * <ul>
  *   <li>the <a
@@ -98,7 +86,9 @@ public final class Model {
     		rub.add(tokenize(str));
     	}
     	
-    	System.out.println(this.predict(doc.toString(), rub.toString()));
+    	float[] tokens = vectorize(doc);
+    	
+    	System.out.println(this.predict(doc.toString(), rub.toString()) + tokens);
     }
     
     /**
@@ -106,10 +96,19 @@ public final class Model {
      * @param document Document or Essay as a string
      * @return A CoreDocument Object containing all pre-processing annotations
      */
-    public CoreDocument tokenize(String document) {
+    private CoreDocument tokenize(String document) {
     	CoreDocument doc = new CoreDocument(document);
     	nlp.annotate(doc);
     	System.out.println(doc.annotation().toString());
     	return doc;
+    }
+    
+    /**
+     * Vectorize's the document from the segmented tokens 
+     * @param doc Tokenized and pre-processed CoreDocument object
+     * @return A Float array containing the word2vec embeddings of the document
+     */
+    private float[] vectorize(CoreDocument doc) {
+    	return new float[0];
     }
 }
