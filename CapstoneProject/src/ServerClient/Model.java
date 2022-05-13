@@ -5,13 +5,21 @@ import ai.djl.ModelException;
 import ai.djl.engine.Engine;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.nlp.qa.QAInput;
+import ai.djl.ndarray.NDArray;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
+import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
+import org.deeplearning4j.models.word2vec.Word2Vec;
 
 import edu.stanford.nlp.pipeline.*;
 
@@ -86,9 +94,9 @@ public final class Model {
     		rub.add(tokenize(str));
     	}
     	
-    	float[] tokens = vectorize(doc);
+    	ArrayList<double[]> tokens = vectorize(doc);
     	
-    	System.out.println(this.predict(doc.toString(), rub.toString()) + tokens);
+    	System.out.println(this.predict(doc.toString(), rub.toString()) + tokens.toString());
     }
     
     /**
@@ -108,7 +116,16 @@ public final class Model {
      * @param doc Tokenized and pre-processed CoreDocument object
      * @return A Float array containing the word2vec embeddings of the document
      */
-    private float[] vectorize(CoreDocument doc) {
-    	return new float[0];
+    private ArrayList<double[]> vectorize(CoreDocument doc) {
+    	ArrayList<double[]> res = new ArrayList<>();
+    	try {
+			WordVectors wordVectors = WordVectorSerializer.loadTxtVectors(new File("glove.6B.50d.txt"));
+			for(CoreSentence s : doc.sentences()) {
+				res.add(wordVectors.getWordVector(s.toString()));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+    	return res;
     }
 }
