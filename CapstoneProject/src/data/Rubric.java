@@ -19,4 +19,12 @@ public class Rubric {
 		this.name = name;
 	}
 	
+	
+	/**
+	 * Getter for Rubric name
+	 * @return Rubric Name
+	 */
+	public String getName() {
+		return name;
+	}
 }

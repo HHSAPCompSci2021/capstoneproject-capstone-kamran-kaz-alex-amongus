@@ -4,14 +4,20 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import data.Classroom;
+import data.Rubric;
 import data.Student;
 import data.Submission;
+import data.Teacher;
 
 /**
  * TEST CLASS FOR DatabaseModifier.java and DatabaseChangeListener.java
@@ -23,6 +29,7 @@ import data.Submission;
 public class DatabaseTester extends JPanel implements ActionListener {
 	private JTextField nameField, contentField, usernameField, idField;
 	private DatabaseModifier m;
+	private static DatabaseModifier staticM;
 	
 	public DatabaseTester() {
 		super(new GridLayout(6,1));
@@ -70,7 +77,27 @@ public class DatabaseTester extends JPanel implements ActionListener {
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 	    root.setLevel(ch.qos.logback.classic.Level.DEBUG);  // This only shows us firebase errors. Change "ERROR" to "DEBUG" to see lots of database info.
 	    
-	    DatabaseTester tester = new DatabaseTester();
+//	    DatabaseTester tester = new DatabaseTester();
+	    
+	    ArrayList<Student> studentList = new ArrayList<Student>();
+	    studentList.add(new Student("name", "2324"));
+	    
+	    ArrayList<Teacher> teacherList = new ArrayList<Teacher>();
+	    teacherList.add(new Teacher("joe", 3432));
+	    
+	    ArrayList<Rubric> rubricList = new ArrayList<Rubric>();
+	    rubricList.add(new Rubric("rubricTest"));
+	    
+	    Classroom c = new Classroom("testClassroom", studentList, teacherList, rubricList);
+	    
+	    if (staticM == null) {
+	    	staticM = new DatabaseModifier();
+	    }
+	    
+	    staticM.submitClassroomToDatabase(c);
+	    
+	    Scanner sc = new Scanner(System.in);
+	    String x = sc.next();
 		
 	}
 	
@@ -80,9 +107,9 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	    	m = new DatabaseModifier();	
 	    }
 	    
-	    Submission s = new Submission(nameField.getText(), contentField.getText(), new Student(usernameField.getText(), idField.getText()));
-	    String submissionID = m.submitToDatabase(s);
-	    System.out.println("SUBMISSION ID = " + submissionID);
+	    Submission s = new Submission(nameField.getText(), contentField.getText());
+//	    String submissionID = m.submitToDatabase(s);
+//	    System.out.println("SUBMISSION ID = " + submissionID);
 	    		
 	}
 }
