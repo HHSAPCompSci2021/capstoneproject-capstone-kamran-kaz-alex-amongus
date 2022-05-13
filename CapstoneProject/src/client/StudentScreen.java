@@ -110,7 +110,6 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 	
 	private void setupStudent() {
 		
-
 		String name = JOptionPane.showInputDialog("What is your name?");
 		
 		String id = null;
@@ -132,10 +131,14 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 		Student check = new Student(name, id);
 		
-		
 		DatabaseModifier m = new DatabaseModifier();
-		Classroom classroom = m.getClassroom();
+
+		Classroom classroom = null;
 		
+		while (classroom == null) {
+			System.out.println("classroom is null");
+			classroom = m.getClassroom();
+		}
 		
 		ArrayList<Student> students = classroom.getStudents();
 		
@@ -153,9 +156,11 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 			student = new Student(name, id);
 		}
 		
-		classroom.addStudent(student);
+		submissions = student.getSubmissions();
+
+		//classroom.addStudent(student);
 		
-		m.submitClassroomToDatabase(classroom);
+		//m.submitClassroomToDatabase(classroom);
 		
 	}
 
