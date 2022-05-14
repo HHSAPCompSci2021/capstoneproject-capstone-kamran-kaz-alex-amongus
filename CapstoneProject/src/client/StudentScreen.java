@@ -29,8 +29,10 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 	
 	
 	private Student student;
+	private Classroom classroom;
 	private ArrayList<Submission> submissions;
 	private JList<String> list;
+	private DatabaseModifier m;
 	
 	/** 
 	 * Sets up the submission screen as a JPanel. Shows the screen for student's submissions and an option for submitting a new submission.
@@ -85,7 +87,7 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		JFrame window = new SubmissionScreen(student);
+		JFrame window = new SubmissionScreen(student, m, classroom);
 		window.setBounds(100, 100, 800, 600);
 		window.setResizable(true);
 		window.setVisible(true);
@@ -116,9 +118,7 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 		Student check = new Student(name, id);
 		
-		DatabaseModifier m = new DatabaseModifier();
-
-		Classroom classroom = null;
+		m = new DatabaseModifier();
 		
 		while (classroom == null) {
 			System.out.println("classroom is null");

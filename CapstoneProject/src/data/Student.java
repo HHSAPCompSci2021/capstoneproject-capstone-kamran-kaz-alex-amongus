@@ -47,6 +47,13 @@ public class Student {
 		submissions.add(new Submission(submissionName, submission));
 	}
 	
+	public void add(Submission s) {
+		if (s == null) {
+			throw new IllegalArgumentException();
+		}
+		submissions.add(s);
+	}
+	
 	
 	/**
 	 * 
