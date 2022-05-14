@@ -23,7 +23,8 @@ public class Submission {
 		name = "";
 		grade = "";
 		content = "";
-		submissionDate = new Date().toString();
+		//submissionDate = new Date().toString();
+		submissionDate = "";
 		throw new IllegalArgumentException("Submission name may not be null");
 	}
 	
@@ -34,7 +35,8 @@ public class Submission {
 		this.name=name;
 		this.grade=grade;
 		this.content=content;
-		submissionDate = new Date().toString();
+		//submissionDate = new Date().toString();
+		submissionDate = "";
 	}
 	
 	/**
@@ -50,7 +52,8 @@ public class Submission {
 		
 		this.name = name;
 		this.content = content;
-		this.submissionDate = new Date().toString();
+		//this.submissionDate = new Date().toString();
+		submissionDate = "";
 		this.grade = "";
 	}
 	

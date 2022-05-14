@@ -118,8 +118,11 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 		
 		Student check = new Student(name, id);
+		System.out.println("searching for classroom");
 		
-		classroom = m.getClassroom();
+		while (classroom == null) {
+			classroom = m.getClassroom();
+		}
 		
 		System.out.println("found classroom");
 		
@@ -132,18 +135,19 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 			if (check.equals(s)) {
 				student = s;
 				found = true;
-				System.out.println("found match");
+				System.out.println("found student match");
 				break;
 			}
 		}
 		
 		if (!found) {
 			student = new Student(name, id);
+			classroom.addStudent(student);
+
 		}
 		
 		submissions = student.getSubmissions();
-		
-		classroom.addStudent(student);
+		System.out.println(submissions);
 		
 		m.submitClassroomToDatabase(classroom);
 		

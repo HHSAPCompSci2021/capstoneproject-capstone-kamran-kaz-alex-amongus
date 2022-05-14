@@ -87,7 +87,7 @@ public class Student {
 		else 
 			throw new IllegalArgumentException("Must be type Student");
 		
-		return name.equals(other.getName()) && submissions.equals(other.getSubmissions()) && id.equals(other.getId());
+		return name.equals(other.getName()) && id.equals(other.getId());
 	}
 	
 	
@@ -95,6 +95,7 @@ public class Student {
 	public String toString() {
 		String output = "Name: " + name + ", ";
 		output += "ID: " + id;
+		output += " submisisons: " + submissions.size();
 		return output;
 	}
 }

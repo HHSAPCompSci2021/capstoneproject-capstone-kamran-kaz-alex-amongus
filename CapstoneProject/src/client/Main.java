@@ -20,14 +20,9 @@ public class Main {
 	    int user = JOptionPane.showOptionDialog(null, "Are you a STUDENT or TEACHER", 
 	    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		
-	    
+	    System.out.println("syncing with server...");
 	    DatabaseModifier m = new DatabaseModifier();
-	    
-	    Classroom classroom = null;
-	    while (classroom == null) {
-	    	classroom = m.getClassroom();
-	    }
-	    
+	    System.out.println("synced with server");
 	    
 	    JFrame w = new JFrame("GRADEME Client");
 	    w.setBounds(100, 100, 800, 600);
