@@ -1,4 +1,4 @@
-package ServerClient;
+package data;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,9 +9,6 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.GcpLaunchStage.Deprecated;
 import com.google.firebase.*;
 import com.google.firebase.database.*;
-
-import data.Classroom;
-import data.Student;
 
 /**
  * Creates and interacts with Firebase; handles actions used to submit, fetch, and access essays, submissions, and other parts
@@ -48,6 +45,7 @@ public class DatabaseModifier {
 			
 			// structure = root/classrooms
 			classroomsRef = database.child("classrooms");
+			
 			
 			// always keep local variables synced up
 			DBChangeListener = new DatabaseChangeListener();

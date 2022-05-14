@@ -16,8 +16,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import ServerClient.DatabaseModifier;
 import data.Classroom;
+import data.DatabaseModifier;
 import data.Student;
 import data.Submission;
 /**
@@ -37,8 +37,10 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 	/** 
 	 * Sets up the submission screen as a JPanel. Shows the screen for student's submissions and an option for submitting a new submission.
 	 */
-	public StudentScreen() {
+	public StudentScreen(DatabaseModifier m) {
 		super(new BorderLayout());
+		
+		this.m = m;
 		
 		setupStudent();
 		
@@ -117,12 +119,10 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 		Student check = new Student(name, id);
 		
-		m = new DatabaseModifier();
+		classroom = m.getClassroom();
 		
-		while (classroom == null) {
-			System.out.println("classroom is null");
-			classroom = m.getClassroom();
-		}
+		System.out.println("found classroom");
+		
 		
 		ArrayList<Student> students = classroom.getStudents();
 		
@@ -142,7 +142,7 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		}
 		
 		submissions = student.getSubmissions();
-
+		
 		classroom.addStudent(student);
 		
 		m.submitClassroomToDatabase(classroom);

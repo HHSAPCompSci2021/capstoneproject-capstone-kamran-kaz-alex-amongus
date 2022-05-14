@@ -1,12 +1,10 @@
-package ServerClient;
+package data;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-
-import data.Classroom;
 
 /**
  * Handles changes with Firebase database reference
@@ -76,9 +74,6 @@ public class DatabaseChangeListener implements ChildEventListener {
 	}
 
 	public Classroom getClassroom() {
-		if (classroom == null) {
-			
-		}
 		return classroom;
 	}
 }

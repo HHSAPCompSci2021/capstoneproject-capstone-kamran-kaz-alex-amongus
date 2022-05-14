@@ -7,18 +7,18 @@ package data;
 public class Teacher {
 	
 	private String name;
-	private int id;
+	private String id;
 
 	public Teacher() {
 		name = "";
-		id = 0;
+		id = "";
 	}
 	/**
 	 * 
 	 * @param name Name of the teacher
 	 * @param id the user id number inputted by user
 	 */
-	public Teacher(String name, int id) {
+	public Teacher(String name, String id) {
 		this.name = name;
 		this.id = id;;
 	}
@@ -35,7 +35,7 @@ public class Teacher {
 	 * 
 	 * @return The id number of the teacher
 	 */
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 }

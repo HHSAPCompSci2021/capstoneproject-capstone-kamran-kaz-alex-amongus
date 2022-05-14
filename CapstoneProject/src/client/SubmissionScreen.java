@@ -14,8 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ServerClient.DatabaseModifier;
 import data.Classroom;
+import data.DatabaseModifier;
 import data.Student;
 import data.Submission;
 

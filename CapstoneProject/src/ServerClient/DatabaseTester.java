@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import data.Classroom;
+import data.DatabaseModifier;
 import data.Rubric;
 import data.Student;
 import data.Teacher;
@@ -89,7 +90,7 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	    studentList.add(new Student("name", "2324"));
 	    
 	    ArrayList<Teacher> teacherList = new ArrayList<Teacher>();
-	    teacherList.add(new Teacher("joe", 3432));
+	    teacherList.add(new Teacher("joe", "3432"));
 	    
 	    ArrayList<Rubric> rubricList = new ArrayList<Rubric>();
 	    rubricList.add(new Rubric("rubricTest"));
