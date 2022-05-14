@@ -83,9 +83,9 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 			m = new DatabaseModifier();
 		}
 		
+		student.add(s);
 		
-		
-		m.submitClassroomToDatabase(null);
+		m.submitClassroomToDatabase(classroom);
 		
 		
 	}

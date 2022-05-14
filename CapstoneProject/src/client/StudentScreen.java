@@ -143,9 +143,9 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 		submissions = student.getSubmissions();
 
-		//classroom.addStudent(student);
+		classroom.addStudent(student);
 		
-		//m.submitClassroomToDatabase(classroom);
+		m.submitClassroomToDatabase(classroom);
 		
 	}
 
