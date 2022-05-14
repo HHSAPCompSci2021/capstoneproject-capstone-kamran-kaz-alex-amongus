@@ -114,7 +114,6 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 			}
 		}
 		
-		final String idnum = id; //use this string for when you intialize the student if needed
 		
 		Student check = new Student(name, id);
 		
@@ -133,6 +132,7 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 			if (check.equals(s)) {
 				student = s;
 				found = true;
+				System.out.println("found match");
 				break;
 			}
 		}
