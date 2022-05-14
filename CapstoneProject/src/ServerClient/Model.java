@@ -14,10 +14,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Properties;
 
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
+import org.deeplearning4j.models.word2vec.Word2Vec;
+import org.nd4j.linalg.ops.transforms.Transforms;
+
+import com.google.common.base.Splitter;
 
 import edu.stanford.nlp.pipeline.*;
 
@@ -125,5 +130,10 @@ public final class Model {
 			e.printStackTrace();
 		}
     	return res;
+    }
+    
+    private static double cosineSimForSentence(Word2Vec vector, String sentence1, String sentence2){
+        return Transforms.cosineSim(vector.getWordVector(sentence1), vector.getWordVector(sentence2));
+
     }
 }
