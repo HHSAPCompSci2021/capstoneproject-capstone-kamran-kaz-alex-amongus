@@ -1,5 +1,6 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.google.firebase.database.ChildEventListener;
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 public class DatabaseChangeListener implements ChildEventListener {
 	private ConcurrentLinkedQueue<Runnable> tasks;
 	private Classroom classroom;
+	private ArrayList<Classroom> classrooms;
 
 	public DatabaseChangeListener() { // This threading strategy will work with Processing programs. Just use this
 										// code inside your PApplet.
@@ -42,7 +44,10 @@ public class DatabaseChangeListener implements ChildEventListener {
 	public void onChildAdded(DataSnapshot dataSnapshot, String arg1) {
 		System.out.println("onChildAdded() called");
 		classroom = dataSnapshot.getValue(Classroom.class);
-		System.out.println("SYNCED, PRINT = " + classroom.toString());
+		if (!classrooms.contains(classroom)) {
+			classrooms.add(classroom);
+		}
+		System.out.println("SYNCED, CLASSROOM = " + classroom.toString() + "\nCLASSROOMS: = " + classrooms.toString());
 	}
 
 	@Override
@@ -50,7 +55,10 @@ public class DatabaseChangeListener implements ChildEventListener {
 		System.out.println("onChildChanged() called");
 		
 		classroom = arg0.getValue(Classroom.class);
-		System.out.println("SYNCED, PRINT = " + classroom.toString());
+		if (!classrooms.contains(classroom)) {
+			classrooms.add(classroom);
+		}
+		System.out.println("SYNCED, PRINT = " + classroom.toString() + "\nCLASSROOMS: = " + classrooms.toString());
 		
 	}
 
@@ -75,5 +83,9 @@ public class DatabaseChangeListener implements ChildEventListener {
 
 	public Classroom getClassroom() {
 		return classroom;
+	}
+	
+	public ArrayList<Classroom> getClassrooms() {
+		return classrooms;
 	}
 }
