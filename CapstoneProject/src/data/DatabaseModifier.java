@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.GcpLaunchStage.Deprecated;
@@ -62,6 +63,7 @@ public class DatabaseModifier {
 	 * @param classroomSubmission Classroom object to be submitted to database root
 	 * @return postID from new data path (DatabaseReference) used to retrieve data
 	 */
+	@Deprecated
 	public String submitClassroomToDatabase(Classroom classroomSubmission) {
 		String postID = null;
 		
@@ -99,15 +101,38 @@ public class DatabaseModifier {
 	}
 	
 	/**
-	 * Get the local/cached version of the Classroom object (should be synced with Firebase)
-	 * @return most up-to-date version of Classroom object
+	 * Updates the classroom at a particular location in the database to a new Classroom object that is passed in through the parameter.
+	 * @param key The location of the classroom in the database. This key should be obtained from the call to getClassrooms().
+	 * @param classroom The new classroom object that you want to update at the specified location. 
 	 */
-	public Classroom getClassroom() {
-		return DBChangeListener.getClassroom();
+	public void set(String key, Classroom classroom) {
+		Map<String, Object> update = new HashMap<String, Object>();
+		update.put(key, classroom);
+		classroomsRef.updateChildrenAsync(update);
 	}
 	
-	public ArrayList<Classroom> getClassrooms() {
-		return DBChangeListener.getClassrooms();
+	
+	/**
+	 * Adds a new classroom to the database. 
+	 * If you are trying to update existing data, use the set() method instead.
+	 * This method will cause the database to create a new entry in the database instead of updating the classroom if it already exists.
+	 * @param classroom The new Classroom object that you want to put into the database.
+	 */
+	public void addClassroom(Classroom classroom) {
+		classroomsRef.push().setValueAsync(classroom);
+	}
+	
+	public HashMap<String, Classroom> getClassrooms() {
+		HashMap<String, Classroom> classrooms = DBChangeListener.getClassrooms();
+		while (classrooms.size() == 0) {
+			try {
+				Thread.sleep(1000);
+				classrooms = DBChangeListener.getClassrooms();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return classrooms;
 	}
 	
 }

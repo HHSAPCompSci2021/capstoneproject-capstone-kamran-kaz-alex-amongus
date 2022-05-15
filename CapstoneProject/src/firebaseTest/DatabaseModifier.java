@@ -15,7 +15,6 @@ public class DatabaseModifier {
 	
 	DatabaseReference ref;
 	DatabaseChangeListener listener;
-	DatabaseReader reader;
 	
 	public DatabaseModifier() {
 		FileInputStream refreshToken;
@@ -63,7 +62,6 @@ public class DatabaseModifier {
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return listener.getUsers();

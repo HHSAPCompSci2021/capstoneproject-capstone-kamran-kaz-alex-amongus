@@ -115,6 +115,24 @@ public class Classroom {
 		assignments.add(rubric);
 	}
 	
+	public boolean hasStudent(Student student) {
+		for (Student s : students) {
+			if (s.equals(student)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasTeacher(Teacher teacher) {
+		for (Teacher t : teachers) {
+			if (t.equals(teacher)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @return Name of the classroom

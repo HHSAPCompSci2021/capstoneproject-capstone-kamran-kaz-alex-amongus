@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,16 +23,16 @@ import data.DatabaseModifier;
 import data.Student;
 import data.Submission;
 /**
- * The screen for the students 
+ * The screen for the students. Displays the classrooms. 
  * @author Kaz Nakao
  *
  */
-public class StudentScreen extends JPanel implements ListSelectionListener, ActionListener{
+public class StudentScreen extends JPanel implements ActionListener{
 	
 	
 	private Student student;
-	private Classroom classroom;
-	private ArrayList<Submission> submissions;
+	private HashMap<String, Classroom> classrooms;
+	private ArrayList<Classroom> classList;
 	private JList<String> list;
 	private DatabaseModifier m;
 	
@@ -44,57 +46,56 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		
 		setupStudent();
 		
-		JLabel title = new JLabel("Submissions");
+		JLabel title = new JLabel("Classrooms");
 		add(title, BorderLayout.PAGE_START);
 		
-		JScrollPane scroll = new JScrollPane();
-		String[] options = null;
-		if (submissions != null) {
-			options = new String[submissions.size()];
-			for (int i = 0; i < submissions.size(); i++) {
-				options[i] = submissions.get(i).getName();
-			}
+		
+		String options[] = new String[classrooms.size()];
+		classList = new ArrayList<Classroom>();
+		Set<String> keys = classrooms.keySet();
+		int i = 0;
+		for (String key : keys) {
+			Classroom classroom = classrooms.get(key);
+			String name = classroom.getName();
+			options[i] = name;
+			classList.add(classroom);
+			i++;
 		}
 		
 		list = new JList<String>(options);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
-		list.addListSelectionListener(this);
-		scroll.add(list);
-		add(list, BorderLayout.CENTER);
+		list.setVisibleRowCount(-1);
 		
-		JButton submit = new JButton("Submit a new Submission");
+		JScrollPane scroll = new JScrollPane(list);
+		add(scroll, BorderLayout.CENTER);
+		
+		JButton submit = new JButton("go to class");
 		submit.addActionListener(this);
 		add(submit, BorderLayout.PAGE_END);
 		
 	}
 
-
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
-		int index = list.getMinSelectionIndex();
-		if (index >= 0) {
-			Submission submission = submissions.get(index);
-			JFrame window = new ViewSubmissionScreen(submission,student);
-			window.setBounds(100, 100, 800, 600);
-			window.setResizable(true);
-			window.setVisible(true);
-			
-			
-		}
-	}
-
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		JFrame window = new SubmissionScreen(student, m, classroom);
-		window.setBounds(100, 100, 800, 600);
-		window.setResizable(true);
-		window.setVisible(true);
-		
-		
+		int index = list.getSelectedIndex();
+		if (index > -1) {
+			Classroom classroom = classList.get(index);
+			String key = getKey(classroom);
+		}
+	}
+	
+	
+	
+	private String getKey(Classroom classroom) {
+		Set<String> keys = classrooms.keySet();
+		for (String key : keys) {
+			if (classrooms.get(key) == classroom) {
+				return key;
+			}
+		}
+		return "";
 	}
 	
 	private void setupStudent() {
@@ -117,39 +118,11 @@ public class StudentScreen extends JPanel implements ListSelectionListener, Acti
 		}
 		
 		
-		Student check = new Student(name, id);
-		System.out.println("searching for classroom");
+		student = new Student(name, id);
+		System.out.println("searching for classrooms");
 		
-		while (classroom == null) {
-			classroom = m.getClassroom();
-		}
+		classrooms = m.getClassrooms();
 		
-		System.out.println("found classroom");
-		
-		
-		ArrayList<Student> students = classroom.getStudents();
-		
-		boolean found = false;
-		
-		for (Student s : students) {
-			if (check.equals(s)) {
-				student = s;
-				found = true;
-				System.out.println("found student match");
-				break;
-			}
-		}
-		
-		if (!found) {
-			student = new Student(name, id);
-			classroom.addStudent(student);
-
-		}
-		
-		submissions = student.getSubmissions();
-		System.out.println(submissions);
-		
-		m.submitClassroomToDatabase(classroom);
 		
 	}
 
