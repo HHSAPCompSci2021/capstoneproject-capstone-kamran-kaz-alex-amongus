@@ -1,8 +1,6 @@
 package firebaseTest;
 
-import java.util.ArrayList;
-
-import javax.swing.SwingUtilities;
+import java.util.HashMap;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -10,10 +8,10 @@ import com.google.firebase.database.DatabaseError;
 
 public class DatabaseChangeListener implements ChildEventListener{
 	
-	private ArrayList<User> users;
+	private HashMap<String, User> users;
 	
 	public DatabaseChangeListener() {
-		users = new ArrayList<User>();
+		users = new HashMap<String, User>();
 	}
 	
 	@Override
@@ -23,22 +21,24 @@ public class DatabaseChangeListener implements ChildEventListener{
 	}
 
 	@Override
-	public void onChildAdded(DataSnapshot arg0, String arg1) {
+	public void onChildAdded(DataSnapshot dataSnapshot, String arg1) {
 		// TODO Auto-generated method stub
 		System.out.println("onChildAdded() called");
-		String path = arg0.getKey();
-		System.out.println("key :" + path);
-		User user = arg0.getValue(User.class);
+		String key = dataSnapshot.getKey();
+		User user = dataSnapshot.getValue(User.class);
+		users.put(key, user);
 		System.out.println(user);
-		users.add(user);
+		
 		System.out.println("finished calling onChildAdded()");
 	}
 
 	@Override
-	public void onChildChanged(DataSnapshot arg0, String arg1) {
+	public void onChildChanged(DataSnapshot dataSnapshot, String arg1) {
 		// TODO Auto-generated method stub
 		System.out.println("onChildChanged() called");
-		User user = arg0.getValue(User.class);
+		String key = dataSnapshot.getKey();
+		User user = dataSnapshot.getValue(User.class);
+		users.put(key, user);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class DatabaseChangeListener implements ChildEventListener{
 		
 	}
 
-	public ArrayList<User> getUsers() {
+	public HashMap<String, User> getUsers() {
 		
 		return users;
 	}

@@ -7,15 +7,18 @@ public class User {
 
 	private String name;
 	private ArrayList<String> things;
+	private Age age;
 	
 	public User() {
 		name = "";
 		things = new ArrayList<String>();
+		age = new Age(10);
 	}
 	
 	public User(String name) {
 		this.name = name;
 		things = new ArrayList<String>();
+		age = new Age(10);
 	}
 	
 	/**
@@ -42,9 +45,13 @@ public class User {
 		return things;
 	}
 	
+	public Age getAge() {
+		return age;
+	}
+	
 	@Override
 	public String toString() {
-		String output = "Name : " + name + ", things: " + things;
+		String output = "Name : " + name + ", things: " + things + ", age: " + age;
 		return output;
 	}
 	

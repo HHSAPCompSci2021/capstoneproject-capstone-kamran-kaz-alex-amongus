@@ -2,7 +2,8 @@ package firebaseTest;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -58,8 +59,20 @@ public class DatabaseModifier {
 	 * Returns the most recently added user
 	 * @return
 	 */
-	public ArrayList<User> getUsers() {
+	public HashMap<String, User> getUsers() {
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return listener.getUsers();
+	}
+	
+	public void set(String key, User user) {
+		Map<String, Object> update = new HashMap<String, Object>();
+		update.put(key, user);
+		ref.updateChildrenAsync(update);
 	}
 
 }
