@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class Submission {
 	
+	public static final String ungraded = "ungraded";
+	
 	private String name;
 	private String grade;
 	private String content;
@@ -23,7 +25,7 @@ public class Submission {
 	 */
 	public Submission() {
 		name = "";
-		grade = "";
+		grade = ungraded;
 		content = "";
 		//submissionDate = new Date().toString();
 		submissionDate = "";
@@ -62,7 +64,7 @@ public class Submission {
 		this.content = content;
 		//this.submissionDate = new Date().toString();
 		submissionDate = "";
-		this.grade = "";
+		this.grade = ungraded;
 		this.rubric = rubric;
 	}
 	
@@ -91,7 +93,7 @@ public class Submission {
 	
 	/**
 	 * 
-	 * @return The index of the rubric that the submission is associated with
+	 * @return The index position of the rubric being used to grade this submission.
 	 */
 	public int getRubric() {
 		return rubric;

@@ -149,7 +149,7 @@ public class Classroom {
 		for (Student s : students) {
 			ArrayList<Submission> submissions = s.getSubmissions();
 			for (Submission submit : submissions) {
-				if (submit.getGrade().isEmpty() && submit.getRubric() == index) {
+				if (submit.getGrade().equals(Submission.ungraded) && submit.getRubric() == index) {
 					ungraded.add(submit);
 				}
 			}
