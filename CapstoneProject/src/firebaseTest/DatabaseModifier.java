@@ -2,6 +2,7 @@ package firebaseTest;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -13,6 +14,7 @@ public class DatabaseModifier {
 	
 	DatabaseReference ref;
 	DatabaseChangeListener listener;
+	DatabaseReader reader;
 	
 	public DatabaseModifier() {
 		FileInputStream refreshToken;
@@ -36,6 +38,9 @@ public class DatabaseModifier {
 			// always keep local variables synced up
 			listener = new DatabaseChangeListener();
 			ref.addChildEventListener(listener);
+			//reader = new DatabaseReader();
+			//ref.addValueEventListener(reader);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -53,8 +58,8 @@ public class DatabaseModifier {
 	 * Returns the most recently added user
 	 * @return
 	 */
-	public User getUser() {
-		return listener.getUser();
+	public ArrayList<User> getUsers() {
+		return listener.getUsers();
 	}
 
 }

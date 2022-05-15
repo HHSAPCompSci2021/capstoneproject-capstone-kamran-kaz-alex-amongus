@@ -1,15 +1,19 @@
 package firebaseTest;
 
+import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 public class DatabaseChangeListener implements ChildEventListener{
 	
-	private User user;
+	private ArrayList<User> users;
 	
 	public DatabaseChangeListener() {
-		
+		users = new ArrayList<User>();
 	}
 	
 	@Override
@@ -24,8 +28,9 @@ public class DatabaseChangeListener implements ChildEventListener{
 		System.out.println("onChildAdded() called");
 		String path = arg0.getKey();
 		System.out.println("key :" + path);
-		user = arg0.getValue(User.class);
-		System.out.println("user: " + user);
+		User user = arg0.getValue(User.class);
+		System.out.println(user);
+		users.add(user);
 		System.out.println("finished calling onChildAdded()");
 	}
 
@@ -33,7 +38,7 @@ public class DatabaseChangeListener implements ChildEventListener{
 	public void onChildChanged(DataSnapshot arg0, String arg1) {
 		// TODO Auto-generated method stub
 		System.out.println("onChildChanged() called");
-		user = arg0.getValue(User.class);
+		User user = arg0.getValue(User.class);
 	}
 
 	@Override
@@ -48,8 +53,9 @@ public class DatabaseChangeListener implements ChildEventListener{
 		
 	}
 
-	public User getUser() {
-		return user;
+	public ArrayList<User> getUsers() {
+		
+		return users;
 	}
 	
 }
