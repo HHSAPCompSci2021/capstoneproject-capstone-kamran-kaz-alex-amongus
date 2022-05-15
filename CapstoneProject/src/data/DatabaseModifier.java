@@ -2,6 +2,7 @@ package data;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,5 +106,8 @@ public class DatabaseModifier {
 		return DBChangeListener.getClassroom();
 	}
 	
+	public ArrayList<Classroom> getClassrooms() {
+		return DBChangeListener.getClassrooms();
+	}
 	
 }
