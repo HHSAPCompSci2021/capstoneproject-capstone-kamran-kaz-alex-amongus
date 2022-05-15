@@ -134,6 +134,31 @@ public class Classroom {
 	}
 	
 	/**
+	 * Goes through each students submissions to find which ones have not been graded yet that are associated to a particular rubric
+	 * @param index The index of the rubric in the list of rubrics in the classroom
+	 * @return An ArrayList with Submission objects that contain submissions without a grade that have the matching rubric index.
+	 */
+	public ArrayList<Submission> getUngraded(int index) {
+		
+		if (index >= assignments.size()) {
+			throw new IndexOutOfBoundsException("index must be between 0 and the number of rubrics - 1");
+		}
+		
+		ArrayList<Submission> ungraded = new ArrayList<Submission>();
+		
+		for (Student s : students) {
+			ArrayList<Submission> submissions = s.getSubmissions();
+			for (Submission submit : submissions) {
+				if (submit.getGrade().isEmpty() && submit.getRubric() == index) {
+					ungraded.add(submit);
+				}
+			}
+		}
+		
+		return ungraded;
+	}
+	
+	/**
 	 * 
 	 * @return Name of the classroom
 	 */
