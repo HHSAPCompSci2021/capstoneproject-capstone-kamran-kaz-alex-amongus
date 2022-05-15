@@ -76,7 +76,7 @@ public class Grader {
      * Checks if the two student documents 
      * @param studentDocument1
      * @param studentDocument2
-     * @return
+     * @return True if the documents have more than 40% literal similarity
      */
     public boolean isPlagiarized(String studentDocument1, String studentDocument2) {
     	return literalSimilarity(studentDocument1, studentDocument2) > 40.0;
