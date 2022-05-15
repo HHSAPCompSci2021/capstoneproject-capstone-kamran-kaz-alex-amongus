@@ -1,17 +1,5 @@
 package ServerClient;
 
-import ai.djl.Application;
-import ai.djl.ModelException;
-import ai.djl.engine.Engine;
-import ai.djl.inference.Predictor;
-import ai.djl.modality.nlp.qa.QAInput;
-import ai.djl.modality.nlp.Vocabulary;
-import ai.djl.modality.nlp.bert.BertFullTokenizer;
-import ai.djl.repository.zoo.Criteria;
-import ai.djl.repository.zoo.ZooModel;
-import ai.djl.training.util.ProgressBar;
-import ai.djl.translate.TranslateException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,11 +9,21 @@ import java.util.Properties;
 
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
-import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.ops.transforms.Transforms;
 
-import edu.stanford.nlp.pipeline.*;
+import ai.djl.Application;
+import ai.djl.ModelException;
+import ai.djl.engine.Engine;
+import ai.djl.inference.Predictor;
+import ai.djl.modality.nlp.bert.BertFullTokenizer;
+import ai.djl.modality.nlp.qa.QAInput;
+import ai.djl.repository.zoo.Criteria;
+import ai.djl.repository.zoo.ZooModel;
+import ai.djl.training.util.ProgressBar;
+import ai.djl.translate.TranslateException;
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.CoreSentence;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 /**
  * The automatic grading model using BERT via DeepLearningJava and Word2Vec. 
@@ -99,7 +97,6 @@ public final class Model {
     	}
     	
     	ArrayList<INDArray> tokens = vectorize(doc);
-    	
     	System.out.println(this.predict(doc.toString(), rub.toString()) + tokens.toString());
     }
     

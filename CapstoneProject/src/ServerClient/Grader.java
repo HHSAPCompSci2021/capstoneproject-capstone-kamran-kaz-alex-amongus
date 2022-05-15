@@ -7,7 +7,6 @@ import org.nd4j.linalg.ops.transforms.Transforms;
 
 import ai.djl.ModelException;
 import ai.djl.translate.TranslateException;
-
 import data.Submission;
 
 /**

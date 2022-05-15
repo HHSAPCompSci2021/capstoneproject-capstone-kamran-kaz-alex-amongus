@@ -8,20 +8,16 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import data.Classroom;
 import data.DatabaseModifier;
 import data.Student;
-import data.Submission;
 /**
  * The screen for the students. Displays the classrooms. 
  * @author Kaz Nakao

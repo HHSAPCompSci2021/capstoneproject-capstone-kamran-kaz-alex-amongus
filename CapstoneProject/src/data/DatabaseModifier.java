@@ -2,15 +2,15 @@ package data;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.GcpLaunchStage.Deprecated;
-import com.google.firebase.*;
-import com.google.firebase.database.*;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Creates and interacts with Firebase; handles actions used to submit, fetch, and access essays, submissions, and other parts

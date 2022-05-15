@@ -1,7 +1,5 @@
 package data;
 
-import java.util.Date;
-
 /**
  * The Submission class models a submission that a student makes to the teacher. A submission will contain 
  * the names of the submission as well as the content inside.
