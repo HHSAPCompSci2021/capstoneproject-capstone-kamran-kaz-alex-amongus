@@ -47,6 +47,10 @@ public class Student {
 		submissions.add(new Submission(submissionName, submission));
 	}
 	
+	/**
+	 * Adds a new submission to the list of submissions that the student has
+	 * @param s The submission object that you want to add
+	 */
 	public void add(Submission s) {
 		if (s == null) {
 			throw new IllegalArgumentException();
