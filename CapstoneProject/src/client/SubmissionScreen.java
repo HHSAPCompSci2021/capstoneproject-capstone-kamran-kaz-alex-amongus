@@ -75,9 +75,8 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
 		String name = title.getText();
-		Submission s = new Submission(name, input);
+		Submission s = new Submission(name, input, 0); // MUST REPLACE INT WITH ASSIGNMENT INDEX
 		if (m == null) {
 			System.out.println("Database Modifier is null");
 			m = new DatabaseModifier();
@@ -86,8 +85,6 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 		student.add(s);
 		
 		m.submitClassroomToDatabase(classroom);
-		
-		
 	}
 	
 

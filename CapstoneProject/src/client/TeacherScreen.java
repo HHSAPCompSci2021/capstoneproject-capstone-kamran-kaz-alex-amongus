@@ -45,9 +45,9 @@ public class TeacherScreen extends JPanel implements ListSelectionListener, Acti
 		setupTeacher();
 		
 		submissions = new ArrayList<Submission>();
-		submissions.add(new Submission("hamlet", "Shakespear did a thing"));
-		submissions.add(new Submission("romeo and juliet", "love and stuff ig"));
-		submissions.add(new Submission("test submission", "testing testing testing"));
+		submissions.add(new Submission("hamlet", "Shakespear did a thing", 0));
+		submissions.add(new Submission("romeo and juliet", "love and stuff ig",0));
+		submissions.add(new Submission("test submission", "testing testing testing",0));
 		
 		
 		JLabel title = new JLabel("Submissions");
