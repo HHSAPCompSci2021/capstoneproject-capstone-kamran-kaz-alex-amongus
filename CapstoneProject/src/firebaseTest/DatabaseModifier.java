@@ -57,7 +57,7 @@ public class DatabaseModifier {
 	}
 	/**
 	 * Returns the most recently added user
-	 * @return
+	 * @return A hashmap that has the keys as the keys to the items in the database and the user objects they each map to
 	 */
 	public HashMap<String, User> getUsers() {
 		try {
@@ -69,6 +69,11 @@ public class DatabaseModifier {
 		return listener.getUsers();
 	}
 	
+	/**
+	 * Updates the existing location at a key to a new object
+	 * @param key the location of the item. 
+	 * @param user The new updated user at that location in the database
+	 */
 	public void set(String key, User user) {
 		Map<String, Object> update = new HashMap<String, Object>();
 		update.put(key, user);
