@@ -1,4 +1,4 @@
-package ServerClient;
+package firebaseTest;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -116,7 +116,7 @@ public class DatabaseTester extends JPanel implements ActionListener {
 	    while (!response.equals("quit")) {
 	    	
 	    	// GET CLASSROOM OBJECT TEST CODE
-	    	System.out.println("\n\n-------------CLASSROOM OBJECT----------------\n" + staticM.getClassroom());
+	    	System.out.println("\n\n-------------CLASSROOM OBJECT----------------\n" + staticM.getClassrooms());
 	    	
 	    	response = sc.nextLine();
 	    }

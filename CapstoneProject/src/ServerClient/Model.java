@@ -5,6 +5,8 @@ import ai.djl.ModelException;
 import ai.djl.engine.Engine;
 import ai.djl.inference.Predictor;
 import ai.djl.modality.nlp.qa.QAInput;
+import ai.djl.modality.nlp.Vocabulary;
+import ai.djl.modality.nlp.bert.BertFullTokenizer;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
@@ -14,15 +16,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
 import org.deeplearning4j.models.word2vec.Word2Vec;
+import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.ops.transforms.Transforms;
-
-import com.google.common.base.Splitter;
 
 import edu.stanford.nlp.pipeline.*;
 
@@ -91,13 +92,13 @@ public final class Model {
      * @throws IOException 
      */
     public void predict(String document, String[] rubric) throws IOException, TranslateException, ModelException {
-    	CoreDocument doc = tokenize(document);
+    	CoreDocument doc = tokenizeCoreNLP(document);
     	ArrayList<CoreDocument> rub = new ArrayList<>();
     	for(String str : rubric) { 
-    		rub.add(tokenize(str));
+    		rub.add(tokenizeCoreNLP(str));
     	}
     	
-    	ArrayList<double[]> tokens = vectorize(doc);
+    	ArrayList<INDArray> tokens = vectorize(doc);
     	
     	System.out.println(this.predict(doc.toString(), rub.toString()) + tokens.toString());
     }
@@ -107,7 +108,7 @@ public final class Model {
      * @param document Document or Essay as a string
      * @return A CoreDocument Object containing all pre-processing annotations
      */
-    private CoreDocument tokenize(String document) {
+    private CoreDocument tokenizeCoreNLP(String document) {
     	CoreDocument doc = new CoreDocument(document);
     	nlp.annotate(doc);
     	System.out.println(doc.annotation().toString());
@@ -115,25 +116,30 @@ public final class Model {
     }
     
     /**
+     * Tokenizes the input document with the BERT Tokenizer
+     * @param document Student Document as a String 
+     * @return A List of tokens for BERT processing
+     */
+    private List<String> tokenize(String document) {
+    	BertFullTokenizer tokenizer = new BertFullTokenizer(null, true);
+    	return tokenizer.tokenize(document);
+    }
+    
+    /**
      * Vectorize's the document from the segmented tokens 
      * @param doc Tokenized and pre-processed CoreDocument object
      * @return A Float array containing the word2vec embeddings of the document
      */
-    private ArrayList<double[]> vectorize(CoreDocument doc) {
-    	ArrayList<double[]> res = new ArrayList<>();
+    private ArrayList<INDArray> vectorize(CoreDocument doc) {
+    	ArrayList<INDArray> res = new ArrayList<>();
     	try {
 			WordVectors wordVectors = WordVectorSerializer.loadTxtVectors(new File("glove.6B.50d.txt"));
 			for(CoreSentence s : doc.sentences()) {
-				res.add(wordVectors.getWordVector(s.toString()));
+				res.add(wordVectors.getWordVectorMatrix(s.toString()));
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
     	return res;
-    }
-    
-    private static double cosineSimForSentence(Word2Vec vector, String sentence1, String sentence2){
-        return Transforms.cosineSim(vector.getWordVector(sentence1), vector.getWordVector(sentence2));
-
     }
 }
