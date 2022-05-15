@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class Submission {
 	
-	public static final String ungraded = "ungraded";
+	public static final String UNGRADED = "UNGRADED";
 	
 	private String name;
 	private String grade;
@@ -25,7 +25,7 @@ public class Submission {
 	 */
 	public Submission() {
 		name = "";
-		grade = ungraded;
+		grade = UNGRADED;
 		content = "";
 		//submissionDate = new Date().toString();
 		submissionDate = "";
@@ -64,7 +64,7 @@ public class Submission {
 		this.content = content;
 		//this.submissionDate = new Date().toString();
 		submissionDate = "";
-		this.grade = ungraded;
+		this.grade = UNGRADED;
 		this.rubric = rubric;
 	}
 	
