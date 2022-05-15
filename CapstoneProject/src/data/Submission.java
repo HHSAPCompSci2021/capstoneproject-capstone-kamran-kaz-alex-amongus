@@ -15,6 +15,8 @@ public class Submission {
 	private String grade;
 	private String content;
 	private String submissionDate;
+	private int rubric;
+	
 	
 	/**
 	 * No args constructor, will initialize the name and content to an empty string.
@@ -25,26 +27,32 @@ public class Submission {
 		content = "";
 		//submissionDate = new Date().toString();
 		submissionDate = "";
-		throw new IllegalArgumentException("Submission name may not be null");
+		rubric = 0;
 	}
 	
 	/**
-	 * Constructor with arguments for 
+	 * For initializing a submission with a grade already set
+	 * @param name Title of the submission
+	 * @param content The "content" of the submission. Essay material
+	 * @param grade The grade of the submission
+	 * @param rubric The index of the rubric in the classroom that this submission will be found in. 
 	 */
-	public Submission(String name, String content, String grade) {
+	public Submission(String name, String content, String grade, int rubric) {
 		this.name=name;
 		this.grade=grade;
 		this.content=content;
 		//submissionDate = new Date().toString();
 		submissionDate = "";
+		this.rubric = rubric;
 	}
 	
 	/**
 	 * Creates a new submission object.
 	 * @param name Name of the submission
 	 * @param content The essay material that is in the submission
+	 * @param rubric The index of the rubric in the classroom that this submission will be found in. 
 	 */
-	public Submission(String name, String content) {
+	public Submission(String name, String content, int rubric) {
 		if (name == null || name.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission must have a name");
 		if (content == null || content.trim().isEmpty()) 
@@ -55,6 +63,7 @@ public class Submission {
 		//this.submissionDate = new Date().toString();
 		submissionDate = "";
 		this.grade = "";
+		this.rubric = rubric;
 	}
 	
 	/**
@@ -78,6 +87,14 @@ public class Submission {
 	 */
 	public String getGrade() {
 		return grade;
+	}
+	
+	/**
+	 * 
+	 * @return The index of the rubric that the submission is associated with
+	 */
+	public int getRubric() {
+		return rubric;
 	}
 	
 	/** 

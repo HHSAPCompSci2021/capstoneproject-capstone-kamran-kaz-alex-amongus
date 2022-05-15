@@ -38,13 +38,14 @@ public class Student {
 	 * Adds a new submission for the student
 	 * @param submissionName The name of the new submission being created
 	 * @param submission The content that will be inside the submission
+	 * @param rubric The index of the rubric corresponding to the assignment
 	 */
-	public void add(String submissionName, String submission) {
+	public void add(String submissionName, String submission, int rubric) {
 		if (submissionName == null || submission.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission name cannot be null or be blank");
 		if (submission == null || submission.trim().isEmpty()) 
 			throw new IllegalArgumentException("Submission cannot be null or be blank");
-		submissions.add(new Submission(submissionName, submission));
+		submissions.add(new Submission(submissionName, submission, rubric));
 	}
 	
 	/**
