@@ -38,7 +38,7 @@ public class DatabaseChangeListener implements ChildEventListener{
 		System.out.println("onChildChanged() called");
 		String key = dataSnapshot.getKey();
 		User user = dataSnapshot.getValue(User.class);
-		users.put(key, user);
+		users.replace(key, user);
 	}
 
 	@Override
