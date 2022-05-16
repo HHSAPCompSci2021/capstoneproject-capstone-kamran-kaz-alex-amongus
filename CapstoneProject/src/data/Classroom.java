@@ -158,6 +158,26 @@ public class Classroom {
 		return ungraded;
 	}
 	
+	
+	public ArrayList<Submission> getGraded(int index) {
+		if (index >= assignments.size()) {
+			throw new IndexOutOfBoundsException("index must be between 0 and the number of rubrics - 1");
+		}
+		
+		ArrayList<Submission> graded = new ArrayList<Submission>();
+		
+		for (Student s : students) {
+			ArrayList<Submission> submissions = s.getSubmissions();
+			for (Submission submit : submissions) {
+				if (!submit.getGrade().equals(Submission.UNGRADED) && submit.getRubric() == index) {
+					graded.add(submit);
+				}
+			}
+		}
+		
+		return graded;
+	}
+	
 	/**
 	 * 
 	 * @return Name of the classroom
@@ -165,6 +185,16 @@ public class Classroom {
 	public String getName() {
 		return name;
 	}
+	
+	@Override 
+	public boolean equals(Object obj) {
+		if (obj instanceof Classroom) {
+			Classroom other = (Classroom)obj;
+			return other.getName().equals(name);
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		String output = "Classroom " + name + ": \n";

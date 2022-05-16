@@ -40,6 +40,8 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	
 	
 	private void setup() {
+		
+		//GUI
 		JPanel panel = new JPanel(new BorderLayout());
 		
 		JPanel top = new JPanel(new FlowLayout());
@@ -104,6 +106,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 			}
 		}
 		classroom.addStudent(student);
+		m.set(key, classroom);
 	}
 
 

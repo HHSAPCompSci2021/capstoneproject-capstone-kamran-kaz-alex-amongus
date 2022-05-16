@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.GcpLaunchStage.Deprecated;
@@ -137,6 +138,19 @@ public class DatabaseModifier {
 			}
 		}
 		return classrooms;
+	}
+	
+	
+	public String getKey(Classroom classroom) {
+		HashMap<String, Classroom> classrooms = getClassrooms();
+		Set<String> keys = classrooms.keySet();
+		for (String key : keys) {
+			Classroom match = classrooms.get(key);
+			if (match.equals(classroom)) {
+				return key;
+			}
+		}
+		return "";
 	}
 	
 }

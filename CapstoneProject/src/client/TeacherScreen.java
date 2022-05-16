@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
 
 import data.Classroom;
 import data.DatabaseModifier;
+import data.Student;
 import data.Submission;
 import data.Teacher;
 /**
@@ -26,12 +29,12 @@ import data.Teacher;
  * @author Kaz Nakao
  *
  */
-public class TeacherScreen extends JPanel implements ListSelectionListener, ActionListener{
+public class TeacherScreen extends JPanel implements ActionListener{
 	
-	private ArrayList<Submission> submissions;
+	private HashMap<String, Classroom> classrooms;
 	private JList<String> list;
+	private ArrayList<Classroom> classList;
 	private Teacher teacher;
-	private Classroom classroom;
 	
 	private DatabaseModifier m;
 	
@@ -42,36 +45,15 @@ public class TeacherScreen extends JPanel implements ListSelectionListener, Acti
 		
 		super(new BorderLayout());
 		this.m = m;
+		
 		setupTeacher();
 		
-		submissions = new ArrayList<Submission>();
+		updateGUI();
 		
-		JLabel title = new JLabel("Submissions");
-		add(title, BorderLayout.PAGE_START);
-		
-		JScrollPane scroll = new JScrollPane();
-		String[] options = null;
-		if (submissions != null) {
-			options = new String[submissions.size()];
-			for (int i = 0; i < submissions.size(); i++) {
-				options[i] = submissions.get(i).getName();
-			}
-		}
-		
-		list = new JList<String>(options);
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.addListSelectionListener(this);
-		scroll.add(list);
-		add(list, BorderLayout.CENTER);
-		
-		JButton newClass = new JButton("Create a new Classroom");
-		newClass.addActionListener(this);
-		
-		add(newClass, BorderLayout.PAGE_END);
 	}
 	
 	private void setupTeacher() {
+		
 		String name = JOptionPane.showInputDialog("What is your name?");
 		
 		String id = null;
@@ -89,34 +71,79 @@ public class TeacherScreen extends JPanel implements ListSelectionListener, Acti
 			}
 		}
 		
+		
 		teacher = new Teacher(name, id);
 		
-	}
-
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-			// TODO Auto-generated method stub
-		int index = list.getMinSelectionIndex();
-		if (index >= 0) {
-			Submission submission = submissions.get(index);
-			JFrame window = new ViewSubmissionScreen(submission,teacher);
-			window.setBounds(100, 100, 800, 600);
-			window.setResizable(true);
-			window.setVisible(true);
-			
-			
-		}
-
+		classrooms = m.getClassrooms();
+		
+		
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		Classroom newClass = new Classroom("Test Classroom");
-		newClass.addTeacher(teacher);
-		m.addClassroom(newClass);
+		int index = list.getSelectedIndex();
+		System.out.println("selected index: " + index);
+		if (index > -1) {
+			Classroom classroom = classList.get(index);
+			String key = m.getKey(classroom);
+			
+			JFrame window = new AssignmentViewer(classroom, m, teacher);
+			window.setBounds(100, 100, 800, 600);
+			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			window.setResizable(true);
+			window.setVisible(true);
+		}
 	}
-
 	
+	private class CreateClassroomListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			String name = JOptionPane.showInputDialog("Choose a name for the classroom");
+			Classroom classroom = new Classroom(name);
+			ArrayList<Teacher> teachers = classroom.getTeachers();
+			
+			classroom.addTeacher(teacher);
+			m.addClassroom(classroom);
+		}
+		
+	}
+	
+	private void updateGUI() {
+		JPanel panel = new JPanel();
+		JLabel title = new JLabel("Select a Classroom");
+		JButton createClass = new JButton("Create a new classroom");
+		createClass.addActionListener(new CreateClassroomListener());
+		panel.add(title);
+		panel.add(createClass);
+		add(panel, BorderLayout.PAGE_START);
+		
+		String[] options = new String[classrooms.size()];
+		classList = new ArrayList<Classroom>();
+		Set<String> keys = classrooms.keySet();
+		int i = 0;
+		for (String key : keys) {
+			Classroom classroom = classrooms.get(key);
+			classList.add(classroom);
+			options[i] = classroom.getName();
+			i++;
+		}
+		
+		list = new JList<String>(options);
+		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setVisibleRowCount(-1);
+		
+
+		JScrollPane scroll = new JScrollPane(list);
+		add(scroll, BorderLayout.CENTER);
+		
+		JButton submit = new JButton("go to class");
+		submit.addActionListener(this);
+		add(submit, BorderLayout.PAGE_END);
+	}
 	
 }

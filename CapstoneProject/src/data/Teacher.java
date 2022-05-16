@@ -38,4 +38,9 @@ public class Teacher {
 	public String getId() {
 		return id;
 	}
+	
+	@Override
+	public String toString() {
+		return "name: " + name + ", id: " + id;
+	}
 }
