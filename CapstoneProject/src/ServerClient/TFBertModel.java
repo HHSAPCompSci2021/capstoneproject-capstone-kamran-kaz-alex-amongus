@@ -1,14 +1,23 @@
+package ServerClient;
+
 import org.tensorflow.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class BertModel {
+/**
+ * A Class that loads a pretrained BERT Classification Model and adds a Long-Short Term Memory 
+ * neural network on top of BERT Transformers for extremely high adaptability and accuracy (85%+ model accuracy).
+ * This model is currently non functional because the Tensorflow Build is not functional. 
+ * @author Kamran Hussain
+ *
+ */
+public class TFBertModel {
 
     public static void main(String[] args) throws Exception {
         System.out.println("TensorFlow version: " + TensorFlow.version());
-        Path modelPath = Paths.get(BertModel.class.getResource("saved_model.pb").toURI());
+        Path modelPath = Paths.get(TFBertModel.class.getResource("saved_model.pb").toURI());
         byte[] graph = Files.readAllBytes(modelPath);
 
         try (Graph g = new Graph()) {

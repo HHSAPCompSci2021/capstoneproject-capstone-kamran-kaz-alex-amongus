@@ -3,8 +3,6 @@ package ServerClient;
 import java.io.IOException;
 import java.util.Scanner;
 
-import org.tensorflow.TensorFlow;
-
 import ai.djl.ModelException;
 import ai.djl.translate.TranslateException;
 
@@ -20,7 +18,7 @@ public class Main {
 			                + "It ceased operations after its Japanese distributor folded.";
 		System.out.print("Enter Question: ");
 		try (Scanner kboard = new Scanner(System.in)) {
-			Model mdl = new Model();
+			CustomModel mdl = new CustomModel();
 			String question = kboard.nextLine();
 			String answer = mdl.predict(paragraph, question);
 			System.out.println(answer);

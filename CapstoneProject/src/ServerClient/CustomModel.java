@@ -42,12 +42,13 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
  *       for information about running this example.
  * </ul>
  */
-public final class Model {
+@SuppressWarnings("unused")
+public final class CustomModel {
 	
 	private Properties props;
 	private StanfordCoreNLP nlp;
 	
-	public Model() {
+	public CustomModel() {
 		props = new Properties();
 		props.setProperty("annotators", "tokenize,ssplit");
 		nlp = new StanfordCoreNLP(props);

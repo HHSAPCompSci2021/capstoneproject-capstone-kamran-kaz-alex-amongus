@@ -16,10 +16,10 @@ import data.Submission;
  */
 public class Grader {
 	
-	private Model model;
+	private CustomModel model;
 	
 	public Grader() {
-		model = new Model();
+		model = new CustomModel();
 	}
 
 	public String getGrade(String document, String[] rubric) {
