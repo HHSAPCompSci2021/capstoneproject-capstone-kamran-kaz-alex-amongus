@@ -16,6 +16,7 @@ import javax.swing.JProgressBar;
  */
 public class ServerGui  {
 	private JProgressBar taskProgressBar;
+	private JLabel progressLabel;
 	private int progressVal;
 	
 	public static void main(String[] args) {
@@ -46,11 +47,14 @@ public class ServerGui  {
 		progressRow.setLayout(new BoxLayout(progressRow, BoxLayout.LINE_AXIS));
 		
 		progressVal = 0; // dummy data
-		JLabel progressLabel = new JLabel(String.format("Task Progress: %d", progressVal));
+		progressLabel = new JLabel(String.format("Task Progress: %d", progressVal));
 		
 		taskProgressBar = new JProgressBar(0, 100); // modify max val as needed
 		taskProgressBar.setValue(progressVal);
 		taskProgressBar.setStringPainted(true);
+		
+		// indeterminate mode for no progress
+		updateIndeterminateMode();
 		
 		progressRow.add(progressLabel);
 		progressRow.add(taskProgressBar);
@@ -64,7 +68,25 @@ public class ServerGui  {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Syncs GUI elements with values
+	 * Should be called on value update
+	 */
+	private void syncValues() {
+		taskProgressBar.setValue(progressVal);
+		progressLabel.setText(String.format("Task Progress: %d", progressVal));
+		updateIndeterminateMode();
+		
+	}
+	
+	private void updateIndeterminateMode() {
+		taskProgressBar.setIndeterminate(progressVal == 0);
+	}
+	
 	public void setProgressVal(int progressVal) {
 		this.progressVal = progressVal;
+		syncValues();
 	}
+	
+	
 }
