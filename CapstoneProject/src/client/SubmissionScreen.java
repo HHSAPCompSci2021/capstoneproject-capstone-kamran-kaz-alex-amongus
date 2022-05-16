@@ -51,6 +51,7 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	    	
 	    	try {
 	    		input = readFile(chooser.getSelectedFile().getPath());
+	    		System.out.println(input);
 	    	} 
 	    	catch (IOException e) {
 	    		e.printStackTrace();
@@ -61,7 +62,7 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	    //title of the submission
 	    JPanel panel = new JPanel();
 	    JLabel label = new JLabel("input a title");
-	    textInput = new JTextField();
+	    textInput = new JTextField(30);
 	    
 	    panel.add(label);
 	    panel.add(textInput);
