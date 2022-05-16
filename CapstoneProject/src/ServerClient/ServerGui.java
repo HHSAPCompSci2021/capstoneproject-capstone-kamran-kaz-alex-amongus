@@ -11,6 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.DefaultXYDataset;
+import org.jfree.data.xy.XYDataset;
+
 /**
  * Screen to visualize Server task progress
  * @author Alex wang
@@ -73,6 +80,17 @@ public class ServerGui  {
 		// loss value label
 		lossLabel = new JLabel(String.format("Loss: %d", lossVal));
 		panel.add(lossLabel);
+//		panel.add(Box.createRigidArea(new Dimension(0, 30)));
+		
+		XYDataset ds = getDataset();
+        JFreeChart chart = ChartFactory.createXYLineChart("Loss vs. Time",
+                "x", "y", ds, PlotOrientation.VERTICAL, true, true,
+                false);
+
+        ChartPanel cp = new ChartPanel(chart);
+
+        panel.add(cp);
+
 		
 		
 		frame.add(panel);
@@ -107,6 +125,17 @@ public class ServerGui  {
 	public void setLossVal(int loss) {
 		lossVal = loss;
 		syncValues();
+	}
+	
+	private XYDataset getDataset() {
+		DefaultXYDataset ds = new DefaultXYDataset();
+
+		// current hard coded data
+        double[][] data = { {0.1, 0.2, 0.3}, {1, 2, 5} };
+
+        ds.addSeries("loss", data);
+
+        return ds;
 	}
 	
 	/**
