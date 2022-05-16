@@ -5,7 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -47,6 +46,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		JLabel label = new JLabel(classroom.getName());
 		top.add(label);
 		JButton newSubmission = new JButton("submit a new assignment");
+		newSubmission.addActionListener(new SubmissionListener());
 		top.add(newSubmission);
 		
 		panel.add(top, BorderLayout.PAGE_START);
@@ -80,6 +80,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		
 		int index = list.getSelectedIndex();
 		if (index > -1) {
 			Submission selected = student.getSubmissions().get(index);
@@ -106,6 +107,20 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	}
 
 
+	
+	private class SubmissionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			JFrame window = new SelectAssignmentScreen(student, m, classroom);
+			window.setBounds(100, 100, 800, 600);
+			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			window.setResizable(true);
+			window.setVisible(true);
+		}
+		
+	}
 	
 
 }
