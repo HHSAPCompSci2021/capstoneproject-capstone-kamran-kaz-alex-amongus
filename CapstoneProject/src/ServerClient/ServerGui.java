@@ -1,8 +1,10 @@
 package ServerClient;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.Scanner;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,8 +18,8 @@ import javax.swing.JProgressBar;
  */
 public class ServerGui  {
 	private JProgressBar taskProgressBar;
-	private JLabel progressLabel;
-	private int progressVal;
+	private JLabel progressLabel, lossLabel;
+	private int progressVal, lossVal;
 	
 	public static void main(String[] args) {
 		ServerGui serverGui = new ServerGui();
@@ -27,8 +29,9 @@ public class ServerGui  {
 		Scanner in = new Scanner(System.in);
 		
 		while (true) {
-			System.out.println("Enter ProgressVal: ");
+			System.out.println("Enter ProgressVal and LossVal");
 			serverGui.setProgressVal(in.nextInt());
+			serverGui.setLossVal(in.nextInt());
 		}
 	}
 	
@@ -46,7 +49,7 @@ public class ServerGui  {
 		JPanel progressRow = new JPanel();
 		progressRow.setLayout(new BoxLayout(progressRow, BoxLayout.LINE_AXIS));
 		
-		progressVal = 0; // dummy data
+		progressVal = lossVal = 0; // dummy data
 		progressLabel = new JLabel(String.format("Task Progress: %d", progressVal));
 		
 		taskProgressBar = new JProgressBar(0, 100); // modify max val as needed
@@ -56,12 +59,20 @@ public class ServerGui  {
 		// indeterminate mode for no progress
 		updateIndeterminateMode();
 		
+		progressRow.add(Box.createRigidArea(new Dimension(20, 0)));
 		progressRow.add(progressLabel);
+		progressRow.add(Box.createRigidArea(new Dimension(10, 0)));
 		progressRow.add(taskProgressBar);
+		progressRow.add(Box.createRigidArea(new Dimension(20, 0)));
 		
+		panel.add(Box.createRigidArea(new Dimension(0, 50)));
 		panel.add(progressRow);
+//		panel.add(Box.createVerticalGlue()); // space goes to middle of vertical layout
+		panel.add(Box.createRigidArea(new Dimension(0, 50)));
 		
 		// loss value label
+		lossLabel = new JLabel(String.format("Loss: %d", lossVal));
+		panel.add(lossLabel);
 		
 		
 		frame.add(panel);
@@ -72,21 +83,38 @@ public class ServerGui  {
 	 * Syncs GUI elements with values
 	 * Should be called on value update
 	 */
-	private void syncValues() {
+	public void syncValues() {
 		taskProgressBar.setValue(progressVal);
 		progressLabel.setText(String.format("Task Progress: %d", progressVal));
+		lossLabel.setText(String.format("Loss: %d", lossVal));
 		updateIndeterminateMode();
 		
 	}
 	
-	private void updateIndeterminateMode() {
-		taskProgressBar.setIndeterminate(progressVal == 0);
-	}
-	
+	/**
+	 * Sets the progress value
+	 * @param progressVal value to be set
+	 */
 	public void setProgressVal(int progressVal) {
 		this.progressVal = progressVal;
 		syncValues();
 	}
 	
+	/**
+	 * Sets the loss
+	 * @param loss value to be set
+	 */
+	public void setLossVal(int loss) {
+		lossVal = loss;
+		syncValues();
+	}
+	
+	/**
+	 * Updates the progress bar state according to progress value
+	 * Called by other methods within ServerGui
+	 */
+	private void updateIndeterminateMode() {
+		taskProgressBar.setIndeterminate(progressVal == 0);
+	}
 	
 }
