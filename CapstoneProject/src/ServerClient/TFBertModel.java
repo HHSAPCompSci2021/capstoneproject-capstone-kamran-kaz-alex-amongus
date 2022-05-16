@@ -1,23 +1,30 @@
 package ServerClient;
 
-import org.tensorflow.*;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.tensorflow.Graph;
+import org.tensorflow.Session;
+import org.tensorflow.Tensor;
+import org.tensorflow.TensorFlow;
+import org.tensorflow.*;
+
 /**
- * A Class that loads a pretrained BERT Classification Model and adds a Long-Short Term Memory 
+ * A Class that loads a pre-trained BERT Classification Model and adds a Long-Short Term Memory 
  * neural network on top of BERT Transformers for extremely high adaptability and accuracy (85%+ model accuracy).
- * This model is currently non functional because the Tensorflow Build is not functional. 
+ * This model is currently non functional because the TensorFlow Build is not functional. 
+ * This model is currently non functional because it is unable to locate the binary.
+ * 
  * @author Kamran Hussain
  *
  */
+@SuppressWarnings("rawtypes")
 public class TFBertModel {
 
     public static void main(String[] args) throws Exception {
         System.out.println("TensorFlow version: " + TensorFlow.version());
-        Path modelPath = Paths.get(TFBertModel.class.getResource("saved_model.pb").toURI());
+        Path modelPath = Paths.get(TFBertModel.class.getResource("/rsc/saved_model.pb").toURI());
         byte[] graph = Files.readAllBytes(modelPath);
 
         try (Graph g = new Graph()) {
@@ -32,7 +39,6 @@ public class TFBertModel {
                 float[][] inputData = {{4, 3, 2, 1}};
 
                 // We have to create tensor to feed it to session,
-                // unlike in Python where you just pass Numpy array
                 Tensor inputTensor = Tensor.create(inputData, Float.class);
                 float[][] output = predict(sess, inputTensor);
                 for (int i = 0; i < output[0].length; i++) {
@@ -42,6 +48,7 @@ public class TFBertModel {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static float[][] predict(Session sess, Tensor inputTensor) {
         Tensor result = sess.runner()
                 .feed("input", inputTensor)
