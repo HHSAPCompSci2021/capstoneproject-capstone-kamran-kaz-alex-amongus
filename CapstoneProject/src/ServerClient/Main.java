@@ -3,6 +3,8 @@ package ServerClient;
 import java.io.IOException;
 import java.util.Scanner;
 
+import org.tensorflow.TensorFlow;
+
 import ai.djl.ModelException;
 import ai.djl.translate.TranslateException;
 
