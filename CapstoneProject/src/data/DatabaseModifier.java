@@ -122,6 +122,10 @@ public class DatabaseModifier {
 		classroomsRef.push().setValueAsync(classroom);
 	}
 	
+	/**
+	 * 
+	 * @return A HashMap that contains the keys of the locations of the classrooms as a key and classroom objects that are at each of those locations in the database
+	 */
 	public HashMap<String, Classroom> getClassrooms() {
 		HashMap<String, Classroom> classrooms = DBChangeListener.getClassrooms();
 		while (classrooms.size() == 0) {

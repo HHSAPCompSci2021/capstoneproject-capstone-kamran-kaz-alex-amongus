@@ -45,10 +45,6 @@ public class TeacherScreen extends JPanel implements ListSelectionListener, Acti
 		setupTeacher();
 		
 		submissions = new ArrayList<Submission>();
-		submissions.add(new Submission("hamlet", "Shakespear did a thing", 0));
-		submissions.add(new Submission("romeo and juliet", "love and stuff ig",0));
-		submissions.add(new Submission("test submission", "testing testing testing",0));
-		
 		
 		JLabel title = new JLabel("Submissions");
 		add(title, BorderLayout.PAGE_START);
@@ -118,8 +114,7 @@ public class TeacherScreen extends JPanel implements ListSelectionListener, Acti
 		// TODO Auto-generated method stub
 		Classroom newClass = new Classroom("Test Classroom");
 		newClass.addTeacher(teacher);
-		m.submitClassroomToDatabase(newClass);
-		
+		m.addClassroom(newClass);
 	}
 
 	

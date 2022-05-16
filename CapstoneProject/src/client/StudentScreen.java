@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -76,9 +77,16 @@ public class StudentScreen extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		int index = list.getSelectedIndex();
+		System.out.println("selected index: " + index);
 		if (index > -1) {
 			Classroom classroom = classList.get(index);
 			String key = getKey(classroom);
+			//System.out.println("key: " + key);
+			JFrame window = new StudentClassroomScreen(classroom, key, m, student);
+			window.setBounds(100, 100, 800, 600);
+			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			window.setResizable(true);
+			window.setVisible(true);
 		}
 	}
 	
