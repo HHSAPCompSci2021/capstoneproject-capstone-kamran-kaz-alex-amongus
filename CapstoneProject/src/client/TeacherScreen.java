@@ -15,13 +15,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import data.Classroom;
 import data.DatabaseModifier;
-import data.Student;
-import data.Submission;
 import data.Teacher;
 /**
  * 

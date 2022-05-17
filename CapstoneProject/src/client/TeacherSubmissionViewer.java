@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,7 +40,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		
-		JLabel title = new JLabel("Choose a submission. Left is ungraded, Right is graded");
+		JLabel title = new JLabel("Choose a submission. top is ungraded, bottom is graded");
 		panel.add(title, BorderLayout.PAGE_START);
 		
 		String[] options1 = new String[ungradedSubmissions.size()];
@@ -58,8 +59,12 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		JScrollPane scroll1 = new JScrollPane(ungradedList);
 		JScrollPane scroll2 = new JScrollPane(gradedList);
 		
-		panel.add(scroll1, BorderLayout.LINE_START);
-		panel.add(scroll2, BorderLayout.LINE_END);
+		JPanel scrollPanel = new JPanel();
+		scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
+		scrollPanel.add(scroll1);
+		scrollPanel.add(scroll2);
+		
+		panel.add(scrollPanel, BorderLayout.CENTER);
 		
 		JButton view = new JButton("View Submissions");
 		view.addActionListener(this);

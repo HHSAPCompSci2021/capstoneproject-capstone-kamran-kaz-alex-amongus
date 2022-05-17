@@ -3,9 +3,13 @@ package client;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -13,6 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
 import data.Classroom;
 import data.DatabaseModifier;
@@ -85,6 +92,23 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 			// TODO Auto-generated method stub
 			String name = JOptionPane.showInputDialog("What is the name of the new assignment");
 			Rubric assignment = new Rubric(name);
+			
+			JFileChooser choose = new JFileChooser();
+			int returnVal = choose.showOpenDialog(null);
+			
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				try {
+					FileReader reader = new FileReader(choose.getSelectedFile().getPath());
+					Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(reader);
+					
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 			
 			String key = DatabaseModifier.getKey(classroom);
 			

@@ -3,24 +3,17 @@ package client;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import data.Classroom;
-import data.DatabaseModifier;
 import data.Student;
-import data.Submission;
 import data.Rubric;
 
 /**
