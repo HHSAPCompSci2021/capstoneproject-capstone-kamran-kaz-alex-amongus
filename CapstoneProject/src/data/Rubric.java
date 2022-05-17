@@ -5,14 +5,14 @@ import java.util.ArrayList;
 public class Rubric {
 
 	private String name;
-	private ArrayList<ArrayList<String>> criteria;
+	private ArrayList<RubricRow> criteria;
 	
 	/**
 	 * No Args constructor. Will automatically set the name to an empty String.
 	 */
 	public Rubric() {
 		name = "";
-		criteria = new ArrayList<ArrayList<String>>();
+		criteria = new ArrayList<RubricRow>();
 	}
 	
 	/**
@@ -21,7 +21,7 @@ public class Rubric {
 	 */
 	public Rubric(String name) {
 		this.name = name;
-		criteria = new ArrayList<ArrayList<String>>();
+		criteria = new ArrayList<RubricRow>();
 	}
 	
 	/**
@@ -29,13 +29,16 @@ public class Rubric {
 	 * @param name Name of the assignment
 	 * @param criteria A 2D arraylist of Strings that each outline an aspect that the assignment should have
 	 */
-	public Rubric(String name, ArrayList<ArrayList<String>> criteria) {
+	public Rubric(String name, ArrayList<RubricRow> criteria) {
 		this.name = name;
 		this.criteria = criteria;
 	}
 	
-	
-	public void addCriteria(ArrayList<String> newCriteria) {
+	/**
+	 * Adds a new criteria point to the rubric
+	 * @param newCriteria
+	 */
+	public void addCriteria(RubricRow newCriteria) {
 		criteria.add(newCriteria);
 	}
 	
@@ -52,7 +55,18 @@ public class Rubric {
 	 * 
 	 * @return Returns an ArrayList of the criteria of the rubric.
 	 */
-	public ArrayList<ArrayList<String>> getCriteria() {
+	public ArrayList<RubricRow> getCriteria() {
 		return criteria;
 	}
+	
+	
+	@Override
+	public String toString() {
+		String output = name + "\n";
+		for (RubricRow r : criteria) {
+			output += r + "\n";
+		}
+		return output;
+	}
+	
 }

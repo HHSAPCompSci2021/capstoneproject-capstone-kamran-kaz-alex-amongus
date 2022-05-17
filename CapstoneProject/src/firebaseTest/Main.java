@@ -1,5 +1,6 @@
 package firebaseTest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class Main {
 		System.out.println("added user");
 		*/
 		HashMap<String, User> users = m.getUsers();
-		
+		/*
 		System.out.println();
 		System.out.println("users: " + users);
 		
@@ -57,8 +58,19 @@ public class Main {
 		}
 		
 		users = m.getUsers();
-		
 		System.out.println(users);
+		*/
+		
+		User user = new User("testing 2D arraylist");
+		user.addThing("test 1D array");
+		Age age = user.getAge();
+		ArrayList<String> newAges = new ArrayList<String>();
+		newAges.add("testing 2D array");
+		newAges.add("testing 2D array");
+		age.add(newAges);
+		
+		m.addUser(user);
+		
 		
 		//User newUser = users.get(0);
 		//System.out.println("database user: " + newUser);

@@ -5,19 +5,19 @@ import java.util.ArrayList;
 public class Age {
 
 	private int age;
-	private ArrayList<String> years;
+	private ArrayList<ArrayList<String>> years;
 	
 	public Age() {
 		age = 0;
-		years = new ArrayList<String>();
+		years = new ArrayList<ArrayList<String>>();
 	}
 	
 	public Age(int age) {
 		this.age = age;
-		years = new ArrayList<String>();
+		years = new ArrayList<ArrayList<String>>();
 	}
 	
-	public void add(String year) {
+	public void add(ArrayList<String> year) {
 		years.add(year);
 	}
 	
@@ -25,7 +25,7 @@ public class Age {
 		return age;
 	}
 	
-	public ArrayList<String> getYears() {
+	public ArrayList<ArrayList<String>> getYears() {
 		return years;
 	}
 	
