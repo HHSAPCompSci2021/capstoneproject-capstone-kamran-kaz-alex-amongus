@@ -17,8 +17,7 @@ import data.Student;
 import data.Rubric;
 
 /**
- * Models a page to show a screen for submitting an assignment to the classroom. Will prompt the user to select a file to submit. 
- * The file will be converted to a simple text format and will submit that along with a submission title. 
+ * Shows a screen that allows the user to choose from an assignment to submit to. The list of assignments will be from the particular classroom's list of assignments
  * @author Kaz Nakao
  *
  */

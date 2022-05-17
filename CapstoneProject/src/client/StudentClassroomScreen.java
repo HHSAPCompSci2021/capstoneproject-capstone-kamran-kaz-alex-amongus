@@ -19,6 +19,11 @@ import data.DatabaseModifier;
 import data.Student;
 import data.Submission;
 
+/**
+ * The StudentClassroomScreen class allows a student to view their past assignments and an option to create a new submission.
+ * @author Kaz
+ *
+ */
 public class StudentClassroomScreen extends JFrame implements ActionListener{
 	
 	private Classroom classroom;
@@ -27,7 +32,12 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	
 	private JList<String> list;
 	
-	
+	/**
+	 * Shows past submissions of the student and allows user to submit new assignments.
+	 * @param classroom Classroom object that the student is viewing
+	 * @param key The "key" location of the classroom in the database
+	 * @param s The student object that you are viewing the submission through
+	 */
 	public StudentClassroomScreen(Classroom classroom, String key, Student s) {
 		super("Classroom Viewer");
 		this.classroom = classroom;
@@ -36,7 +46,9 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		setup();
 	}
 	
-	
+	/**
+	 * makes a gui with a list of past assignments
+	 */
 	private void setup() {
 		
 		//GUI

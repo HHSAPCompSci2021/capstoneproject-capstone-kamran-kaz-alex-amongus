@@ -77,7 +77,6 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	}
 	
 	
-	
 	private String readFile(String inputFile) throws IOException{
 		Scanner scan = null;
 		StringBuffer fileData = new StringBuffer();
