@@ -57,14 +57,14 @@ public final class CustomModel {
     /**
      * Answers a question based on the input essay.
      * @param paragraph The document as a string
-     * @param question The question that needs to be answered
+     * @param rubric The question that needs to be answered
      * @return The model generated answer String
      * @throws IOException If the resource directory is not found
      * @throws TranslateException If the translation layer fails
      * @throws ModelException If the model cannot be loaded
      */
-    public String predict(String paragraph, String question) throws IOException, TranslateException, ModelException {
-        QAInput input = new QAInput(question, paragraph);
+    public String predict(String paragraph, String[][] rubric) throws IOException, TranslateException, ModelException {
+        QAInput input = new QAInput(rubric[0][0], paragraph);
 
         Criteria<QAInput, String> criteria =
                 Criteria.builder()
@@ -98,7 +98,6 @@ public final class CustomModel {
     	}
     	
     	ArrayList<INDArray> tokens = vectorize(doc);
-    	System.out.println(this.predict(doc.toString(), rub.toString()) + tokens.toString());
     }
     
     /**
