@@ -40,22 +40,31 @@ public class TFBertModel {
 
                 // We have to create tensor to feed it to session,
                 Tensor inputTensor = Tensor.create(inputData, Float.class);
-                float[][] output = predict(sess, inputTensor);
-                for (int i = 0; i < output[0].length; i++) {
-                    System.out.println(output[0][i]);
-                }
+//                float[][] output = predict(sess, inputTensor);
+//                for (int i = 0; i < output[0].length; i++) {
+//                    System.out.println(output[0][i]);
+//                }
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private static float[][] predict(Session sess, Tensor inputTensor) {
+    private static String predict(Session sess, Tensor inputTensor) {
         Tensor result = sess.runner()
                 .feed("input", inputTensor)
                 .fetch("not_activated_output").run().get(0);
         float[][] outputBuffer = new float[1][3];
         result.copyTo(outputBuffer);
-        return outputBuffer;
+        
+        String[] labelDict = new String[] {"contradiction", "correlation", "neutral"};
+        
+        float sum = 0;
+        for(int i = 0; i<outputBuffer.length; i++) {
+        	for(int j = 0; j<outputBuffer[0].length; i++) {
+        		sum+= outputBuffer[i][j];
+        	}
+        }
+        return labelDict[(int)sum];
     }
 
 }

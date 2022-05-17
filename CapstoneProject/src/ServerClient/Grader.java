@@ -30,7 +30,7 @@ public class Grader {
 			return "FATAL MODEL ERROR, PLEASE REBUILD THE MODEL";
 		}
 		
-		if(isPlagiarized(document, rubric[0][0][0]) ) {
+		if(isPlagiarized(document, rubric[0][0][0][0]) ) {
 			return "F, plagiarized";
 		}
 		return "UNGRADED";
