@@ -34,11 +34,11 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 	
 	
 	/**
-	 * Will create a system to upload a new submission for the user. Will have a text field in the center to add a title to the submission.
+	 * Creates a screen to select an assignment to submit to in a list with elements to choose from.
 	 * 
 	 */
 	public SelectAssignmentScreen(Student student, Classroom classroom) {
-		super("Submission Screen");
+		super("Select Assignment");
 		this.student = student;
 		this.classroom = classroom;
 		
