@@ -31,15 +31,12 @@ public class StudentScreen extends JPanel implements ActionListener{
 	private HashMap<String, Classroom> classrooms;
 	private ArrayList<Classroom> classList;
 	private JList<String> list;
-	private DatabaseModifier m;
 	
 	/** 
 	 * Sets up the submission screen as a JPanel. Shows the screen for student's submissions and an option for submitting a new submission.
 	 */
-	public StudentScreen(DatabaseModifier m) {
+	public StudentScreen() {
 		super(new BorderLayout());
-		
-		this.m = m;
 		
 		setupStudent();
 		
@@ -82,7 +79,7 @@ public class StudentScreen extends JPanel implements ActionListener{
 			Classroom classroom = classList.get(index);
 			String key = getKey(classroom);
 			//System.out.println("key: " + key);
-			JFrame window = new StudentClassroomScreen(classroom, key, m, student);
+			JFrame window = new StudentClassroomScreen(classroom, key, student);
 			window.setBounds(100, 100, 800, 600);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setResizable(true);
@@ -125,7 +122,7 @@ public class StudentScreen extends JPanel implements ActionListener{
 		student = new Student(name, id);
 		System.out.println("searching for classrooms");
 		
-		classrooms = m.getClassrooms();
+		classrooms = DatabaseModifier.getClassrooms();
 		
 		
 	}

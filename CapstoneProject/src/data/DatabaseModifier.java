@@ -21,17 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class DatabaseModifier {
 	
-	private DatabaseReference classroomsRef;
-	private DatabaseChangeListener DBChangeListener;
-
-	public DatabaseModifier() {
-		setupDatabase();
-	}
+	private static DatabaseReference classroomsRef;
+	private static  DatabaseChangeListener DBChangeListener;
 	
 	/**
 	 * Creates a Database Reference and sets up necessary Firebase options
 	 */
-	public void setupDatabase() {
+	public static void setupDatabase() {
 		FileInputStream refreshToken;
 		
 		try {
@@ -106,7 +102,7 @@ public class DatabaseModifier {
 	 * @param key The location of the classroom in the database. This key should be obtained from the call to getClassrooms().
 	 * @param classroom The new classroom object that you want to update at the specified location. 
 	 */
-	public void set(String key, Classroom classroom) {
+	public static void set(String key, Classroom classroom) {
 		Map<String, Object> update = new HashMap<String, Object>();
 		update.put(key, classroom);
 		classroomsRef.updateChildrenAsync(update);
@@ -119,7 +115,7 @@ public class DatabaseModifier {
 	 * This method will cause the database to create a new entry in the database instead of updating the classroom if it already exists.
 	 * @param classroom The new Classroom object that you want to put into the database.
 	 */
-	public void addClassroom(Classroom classroom) {
+	public static void addClassroom(Classroom classroom) {
 		classroomsRef.push().setValueAsync(classroom);
 	}
 	
@@ -127,7 +123,7 @@ public class DatabaseModifier {
 	 * 
 	 * @return A HashMap that contains the keys of the locations of the classrooms as a key and classroom objects that are at each of those locations in the database
 	 */
-	public HashMap<String, Classroom> getClassrooms() {
+	public static HashMap<String, Classroom> getClassrooms() {
 		HashMap<String, Classroom> classrooms = DBChangeListener.getClassrooms();
 		while (classrooms.size() == 0) {
 			try {
@@ -141,7 +137,7 @@ public class DatabaseModifier {
 	}
 	
 	
-	public String getKey(Classroom classroom) {
+	public static String getKey(Classroom classroom) {
 		HashMap<String, Classroom> classrooms = getClassrooms();
 		Set<String> keys = classrooms.keySet();
 		for (String key : keys) {

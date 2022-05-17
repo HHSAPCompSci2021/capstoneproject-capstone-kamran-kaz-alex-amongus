@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import data.Student;
 import data.Submission;
@@ -44,7 +45,8 @@ public class ViewSubmissionScreen extends JFrame implements ActionListener{
 		
 		String content = submission.getContent();
 		JLabel c = new JLabel(content);
-		viewSubmission.add(c, BorderLayout.CENTER);
+		JScrollPane scroll = new JScrollPane(c);
+		viewSubmission.add(scroll, BorderLayout.CENTER);
 		
 		JButton back = new JButton("Back");
 		back.addActionListener(this);

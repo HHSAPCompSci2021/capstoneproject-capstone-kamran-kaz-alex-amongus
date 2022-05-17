@@ -36,15 +36,13 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	private ArrayList<Classroom> classList;
 	private Teacher teacher;
 	
-	private DatabaseModifier m;
 	
 	/**
 	 * Creates a screen for teacher screen. Will be able to view all submissions.
 	 */
-	public TeacherScreen(DatabaseModifier m) {
+	public TeacherScreen() {
 		
 		super(new BorderLayout());
-		this.m = m;
 		
 		setupTeacher();
 		
@@ -74,7 +72,7 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		
 		teacher = new Teacher(name, id);
 		
-		classrooms = m.getClassrooms();
+		classrooms = DatabaseModifier.getClassrooms();
 		
 		
 		
@@ -87,9 +85,9 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		System.out.println("selected index: " + index);
 		if (index > -1) {
 			Classroom classroom = classList.get(index);
-			String key = m.getKey(classroom);
+			String key = DatabaseModifier.getKey(classroom);
 			
-			JFrame window = new AssignmentViewer(classroom, m, teacher);
+			JFrame window = new AssignmentViewer(classroom, teacher);
 			window.setBounds(100, 100, 800, 600);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setResizable(true);
@@ -107,7 +105,7 @@ public class TeacherScreen extends JPanel implements ActionListener{
 			ArrayList<Teacher> teachers = classroom.getTeachers();
 			
 			classroom.addTeacher(teacher);
-			m.addClassroom(classroom);
+			DatabaseModifier.addClassroom(classroom);
 		}
 		
 	}

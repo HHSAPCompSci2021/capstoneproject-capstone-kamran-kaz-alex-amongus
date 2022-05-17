@@ -20,7 +20,7 @@ public class Main {
 	    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		
 	    System.out.println("syncing with server...");
-	    DatabaseModifier m = new DatabaseModifier();
+	    DatabaseModifier.setupDatabase();
 	    System.out.println("synced with server");
 	    
 	    JFrame w = new JFrame("GRADEME Client");
@@ -28,11 +28,11 @@ public class Main {
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
 	    if (user == 0) {
-	    	screen = new StudentScreen(m);
+	    	screen = new StudentScreen();
 	    	//screen = new SubmissionScreen("test");
 	    }
 	    else if (user == 1) {
-	    	screen = new TeacherScreen(m);
+	    	screen = new TeacherScreen();
 	    }
 	    w.add(screen);
 		w.setResizable(true);
