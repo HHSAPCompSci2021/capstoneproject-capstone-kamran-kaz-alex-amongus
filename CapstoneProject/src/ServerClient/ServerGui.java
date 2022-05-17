@@ -21,7 +21,7 @@ import org.jfree.data.xy.XYDataset;
 
 /**
  * Screen to visualize Server task progress
- * @author Alex wang
+ * @author Alex Wang
  *
  */
 public class ServerGui  {
@@ -41,10 +41,14 @@ public class ServerGui  {
 			System.out.println("Enter ProgressVal and LossVal");
 			serverGui.setProgressVal(in.nextInt());
 			serverGui.setLossVal(in.nextInt());
+			
+			// use appendLossData() with time parameter to visualize graph
 		}
 	}
 	
 	public ServerGui() {
+		lossData = new ArrayList<double[]>();
+		
 		JFrame frame = new JFrame("GradeMe Server");
 	    frame.setBounds(100, 100, 1200, 650);
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -137,13 +141,17 @@ public class ServerGui  {
 		lossData.add(newData);
 	}
 	
+	/**
+	 * Gets the dataset used for graphing
+	 * @return XYDataset that contains points for graphing
+	 */
 	private XYDataset getDataset() {
 		DefaultXYDataset ds = new DefaultXYDataset();
 
 		// current hard coded data
 //        double[][] data = { {0.1, 0.2, 0.3}, {1, 2, 5} };
         
-        double[] timeX = new double[lossData.size()];
+		double[] timeX = new double[lossData.size()];
         double[] lossY = new double[lossData.size()];
         for (int i = 0; i < lossData.size(); i++) {
         	timeX[i] = lossData.get(i)[0];
