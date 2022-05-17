@@ -46,6 +46,10 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		
 	}
 	
+	
+	/**
+	 * Creates teacher object on client to find a match on the database
+	 */
 	private void setupTeacher() {
 		
 		String name = JOptionPane.showInputDialog("What is your name?");
@@ -106,6 +110,9 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		
 	}
 	
+	/**
+	 * shows list of classrooms
+	 */
 	private void updateGUI() {
 		JPanel panel = new JPanel();
 		JLabel title = new JLabel("Select a Classroom");
