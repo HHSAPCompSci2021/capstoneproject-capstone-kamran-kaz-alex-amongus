@@ -25,7 +25,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	private String key;
 	private Student student;
 	
-	private JList list;
+	private JList<String> list;
 	
 	
 	public StudentClassroomScreen(Classroom classroom, String key, Student s) {

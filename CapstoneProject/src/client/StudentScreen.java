@@ -124,6 +124,7 @@ public class StudentScreen extends JPanel implements ActionListener{
 		
 		classrooms = DatabaseModifier.getClassrooms();
 		
+		System.out.println("found classrooms");
 		
 	}
 
