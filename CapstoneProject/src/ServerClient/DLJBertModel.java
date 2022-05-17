@@ -29,13 +29,11 @@ import org.apache.commons.csv.*;
 
 /**
  * A BERT Model Version using the Deep Java Library BERT Wrapper.
- * 
- * Adapted from 
+ * Adapted from DLJ Examples
  * 
  * @author kamran hussain
  *
  */
-@SuppressWarnings("deprecation")
 public class DLJBertModel {
 
 	public DLJBertModel() {
@@ -71,15 +69,13 @@ public class DLJBertModel {
 		String amazonReview = "https://s3.amazonaws.com/amazon-reviews-pds/tsv/amazon_reviews_us_Digital_Software_v1_00.tsv.gz";
 		float paddingToken = tokenizer.getVocabulary().getIndex("[PAD]");
 		return CsvDataset.builder().optCsvUrl(amazonReview) // load from Url
-				.setCsvFormat(CSVFormat.TDF.withQuote(null).withHeader()) // Setting TSV loading format
+				.setCsvFormat(CSVFormat.TDF) // Setting TSV loading format
 				.setSampling(batchSize, true) // make sample size and random access
 				.optLimit(limit)
 				.addFeature(new CsvDataset.Feature("review_body", new BertFeaturizer(tokenizer, maxLength)))
 				.addLabel(new CsvDataset.Feature("star_rating", (buf, data) -> buf.put(Float.parseFloat(data) - 1.0f)))
 				.optDataBatchifier(PaddingStackBatchifier.builder().optIncludeValidLengths(false)
-						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(paddingToken)).build()) // define how to pad
-																								// dataset to a fix
-																								// length
+						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(paddingToken)).build()) 
 				.build();
 	}
 
@@ -122,11 +118,22 @@ public class DLJBertModel {
 				// classification layer
 				.add(Linear.builder().setUnits(768).build()) // pre classifier
 				.add(Activation::relu).add(Dropout.builder().optRate(0.2f).build())
-				.add(Linear.builder().setUnits(5).build()) // 5 star rating
+				.add(Linear.builder().setUnits(2).build()) // 5 star rating
 				.addSingleton(nd -> nd.get(":,0")); // Take [CLS] as the head
 		Model model = Model.newInstance("AmazonReviewRatingClassification");
 		model.setBlock(classifier);
+		
+		try {
+			train(model, embedding);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch (TranslateException e) {
+			e.printStackTrace();
+		}
+	}
 
+		
+	public void train(Model model, ZooModel<NDList, NDList> embedding) throws IOException, TranslateException {
 		// Train the model
 
 		// Prepare the vocabulary
@@ -141,7 +148,7 @@ public class DLJBertModel {
 		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
 		CsvDataset amazonReviewDataset = getDataset(batchSize, tokenizer, maxTokenLength, limit);
 		// split data with 7:3 train:valid ratio
-		RandomAccessDataset[] datasets = amazonReviewDataset.randomSplit(7, 3);
+		RandomAccessDataset[] datasets = amazonReviewDataset.randomSplit(7, 2);
 		RandomAccessDataset trainingSet = datasets[0];
 		RandomAccessDataset validationSet = datasets[1];
 
@@ -169,7 +176,11 @@ public class DLJBertModel {
 		System.out.println(trainer.getTrainingResult());
 
 		model.save(Paths.get("build/model"), "amazon-review.param");
-
+	}
+	
+	public void predict(Model model, ZooModel<NDList, NDList> embedding) throws TranslateException, IOException {
+		BertFullTokenizer tokenizer = new BertFullTokenizer(DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
+				.optUnknownToken("[UNK]").build(), true);
 		String review = "It works great, but it takes too long to update itself and slows the system";
 		Predictor<String, Classifications> predictor = model.newPredictor(new MyTranslator(tokenizer));
 
@@ -185,7 +196,7 @@ public class DLJBertModel {
 		public MyTranslator(BertFullTokenizer tokenizer) {
 			this.tokenizer = tokenizer;
 			vocab = tokenizer.getVocabulary();
-			ranks = Arrays.asList("1", "2", "3", "4", "5");
+			ranks = Arrays.asList("1", "2"); // 1 is correspondence and 2 is contradiction
 		}
 
 		@Override
@@ -208,6 +219,24 @@ public class DLJBertModel {
 		@Override
 		public Classifications processOutput(TranslatorContext ctx, NDList list) {
 			return new Classifications(ranks, list.singletonOrThrow().softmax(0));
+		}
+	}
+	
+	public static void main(String[] args) {
+		try {
+			new DLJBertModel().process();
+		} catch (ModelNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TranslateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
