@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import data.Student;
 import data.Submission;
@@ -17,6 +18,11 @@ import data.Teacher;
 public class ViewSubmissionScreen extends JFrame implements ActionListener{
 
 
+	/**
+	 * Creates a screen that will let you view the contents of your submission.
+	 * @param submission Submission that you want to view
+	 * @param student Student object that you are using to view the submission
+	 */
 	public ViewSubmissionScreen(Submission submission, Student student) {
 		
 		String title = student.getName() + "    " + submission.getName() + "    " + "Grade : " + submission.getGrade();
@@ -24,6 +30,11 @@ public class ViewSubmissionScreen extends JFrame implements ActionListener{
 		setup(submission, title);
 	}
 	
+	/**
+	 * Creates a screen that will let you view the contents of the selected submission
+	 * @param submission Submission that you want to view
+	 * @param teacher Teacher object that you are using to view the submission
+	 */
 	public ViewSubmissionScreen(Submission submission, Teacher teacher) {
 		String title = teacher.getName() + "    " + submission.getName() + "     " + "Grade : " + submission.getGrade();
 		
@@ -44,7 +55,7 @@ public class ViewSubmissionScreen extends JFrame implements ActionListener{
 		viewSubmission.add(t, BorderLayout.PAGE_START);
 		
 		String content = submission.getContent();
-		JLabel c = new JLabel(content);
+		JTextArea c = new JTextArea(content);
 		JScrollPane scroll = new JScrollPane(c);
 		viewSubmission.add(scroll, BorderLayout.CENTER);
 		
