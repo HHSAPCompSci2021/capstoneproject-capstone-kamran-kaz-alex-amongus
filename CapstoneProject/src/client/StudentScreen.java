@@ -72,7 +72,6 @@ public class StudentScreen extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		int index = list.getSelectedIndex();
 		System.out.println("selected index: " + index);
 		if (index > -1) {
@@ -107,24 +106,52 @@ public class StudentScreen extends JPanel implements ActionListener{
 	 * Asks for student name and id for login. Will then use that information to search for a similar student in the database.
 	 */
 	private void setupStudent() {
+		String name;
+		int response = 0;
+		String[] nameOptions = {"Re-enter name", "Exit program"};
 		
-		String name = JOptionPane.showInputDialog("What is your name?");
-		
-		String id = null;
-		
-		while (id == null) {
-			id = JOptionPane.showInputDialog("What is your id number?");
-			char[] chars = id.toCharArray();
-			for (char c : chars) {
-				if (!Character.isDigit(c)) {
-					id = null;
-					String[] options = { "OK" };
-					JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
-				    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-				}
+		// prompt name input - no input => response = 0
+		do {
+			name = JOptionPane.showInputDialog("What is your name?");
+			if (name == null) {
+				response = JOptionPane.showOptionDialog(null, "Please enter a name to proceed.", "GRADEME",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, nameOptions, nameOptions[0]);				
 			}
+			System.out.println("------------------------- " + response);
+		} while (name == null && response == 0);
+		
+		// user chose to exit
+		if (response == 1) {
+			System.exit(0);
 		}
 		
+		String id = null;
+		int idResponse = 0;
+		String[] idOptions = {"Re-enter ID", "Exit program"};
+		
+		// promopt ID number unless user chooses exit
+		do {
+			id = JOptionPane.showInputDialog("What is your id number?");
+			if (id == null) {
+				idResponse = JOptionPane.showOptionDialog(null, "Please enter an ID to proceed.", "GRADEME",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, idOptions, idOptions[0]);	
+			} else {
+				char[] chars = id.toCharArray();
+				for (char c : chars) {
+					if (!Character.isDigit(c)) {
+						id = null;
+						String[] options = { "OK" };
+						JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
+								"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+					}
+				}				
+			}
+		} while (id == null && idResponse == 0);
+		
+		// user chose to exit
+		if (idResponse == 1) {
+			System.exit(0);
+		}
 		
 		student = new Student(name, id);
 		System.out.println("searching for classrooms");
