@@ -54,6 +54,8 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		
 		while (id == null) {
 			id = JOptionPane.showInputDialog("What is your id number?");
+			// alternative - change this line to in while() - can't quit in that case
+			
 			char[] chars = id.toCharArray();
 			for (char c : chars) {
 				if (!Character.isDigit(c)) {
