@@ -33,11 +33,10 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 	
 	
 	private String input;
-	private DatabaseModifier m;
 	private Student student;
 	private Classroom classroom;
 	
-	JList list;
+	JList<String> list;
 	
 	
 	
@@ -45,10 +44,9 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 	 * Will create a system to upload a new submission for the user. Will have a text field in the center to add a title to the submission.
 	 * 
 	 */
-	public SelectAssignmentScreen(Student student, DatabaseModifier m, Classroom classroom) {
+	public SelectAssignmentScreen(Student student, Classroom classroom) {
 		super("Submission Screen");
 		this.student = student;
-		this.m = m;
 		this.classroom = classroom;
 		
 		JPanel panel = new JPanel(new BorderLayout());
@@ -86,7 +84,7 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 		
 		if (index > -1) {
 			
-			JFrame window = new SubmissionScreen(classroom, student, m, index);
+			JFrame window = new SubmissionScreen(classroom, student, index);
 			window.setBounds(100, 100, 800, 600);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setResizable(true);

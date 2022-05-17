@@ -24,16 +24,14 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	private Classroom classroom;
 	private String key;
 	private Student student;
-	private DatabaseModifier m;
 	
 	private JList list;
 	
 	
-	public StudentClassroomScreen(Classroom classroom, String key, DatabaseModifier m, Student s) {
+	public StudentClassroomScreen(Classroom classroom, String key, Student s) {
 		super("Classroom Viewer");
 		this.classroom = classroom;
 		this.key = key;
-		this.m = m;
 		this.student = s;
 		setup();
 	}
@@ -106,7 +104,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 			}
 		}
 		classroom.addStudent(student);
-		m.set(key, classroom);
+		DatabaseModifier.set(key, classroom);
 	}
 
 
@@ -116,7 +114,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			JFrame window = new SelectAssignmentScreen(student, m, classroom);
+			JFrame window = new SelectAssignmentScreen(student, classroom);
 			window.setBounds(100, 100, 800, 600);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setResizable(true);

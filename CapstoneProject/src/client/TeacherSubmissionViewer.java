@@ -19,7 +19,6 @@ import data.Teacher;
 
 public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 
-	private DatabaseModifier m;
 	private int rubric;
 	private Classroom classroom;
 	private Teacher teacher;
@@ -29,9 +28,8 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	private JList<String> gradedList;
 	private JList<String> ungradedList;
 	
-	public TeacherSubmissionViewer(DatabaseModifier m, Classroom classroom, int rubric, Teacher teacher) {
+	public TeacherSubmissionViewer(Classroom classroom, int rubric, Teacher teacher) {
 		
-		this.m = m;
 		this.classroom = classroom;
 		this.rubric = rubric;
 		this.teacher = teacher;

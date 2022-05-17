@@ -22,15 +22,13 @@ import data.Teacher;
 public class AssignmentViewer extends JFrame implements ActionListener {
 
 	private Classroom classroom;
-	private DatabaseModifier m;
 	private JList<String> list;
 	private Teacher teacher;
 	
-	public AssignmentViewer(Classroom classroom, DatabaseModifier m, Teacher teacher) {
+	public AssignmentViewer(Classroom classroom, Teacher teacher) {
 		super("Assignments");
 		
 		this.classroom = classroom;
-		this.m = m;
 		this.teacher = teacher;
 		
 		JPanel panel = new JPanel(new BorderLayout());
@@ -72,7 +70,7 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 		int index = list.getSelectedIndex();
 		System.out.println("selected index: " + index);
 		if (index > -1) {
-			JFrame window = new TeacherSubmissionViewer(m, classroom, index, teacher);
+			JFrame window = new TeacherSubmissionViewer(classroom, index, teacher);
 			window.setBounds(100, 100, 800, 600);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setResizable(true);
@@ -88,11 +86,11 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 			String name = JOptionPane.showInputDialog("What is the name of the new assignment");
 			Rubric assignment = new Rubric(name);
 			
-			String key = m.getKey(classroom);
+			String key = DatabaseModifier.getKey(classroom);
 			
 			classroom.addAssignment(assignment);
 			
-			m.set(key, classroom);
+			DatabaseModifier.set(key, classroom);
 			
 		}
 		

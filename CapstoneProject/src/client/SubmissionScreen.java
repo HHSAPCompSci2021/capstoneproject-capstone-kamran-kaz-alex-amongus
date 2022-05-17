@@ -26,21 +26,18 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	public final static String fileSeparator = System.getProperty("file.separator");
 	public final static String userDir = System.getProperty("user.dir");
 	public final static String lineSeparator = System.getProperty("line.separator");
-
 	
 	private Classroom classroom;
 	private Student student;
-	private DatabaseModifier m;
 	private int rubric;
 	private String input;
 	private JTextField textInput;
 	
 	
 	
-	public SubmissionScreen(Classroom classroom, Student student, DatabaseModifier m, int rubric) {
+	public SubmissionScreen(Classroom classroom, Student student, int rubric) {
 		this.classroom = classroom;
 		this.student = student;
-		this.m = m;
 		this.rubric = rubric;
 		
 		JFileChooser chooser = new JFileChooser(userDir);
@@ -51,6 +48,7 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	    	
 	    	try {
 	    		input = readFile(chooser.getSelectedFile().getPath());
+	    		System.out.println(input);
 	    	} 
 	    	catch (IOException e) {
 	    		e.printStackTrace();
@@ -61,7 +59,7 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	    //title of the submission
 	    JPanel panel = new JPanel();
 	    JLabel label = new JLabel("input a title");
-	    textInput = new JTextField();
+	    textInput = new JTextField(30);
 	    
 	    panel.add(label);
 	    panel.add(textInput);
@@ -103,12 +101,12 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 		if (!textInput.getText().isEmpty()) {
 			Submission submission = new Submission(textInput.getText(), input, rubric);
 			student.add(submission);
-			String key = m.getKey(classroom);
-			m.set(key, classroom);
+			String key = DatabaseModifier.getKey(classroom);
+			DatabaseModifier.set(key, classroom);
 			this.setVisible(false);
 		}
 	}
 	
-
+	
 	
 }
