@@ -36,7 +36,7 @@ public class Main {
 		
 		for (Map.Entry<String, String[][]> entry : map.entrySet()) {
 			// entry.getKey(), entry.getValue()
-			String grade = g.getGrade(entry.getKey(), entry.getValue());
+			String[] grade = g.getGrade(entry.getKey(), entry.getValue());
 			
 		}
 		

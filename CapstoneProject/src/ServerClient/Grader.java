@@ -1,6 +1,7 @@
 package ServerClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.nd4j.linalg.ops.transforms.Transforms;
@@ -24,17 +25,38 @@ public class Grader {
 		model = new CustomModel();
 	}
 
-	public String getGrade(String document, String[][] rubric) {
+	/**
+	 * Calculates the student grades for each category and runs the student essay and rubric category through the model.
+	 * 
+	 * @param document Student essay as a string
+	 * @param rubric Assignment rubric as an array of strings
+	 * @return An array of grades for each rubric category
+	 */
+	public String[] getGrade(String document, String[][] rubric) {
+		
+		String[] labels = new String[] {"A", "B", "C", "D", "F"};
 		try {
+			String[] grades = new String[rubric.length];
 			for (int i = 0; i < rubric.length; i++) {
-				for (int j = 0; j < rubric[0].length; j++) {
-					String grade = model.predict(document, rubric[i][j]);
+				//check this rubric row
+				ArrayList<Float> similarity = new ArrayList<>();
+				for (int j = 0; j < rubric[i].length; j++) {
+					similarity.add(model.predict(document, rubric[i][j]));
 				}
+				
+				//add the greatest similarity index to the grade array
+				float greatestSim = 0;
+				for(int a = 0; i<similarity.size(); i++) {
+					if(similarity.get(i) > greatestSim) {
+						greatestSim = similarity.get(i);
+					}
+				}
+				grades[i] = labels[similarity.indexOf(greatestSim)];
 			}
+			return grades;
 		} catch (IOException | TranslateException | ModelException e) {
 			e.printStackTrace();
 		}
-		return "UNGRADED";
 	}
 
 	/**
