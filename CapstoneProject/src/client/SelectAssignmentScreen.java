@@ -34,8 +34,9 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 	
 	
 	/**
-	 * Creates a screen to select an assignment to submit to in a list with elements to choose from.
-	 * 
+	 * Creates a screen that allows the user to choose a assignment to submit to
+	 * @param student Student that the submission is being made to
+	 * @param classroom Classroom that the submission is being made to
 	 */
 	public SelectAssignmentScreen(Student student, Classroom classroom) {
 		super("Select Assignment");
