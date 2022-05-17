@@ -22,15 +22,15 @@ public class Grader {
 		model = new CustomModel();
 	}
 
-	public String getGrade(String document, String[][] rubric[][]) {
+	public String getGrade(String document, String[][] strings) {
 		try {
-			model.predict(document, rubric[0][0]);
+			model.predict(document, strings);
 		} catch (IOException | TranslateException | ModelException e) {
 			e.printStackTrace();
 			return "FATAL MODEL ERROR, PLEASE REBUILD THE MODEL";
 		}
 		
-		if(isPlagiarized(document, rubric[0][0][0][0]) ) {
+		if(isPlagiarized(document, strings[0][0]) ) {
 			return "F, plagiarized";
 		}
 		return "UNGRADED";

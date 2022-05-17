@@ -38,7 +38,6 @@ public class Main {
 			// entry.getKey(), entry.getValue()
 			String grade = g.getGrade(entry.getKey(), entry.getValue());
 			
-			
 		}
 		
 		
