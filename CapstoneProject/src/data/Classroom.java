@@ -115,6 +115,11 @@ public class Classroom {
 		assignments.add(rubric);
 	}
 	
+	/**
+	 * Will look through the list of students to see if there is a match. A student is found if there is a student that has the same name and ID number.
+	 * @param student The student object that you want to see if it is included in the student list. 
+	 * @return Whether the particular classroom has a student or not
+	 */
 	public boolean hasStudent(Student student) {
 		for (Student s : students) {
 			if (s.equals(student)) {
@@ -124,6 +129,12 @@ public class Classroom {
 		return false;
 	}
 	
+	
+	/**
+	 * Will look through the list of teachers to see if there is a match. A student is found if there is a teacher that has the same name and ID number.
+	 * @param teacher The Teacher object that you want to see if it is included in the teacher list. 
+	 * @return Whether the particular classroom has a teacher or not
+	 */
 	public boolean hasTeacher(Teacher teacher) {
 		for (Teacher t : teachers) {
 			if (t.equals(teacher)) {
@@ -158,7 +169,11 @@ public class Classroom {
 		return ungraded;
 	}
 	
-	
+	/**
+	 * Goes through the submissions of a particular assignment to find which ones are already graded 
+	 * @param index The index of the rubric in the list of the assignments. 
+	 * @return An arraylist of submission objects thaat contains the graded submissions of a particular assignment
+	 */
 	public ArrayList<Submission> getGraded(int index) {
 		if (index >= assignments.size()) {
 			throw new IndexOutOfBoundsException("index must be between 0 and the number of rubrics - 1");

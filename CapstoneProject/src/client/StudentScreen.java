@@ -88,7 +88,11 @@ public class StudentScreen extends JPanel implements ActionListener{
 	}
 	
 	
-	
+	/**
+	 * 
+	 * @param classroom classroom to get key from
+	 * @return key of the classroom
+	 */
 	private String getKey(Classroom classroom) {
 		Set<String> keys = classrooms.keySet();
 		for (String key : keys) {
@@ -99,6 +103,9 @@ public class StudentScreen extends JPanel implements ActionListener{
 		return "";
 	}
 	
+	/**
+	 * Asks for student name and id for login. Will then use that information to search for a similar student in the database.
+	 */
 	private void setupStudent() {
 		
 		String name = JOptionPane.showInputDialog("What is your name?");

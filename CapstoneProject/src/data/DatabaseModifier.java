@@ -136,7 +136,11 @@ public class DatabaseModifier {
 		return classrooms;
 	}
 	
-	
+	/**
+	 * If the classroom does not exist in the database, an empty String will be returned
+	 * @param classroom Classroom that you want to get the key of
+	 * @return The key or location of the classroom in the database
+	 */
 	public static String getKey(Classroom classroom) {
 		HashMap<String, Classroom> classrooms = getClassrooms();
 		Set<String> keys = classrooms.keySet();
