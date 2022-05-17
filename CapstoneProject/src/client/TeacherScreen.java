@@ -51,8 +51,19 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	 * Creates teacher object on client to find a match on the database
 	 */
 	private void setupTeacher() {
+		String name;
+		int nameResponse = 0;
+		String[] nameOptions = {"Re-enter name", "Exit program"};
+		do {
+			name = JOptionPane.showInputDialog("What is your name?");
+			if (name == null) {
+				nameResponse = JOptionPane.showOptionDialog(null, "Please enter a name to proceed.", "GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, nameOptions, nameOptions[0]);
+			}
+		} while (name == null && nameResponse == 0);
 		
-		String name = JOptionPane.showInputDialog("What is your name?");
+		if (nameResponse == 1) {
+			System.exit(0);
+		}
 		
 		String id = null;
 		
