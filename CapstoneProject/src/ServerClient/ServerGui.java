@@ -2,6 +2,7 @@ package ServerClient;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.Box;
@@ -27,6 +28,7 @@ public class ServerGui  {
 	private JProgressBar taskProgressBar;
 	private JLabel progressLabel, lossLabel;
 	private int progressVal, lossVal;
+	private ArrayList<double[]> lossData;
 	
 	public static void main(String[] args) {
 		ServerGui serverGui = new ServerGui();
@@ -127,12 +129,29 @@ public class ServerGui  {
 		syncValues();
 	}
 	
+	/**
+	 * Appends a new data point of loss
+	 * @param newData double array consisting of x (time) and y (loss) value
+	 */
+	public void appendLossData(double[] newData) {
+		lossData.add(newData);
+	}
+	
 	private XYDataset getDataset() {
 		DefaultXYDataset ds = new DefaultXYDataset();
 
 		// current hard coded data
-        double[][] data = { {0.1, 0.2, 0.3}, {1, 2, 5} };
-
+//        double[][] data = { {0.1, 0.2, 0.3}, {1, 2, 5} };
+        
+        double[] timeX = new double[lossData.size()];
+        double[] lossY = new double[lossData.size()];
+        for (int i = 0; i < lossData.size(); i++) {
+        	timeX[i] = lossData.get(i)[0];
+        	lossY[i] = lossData.get(i)[0];
+        }
+        
+        double[][] data = {timeX, lossY};
+        
         ds.addSeries("loss", data);
 
         return ds;
