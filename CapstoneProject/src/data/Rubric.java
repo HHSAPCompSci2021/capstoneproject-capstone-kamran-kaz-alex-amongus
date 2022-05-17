@@ -1,7 +1,11 @@
 package data;
 
 import java.util.ArrayList;
-
+/**
+ * Models an assignment for a classroom. The Rubric class contains the name of the submission and a list of RubricRow objects that contain grading criteria
+ * @author Kaz
+ *
+ */
 public class Rubric {
 
 	private String name;
@@ -53,7 +57,7 @@ public class Rubric {
 	
 	/**
 	 * 
-	 * @return Returns an ArrayList of the criteria of the rubric.
+	 * @return Returns an ArrayList of the criteria of the rubric
 	 */
 	public ArrayList<RubricRow> getCriteria() {
 		return criteria;

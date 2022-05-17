@@ -1,4 +1,4 @@
-package firebaseTest;
+package testing;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

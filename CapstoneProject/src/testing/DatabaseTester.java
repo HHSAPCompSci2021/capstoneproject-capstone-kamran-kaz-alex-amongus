@@ -1,4 +1,4 @@
-package firebaseTest;
+package testing;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;

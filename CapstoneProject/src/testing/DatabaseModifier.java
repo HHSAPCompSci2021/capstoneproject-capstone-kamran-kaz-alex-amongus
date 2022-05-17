@@ -1,4 +1,4 @@
-package firebaseTest;
+package testing;
 
 import java.io.FileInputStream;
 import java.io.IOException;
