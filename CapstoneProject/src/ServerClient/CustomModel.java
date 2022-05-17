@@ -63,8 +63,8 @@ public final class CustomModel {
      * @throws TranslateException If the translation layer fails
      * @throws ModelException If the model cannot be loaded
      */
-    public String predict(String paragraph, String[][] rubric) throws IOException, TranslateException, ModelException {
-        QAInput input = new QAInput(rubric[0][0], paragraph);
+    public String predict(String paragraph, String rubric) throws IOException, TranslateException, ModelException {
+        QAInput input = new QAInput(rubric, paragraph);
 
         Criteria<QAInput, String> criteria =
                 Criteria.builder()
