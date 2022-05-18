@@ -84,7 +84,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		panel.add(scroll, BorderLayout.CENTER);
 
 
-		JPanel bottom = new JPanel();ka
+		JPanel bottom = new JPanel();
 		
 		view = new JButton("view");
 		view.addActionListener(this);

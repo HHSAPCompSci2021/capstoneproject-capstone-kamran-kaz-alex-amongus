@@ -23,14 +23,13 @@ import data.Rubric;
  */
 public class SelectAssignmentScreen extends JFrame implements ActionListener{
 	
-	
 	private String input;
 	private Student student;
 	private Classroom classroom;
+	private JButton submit;
+	private JButton back;
 	
 	JList<String> list;
-	
-	
 	
 	/**
 	 * Creates a screen that allows the user to choose a assignment to submit to
@@ -60,9 +59,16 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 		
 		panel.add(list, BorderLayout.CENTER);
 		
-		JButton button = new JButton("Submit Assignment");
-		button.addActionListener(this);
-		panel.add(button, BorderLayout.PAGE_END);
+		submit = new JButton("Submit Assignment");
+		submit.addActionListener(this);
+		
+		JPanel bottom = new JPanel();
+		bottom.add(submit);
+		
+		back = new JButton("back");
+		back.addActionListener(this);
+		bottom.add(back);
+		panel.add(bottom, BorderLayout.PAGE_END);
 		
 		add(panel);
 		
@@ -72,18 +78,23 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		int index = list.getSelectedIndex();
-		
-		if (index > -1) {
+		if (e.getSource().equals(submit)) {
+			int index = list.getSelectedIndex();
 			
-			JFrame window = new SubmissionScreen(classroom, student, index);
-			window.setBounds(100, 100, 800, 600);
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
-			window.setVisible(true);
-			
+			if (index > -1) {
+				
+				JFrame window = new SubmissionScreen(classroom, student, index);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setResizable(true);
+				window.setVisible(true);
+			}
 		}
+		else if (e.getSource().equals(back)) {
+			this.setVisible(false);
+		}
+		
+		
 		
 		
 	}
