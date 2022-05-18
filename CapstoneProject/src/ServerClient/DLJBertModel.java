@@ -65,16 +65,19 @@ public class DLJBertModel {
 		}
 	}
 
-	private CsvDataset getDataset(int batchSize, BertFullTokenizer tokenizer, int maxLength, int limit) {
-		String amazonReview = "https://s3.amazonaws.com/amazon-reviews-pds/tsv/amazon_reviews_us_Digital_Software_v1_00.tsv.gz";
+	private CsvDataset getDataset(int batchSize, BertFullTokenizer tokenizer, int maxLength, int limit, String file) {
+		Path datasetPath = FileSystems.getDefault().getPath("resources", file);
 		float paddingToken = tokenizer.getVocabulary().getIndex("[PAD]");
-		return CsvDataset.builder().optCsvUrl(amazonReview) // load from Url
-				.setCsvFormat(CSVFormat.TDF) // Setting TSV loading format
+		return CsvDataset.builder().optCsvFile(datasetPath) // load from file
+				.setCsvFormat(CSVFormat.DEFAULT) // Setting CSV loading format
 				.setSampling(batchSize, true) // make sample size and random access
-				.optLimit(limit)
-				.addFeature(new CsvDataset.Feature("review_body", new BertFeaturizer(tokenizer, maxLength)))
-				//.addFeature(new CsvDataset.Feature("sentence2", new BertFeaturizer(tokenizer, maxLength)))
-				.addLabel(new CsvDataset.Feature("star_rating", (buf, data) -> buf.put(Float.parseFloat(data) - 1.0f)))
+				.optLimit(limit) //limit on token sizes
+				.addFeature(new CsvDataset.Feature("sentence1", new BertFeaturizer(tokenizer, maxLength)))
+				.addFeature(new CsvDataset.Feature("sentence2", new BertFeaturizer(tokenizer, maxLength)))
+				.addLabel(new CsvDataset.Feature("label", (buf, data) -> buf.put(Float.parseFloat(data) - 1.0f)))
+				.addCategoricalLabel("sentence1")
+				.addCategoricalLabel("sentence1")
+				.addCategoricalFeature("label")
 				.optDataBatchifier(PaddingStackBatchifier.builder().optIncludeValidLengths(false)
 						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(paddingToken)).build()) 
 				.build();
@@ -121,7 +124,7 @@ public class DLJBertModel {
 				.add(Linear.builder().setUnits(2).build()) // 2 star rating
 				.addSingleton(nd -> nd.get(":,0")); // Take [CLS] as the head
 		
-		Model model = Model.newInstance("AmazonReviewRatingClassification");
+		Model model = Model.newInstance("SentenceSimilarityClassification");
 		model.setBlock(classifier);
 		
 		try {
@@ -146,12 +149,10 @@ public class DLJBertModel {
 		// int limit = 512; // uncomment for quick testing
 
 		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
-		CsvDataset amazonReviewDataset = getDataset(batchSize, tokenizer, maxTokenLength, limit);
 		
-		// split data with 7:3 train:valid ratio
-		RandomAccessDataset[] datasets = amazonReviewDataset.randomSplit(7, 3);
-		RandomAccessDataset trainingSet = datasets[0];
-		RandomAccessDataset validationSet = datasets[1];
+		// load the training and evaluation dataset's
+		RandomAccessDataset trainingSet = getDataset(batchSize, tokenizer, maxTokenLength, limit, "snli-1.0-train-cleaned.csv");
+		RandomAccessDataset validationSet = getDataset(batchSize, tokenizer, maxTokenLength, limit, "snli-1.0-train-cleaned.csv");
 
 		SaveModelTrainingListener listener = new SaveModelTrainingListener("build/model");
 		listener.setSaveModelCallback(trainer -> {
@@ -172,6 +173,7 @@ public class DLJBertModel {
 		Trainer trainer = model.newTrainer(config);
 		trainer.setMetrics(new Metrics());
 		Shape encoderInputShape = new Shape(batchSize, maxTokenLength);
+		
 		// initialize trainer with proper input shape
 		trainer.initialize(encoderInputShape);
 		EasyTrain.fit(trainer, epoch, trainingSet, validationSet);
@@ -184,18 +186,18 @@ public class DLJBertModel {
 		BertFullTokenizer tokenizer = new BertFullTokenizer(DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build(), true);
 		String review = "It works great, but it takes too long to update itself and slows the system";
-		Predictor<String, Classifications> predictor = model.newPredictor(new MyTranslator(tokenizer));
+		Predictor<String, Classifications> predictor = model.newPredictor(new ModelTranslator(tokenizer));
 
 		predictor.predict(review);
 	}
 
-	private class MyTranslator implements Translator<String, Classifications> {
+	private class ModelTranslator implements Translator<String, Classifications> {
 
 		private BertFullTokenizer tokenizer;
 		private Vocabulary vocab;
 		private List<String> ranks;
 
-		public MyTranslator(BertFullTokenizer tokenizer) {
+		public ModelTranslator(BertFullTokenizer tokenizer) {
 			this.tokenizer = tokenizer;
 			vocab = tokenizer.getVocabulary();
 			ranks = Arrays.asList("1", "2"); // 1 is correspondence and 2 is contradiction
@@ -227,16 +229,7 @@ public class DLJBertModel {
 	public static void main(String[] args) {
 		try {
 			new DLJBertModel().process();
-		} catch (ModelNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TranslateException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
