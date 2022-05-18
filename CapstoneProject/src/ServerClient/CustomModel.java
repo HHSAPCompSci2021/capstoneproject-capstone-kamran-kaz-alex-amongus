@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
-import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
-import org.nd4j.linalg.api.ndarray.INDArray;
-
 import ai.djl.Application;
 import ai.djl.ModelException;
 import ai.djl.engine.Engine;
@@ -21,9 +17,6 @@ import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
-import edu.stanford.nlp.pipeline.CoreDocument;
-import edu.stanford.nlp.pipeline.CoreSentence;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 /**
  * The automatic grading model using BERT via DeepLearningJava and Word2Vec. 
@@ -45,13 +38,8 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 @SuppressWarnings("unused")
 public final class CustomModel {
 	
-	private Properties props;
-	private StanfordCoreNLP nlp;
-	
 	public CustomModel() {
-		props = new Properties();
-		props.setProperty("annotators", "tokenize,ssplit");
-		nlp = new StanfordCoreNLP(props);
+		
 	}
 
     /**
@@ -83,36 +71,6 @@ public final class CustomModel {
     }
     
     /**
-     * Procedural code for grading the essay
-     * @param document The Student essay
-     * @param rubric The Rubric for the assignment
-     * @throws ModelException 
-     * @throws TranslateException 
-     * @throws IOException 
-     */
-    public void predict(String document, String[] rubric) throws IOException, TranslateException, ModelException {
-    	CoreDocument doc = tokenizeCoreNLP(document);
-    	ArrayList<CoreDocument> rub = new ArrayList<>();
-    	for(String str : rubric) { 
-    		rub.add(tokenizeCoreNLP(str));
-    	}
-    	
-    	ArrayList<INDArray> tokens = vectorize(doc);
-    }
-    
-    /**
-     * Tokenizes and splits the input document
-     * @param document Document or Essay as a string
-     * @return A CoreDocument Object containing all pre-processing annotations
-     */
-    private CoreDocument tokenizeCoreNLP(String document) {
-    	CoreDocument doc = new CoreDocument(document);
-    	nlp.annotate(doc);
-    	System.out.println(doc.annotation().toString());
-    	return doc;
-    }
-    
-    /**
      * Tokenizes the input document with the BERT Tokenizer
      * @param document Student Document as a String 
      * @return A List of tokens for BERT processing
@@ -120,23 +78,5 @@ public final class CustomModel {
     private List<String> tokenize(String document) {
     	BertFullTokenizer tokenizer = new BertFullTokenizer(null, true);
     	return tokenizer.tokenize(document);
-    }
-    
-    /**
-     * Vectorize's the document from the segmented tokens 
-     * @param doc Tokenized and pre-processed CoreDocument object
-     * @return A Float array containing the word2vec embeddings of the document
-     */
-    private ArrayList<INDArray> vectorize(CoreDocument doc) {
-    	ArrayList<INDArray> res = new ArrayList<>();
-    	try {
-			WordVectors wordVectors = WordVectorSerializer.loadTxtVectors(new File("glove.6B.50d.txt"));
-			for(CoreSentence s : doc.sentences()) {
-				res.add(wordVectors.getWordVectorMatrix(s.toString()));
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-    	return res;
     }
 }

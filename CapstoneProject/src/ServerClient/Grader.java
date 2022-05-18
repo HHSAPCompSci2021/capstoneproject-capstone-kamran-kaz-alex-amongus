@@ -3,9 +3,6 @@ package ServerClient;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.deeplearning4j.models.word2vec.Word2Vec;
-import org.nd4j.linalg.ops.transforms.Transforms;
-
 import ai.djl.ModelException;
 import ai.djl.translate.TranslateException;
 import data.Submission;
