@@ -32,6 +32,8 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	private ArrayList<Classroom> classList;
 	private Teacher teacher;
 	
+	private JButton createClass;
+	private JButton submit;
 	
 	/**
 	 * Creates a screen for teacher screen. Will be able to view all submissions.
@@ -46,14 +48,31 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		
 	}
 	
+	
+	/**
+	 * Creates teacher object on client to find a match on the database
+	 */
 	private void setupTeacher() {
+		String name;
+		int nameResponse = 0;
+		String[] nameOptions = {"Re-enter name", "Exit program"};
+		do {
+			name = JOptionPane.showInputDialog("What is your name?");
+			if (name == null) {
+				nameResponse = JOptionPane.showOptionDialog(null, "Please enter a name to proceed.", "GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, nameOptions, nameOptions[0]);
+			}
+		} while (name == null && nameResponse == 0);
 		
-		String name = JOptionPane.showInputDialog("What is your name?");
+		if (nameResponse == 1) {
+			System.exit(0);
+		}
 		
 		String id = null;
 		
 		while (id == null) {
 			id = JOptionPane.showInputDialog("What is your id number?");
+			// alternative - change this line to in while() - can't quit in that case
+			
 			char[] chars = id.toCharArray();
 			for (char c : chars) {
 				if (!Character.isDigit(c)) {
@@ -77,25 +96,21 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		int index = list.getSelectedIndex();
-		System.out.println("selected index: " + index);
-		if (index > -1) {
-			Classroom classroom = classList.get(index);
-			String key = DatabaseModifier.getKey(classroom);
-			
-			JFrame window = new AssignmentViewer(classroom, teacher);
-			window.setBounds(100, 100, 800, 600);
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
-			window.setVisible(true);
+		if (e.getSource().equals(submit)) {
+			int index = list.getSelectedIndex();
+			System.out.println("selected index: " + index);
+			if (index > -1) {
+				Classroom classroom = classList.get(index);
+				String key = DatabaseModifier.getKey(classroom);
+				
+				JFrame window = new AssignmentViewer(classroom, teacher);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setResizable(true);
+				window.setVisible(true);
+			}
 		}
-	}
-	
-	private class CreateClassroomListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+		else if (e.getSource().equals(createClass)) {
 			String name = JOptionPane.showInputDialog("Choose a name for the classroom");
 			Classroom classroom = new Classroom(name);
 			ArrayList<Teacher> teachers = classroom.getTeachers();
@@ -103,14 +118,16 @@ public class TeacherScreen extends JPanel implements ActionListener{
 			classroom.addTeacher(teacher);
 			DatabaseModifier.addClassroom(classroom);
 		}
-		
 	}
 	
+	/**
+	 * shows list of classrooms
+	 */
 	private void updateGUI() {
 		JPanel panel = new JPanel();
 		JLabel title = new JLabel("Select a Classroom");
-		JButton createClass = new JButton("Create a new classroom");
-		createClass.addActionListener(new CreateClassroomListener());
+		createClass = new JButton("Create a new classroom");
+		createClass.addActionListener(this);
 		panel.add(title);
 		panel.add(createClass);
 		add(panel, BorderLayout.PAGE_START);
@@ -135,7 +152,7 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		JScrollPane scroll = new JScrollPane(list);
 		add(scroll, BorderLayout.CENTER);
 		
-		JButton submit = new JButton("go to class");
+		submit = new JButton("go to class");
 		submit.addActionListener(this);
 		add(submit, BorderLayout.PAGE_END);
 	}

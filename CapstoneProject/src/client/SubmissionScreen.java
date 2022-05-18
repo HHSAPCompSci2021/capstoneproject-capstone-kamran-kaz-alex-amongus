@@ -31,7 +31,12 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	private JTextField textInput;
 	
 	
-	
+	/**
+	 * Creates a new 
+	 * @param classroom
+	 * @param student
+	 * @param rubric
+	 */
 	public SubmissionScreen(Classroom classroom, Student student, int rubric) {
 		this.classroom = classroom;
 		this.student = student;
@@ -70,7 +75,6 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	    
 		
 	}
-	
 	
 	
 	private String readFile(String inputFile) throws IOException{
