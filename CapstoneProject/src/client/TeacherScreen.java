@@ -32,6 +32,8 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	private ArrayList<Classroom> classList;
 	private Teacher teacher;
 	
+	private JButton createClass;
+	private JButton submit;
 	
 	/**
 	 * Creates a screen for teacher screen. Will be able to view all submissions.
@@ -94,25 +96,21 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		int index = list.getSelectedIndex();
-		System.out.println("selected index: " + index);
-		if (index > -1) {
-			Classroom classroom = classList.get(index);
-			String key = DatabaseModifier.getKey(classroom);
-			
-			JFrame window = new AssignmentViewer(classroom, teacher);
-			window.setBounds(100, 100, 800, 600);
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
-			window.setVisible(true);
+		if (e.getSource().equals(submit)) {
+			int index = list.getSelectedIndex();
+			System.out.println("selected index: " + index);
+			if (index > -1) {
+				Classroom classroom = classList.get(index);
+				String key = DatabaseModifier.getKey(classroom);
+				
+				JFrame window = new AssignmentViewer(classroom, teacher);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setResizable(true);
+				window.setVisible(true);
+			}
 		}
-	}
-	
-	private class CreateClassroomListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+		else if (e.getSource().equals(createClass)) {
 			String name = JOptionPane.showInputDialog("Choose a name for the classroom");
 			Classroom classroom = new Classroom(name);
 			ArrayList<Teacher> teachers = classroom.getTeachers();
@@ -120,7 +118,6 @@ public class TeacherScreen extends JPanel implements ActionListener{
 			classroom.addTeacher(teacher);
 			DatabaseModifier.addClassroom(classroom);
 		}
-		
 	}
 	
 	/**
@@ -129,8 +126,8 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	private void updateGUI() {
 		JPanel panel = new JPanel();
 		JLabel title = new JLabel("Select a Classroom");
-		JButton createClass = new JButton("Create a new classroom");
-		createClass.addActionListener(new CreateClassroomListener());
+		createClass = new JButton("Create a new classroom");
+		createClass.addActionListener(this);
 		panel.add(title);
 		panel.add(createClass);
 		add(panel, BorderLayout.PAGE_START);
@@ -155,7 +152,7 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		JScrollPane scroll = new JScrollPane(list);
 		add(scroll, BorderLayout.CENTER);
 		
-		JButton submit = new JButton("go to class");
+		submit = new JButton("go to class");
 		submit.addActionListener(this);
 		add(submit, BorderLayout.PAGE_END);
 	}

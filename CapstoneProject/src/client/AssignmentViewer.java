@@ -37,6 +37,9 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 	private JList<String> list;
 	private Teacher teacher;
 	
+	private JButton go;
+	private JButton createAssignment;
+	
 	public AssignmentViewer(Classroom classroom, Teacher teacher) {
 		super("Assignments");
 		
@@ -47,8 +50,8 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 		
 		JPanel top = new JPanel();
 		JLabel title = new JLabel ("Select an assignment to view");
-		JButton createAssignment = new JButton("Create a new Assignment");
-		createAssignment.addActionListener(new ButtonListener());
+		createAssignment = new JButton("Create a new Assignment");
+		createAssignment.addActionListener(this);
 		top.add(title);
 		top.add(createAssignment);
 		panel.add(top, BorderLayout.PAGE_START);
@@ -68,7 +71,7 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 		JScrollPane scroll = new JScrollPane(list);
 		panel.add(scroll, BorderLayout.CENTER);
 		
-		JButton go = new JButton("view");
+		go = new JButton("view");
 		go.addActionListener(this);
 		panel.add(go, BorderLayout.PAGE_END);
 		
@@ -79,22 +82,18 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		int index = list.getSelectedIndex();
-		System.out.println("selected index: " + index);
-		if (index > -1) {
-			JFrame window = new TeacherSubmissionViewer(classroom, index, teacher);
-			window.setBounds(100, 100, 800, 600);
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
-			window.setVisible(true);
+		if (e.getSource().equals(go)) {
+			int index = list.getSelectedIndex();
+			System.out.println("selected index: " + index);
+			if (index > -1) {
+				JFrame window = new TeacherSubmissionViewer(classroom, index, teacher);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setResizable(true);
+				window.setVisible(true);
+			}
 		}
-	}
-	
-	private class ButtonListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+		else if (e.getSource().equals(createAssignment)) {
 			String name = JOptionPane.showInputDialog("What is the name of the new assignment");
 			
 			JFileChooser choose = new JFileChooser(userDir);
@@ -111,17 +110,14 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 				}
 			}
 			
-			Rubric newAssignment = getRubric(input, name);
+			Rubric newAssignment = Rubric.makeRubric(input, name);
 			classroom.addAssignment(newAssignment);
 			
 			String key = DatabaseModifier.getKey(classroom);
 			
 			DatabaseModifier.set(key, classroom);
-			
 		}
-		
 	}
-	
 	
 	private String readFile(String inputFile) throws IOException{
 		Scanner scan = null;
@@ -140,32 +136,5 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 		return fileData.toString();
 	}
 	
-	/**
-	 * Creates a rubric class based on a .rubric file input
-	 * @param input .rubric file text as String
-	 * @param name name of rubric
-	 * @return Rubric containing 
-	 */
-	private Rubric getRubric(String input, String name) {
-		
-		
-		int start = 0;
-		Rubric rubric = new Rubric(name);
-		RubricRow temp = new RubricRow();
-		for (int i = 0; i < input.length(); i++) {
-			if (input.charAt(i) == '`') {
-				temp.add(input.substring(start, i));
-				start = i + 2;
-			}
-			else if (input.charAt(i) == lineSeparator.charAt(0)) {
-				temp.add(input.substring(start, i));
-				start = i + 1;
-				rubric.addCriteria(temp);
-				temp = new RubricRow();
-			}
-		}
-		
-		return rubric;
-	}
 	
 }

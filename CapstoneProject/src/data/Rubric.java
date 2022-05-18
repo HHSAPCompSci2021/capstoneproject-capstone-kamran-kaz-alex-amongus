@@ -63,6 +63,35 @@ public class Rubric {
 		return criteria;
 	}
 	
+	/**
+	 * Creates a rubric class based on a .rubric file input
+	 * @pre input String must be in the proper format of a .rubric file
+	 * @param input .rubric file text as String
+	 * @param name name of rubric
+	 * @return Rubric containing 
+	 */
+	public static Rubric makeRubric(String input, String name) {
+
+		String lineSeparator = System.getProperty("line.separator");
+		int start = 0;
+		Rubric rubric = new Rubric(name);
+		RubricRow temp = new RubricRow();
+		for (int i = 0; i < input.length(); i++) {
+			if (input.charAt(i) == '`') {
+				temp.add(input.substring(start, i));
+				start = i + 2;
+			}
+			else if (input.charAt(i) == lineSeparator.charAt(0)) {
+				temp.add(input.substring(start, i));
+				start = i + 1;
+				rubric.addCriteria(temp);
+				temp = new RubricRow();
+			}
+		}
+		
+		return rubric;
+	}
+	
 	
 	@Override
 	public String toString() {

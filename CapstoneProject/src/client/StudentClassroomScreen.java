@@ -31,7 +31,8 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	private Student student;
 	
 	private JList<String> list;
-	
+	private JButton newSubmission;
+	private JButton view;
 	/**
 	 * Shows past submissions of the student and allows user to submit new assignments.
 	 * @param classroom Classroom object that the student is viewing
@@ -57,8 +58,8 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		JPanel top = new JPanel(new FlowLayout());
 		JLabel label = new JLabel(classroom.getName());
 		top.add(label);
-		JButton newSubmission = new JButton("submit a new assignment");
-		newSubmission.addActionListener(new SubmissionListener());
+		newSubmission = new JButton("submit a new assignment");
+		newSubmission.addActionListener(this);
 		top.add(newSubmission);
 		
 		panel.add(top, BorderLayout.PAGE_START);
@@ -81,7 +82,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		panel.add(scroll, BorderLayout.CENTER);
 
 		
-		JButton view = new JButton("view");
+		view = new JButton("view");
 		view.addActionListener(this);
 		panel.add(view, BorderLayout.PAGE_END);
 		
@@ -93,15 +94,25 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
-		int index = list.getSelectedIndex();
-		if (index > -1) {
-			Submission selected = student.getSubmissions().get(index);
-			JFrame window = new ViewSubmissionScreen(selected, student);
+		if (e.getSource().equals(newSubmission)) {
+			JFrame window = new SelectAssignmentScreen(student, classroom);
 			window.setBounds(100, 100, 800, 600);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setResizable(true);
 			window.setVisible(true);
 		}
+		else if (e.getSource().equals(view)) {
+			int index = list.getSelectedIndex();
+			if (index > -1) {
+				Submission selected = student.getSubmissions().get(index);
+				JFrame window = new ViewSubmissionScreen(selected, student);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setResizable(true);
+				window.setVisible(true);
+			}
+		}
+		
 	}
 	
 	/**
@@ -118,22 +129,5 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		classroom.addStudent(student);
 		DatabaseModifier.set(key, classroom);
 	}
-
-
-	
-	private class SubmissionListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			JFrame window = new SelectAssignmentScreen(student, classroom);
-			window.setBounds(100, 100, 800, 600);
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
-			window.setVisible(true);
-		}
-		
-	}
-	
 
 }
