@@ -70,9 +70,7 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 		bottom.add(back);
 		panel.add(bottom, BorderLayout.PAGE_END);
 		
-		add(panel);
-		
-		
+		add(panel);		
 	}
 	
 

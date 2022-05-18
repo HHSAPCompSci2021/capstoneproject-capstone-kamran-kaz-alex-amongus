@@ -96,7 +96,6 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		
 		panel.add(bottom, BorderLayout.PAGE_END);
 		
-		
 		add(panel);
 		
 	}

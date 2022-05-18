@@ -28,6 +28,8 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	private JList<String> gradedList;
 	private JList<String> ungradedList;
 	
+	private JButton view, back;
+	
 	public TeacherSubmissionViewer(Classroom classroom, int rubric, Teacher teacher) {
 		
 		this.classroom = classroom;
@@ -65,9 +67,18 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		
 		panel.add(scrollPanel, BorderLayout.CENTER);
 		
-		JButton view = new JButton("View Submissions");
+		JPanel bottom = new JPanel();
+		
+		view = new JButton("View Submissions");
 		view.addActionListener(this);
-		panel.add(view, BorderLayout.PAGE_END);
+		
+		back = new JButton("back");
+		back.addActionListener(this);
+		
+		bottom.add(view);
+		bottom.add(back);
+		
+		panel.add(bottom, BorderLayout.PAGE_END);
 		
 		add(panel);
 		
@@ -75,22 +86,26 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		int index1 = ungradedList.getSelectedIndex();
-		int index2 = gradedList.getSelectedIndex();
-		
-		if (index1 > -1) {
-			JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index1), teacher);
-			window.setBounds(100, 100, 800, 600);
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
-			window.setVisible(true);
-		} else if (index2 > -1) {
-			JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
-			window.setBounds(100, 100, 800, 600);
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setResizable(true);
-			window.setVisible(true);
+		if (e.getSource().equals(view)) {
+			int index1 = ungradedList.getSelectedIndex();
+			int index2 = gradedList.getSelectedIndex();
+			
+			if (index1 > -1) {
+				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index1), teacher);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setResizable(true);
+				window.setVisible(true);
+			} else if (index2 > -1) {
+				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setResizable(true);
+				window.setVisible(true);
+			}			
+		}
+		else if (e.getSource().equals(back)) {
+			this.setVisible(false);
 		}
 	}
 }
