@@ -1,8 +1,21 @@
 package data;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.csv.CSVFormat;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+
 /**
- * Models an assignment for a classroom. The Rubric class contains the name of the submission and a list of RubricRow objects that contain grading criteria
+ * Models an assignment for a classroom. The Rubric class contains the name of
+ * the submission and a list of RubricRow objects that contain grading criteria
+ * 
  * @author Kaz
  *
  */
@@ -10,7 +23,7 @@ public class Rubric {
 
 	private String name;
 	private ArrayList<RubricRow> criteria;
-	
+
 	/**
 	 * No Args constructor. Will automatically set the name to an empty String.
 	 */
@@ -18,7 +31,7 @@ public class Rubric {
 		name = "";
 		criteria = new ArrayList<RubricRow>();
 	}
-	
+
 	/**
 	 * 
 	 * @param name The name of the rubric
@@ -27,34 +40,36 @@ public class Rubric {
 		this.name = name;
 		criteria = new ArrayList<RubricRow>();
 	}
-	
+
 	/**
 	 * 
-	 * @param name Name of the assignment
-	 * @param criteria A 2D arraylist of Strings that each outline an aspect that the assignment should have
+	 * @param name     Name of the assignment
+	 * @param criteria A 2D arraylist of Strings that each outline an aspect that
+	 *                 the assignment should have
 	 */
 	public Rubric(String name, ArrayList<RubricRow> criteria) {
 		this.name = name;
 		this.criteria = criteria;
 	}
-	
+
 	/**
 	 * Adds a new criteria point to the rubric
+	 * 
 	 * @param newCriteria
 	 */
 	public void addCriteria(RubricRow newCriteria) {
 		criteria.add(newCriteria);
 	}
-	
-	
+
 	/**
 	 * Getter for Rubric name
+	 * 
 	 * @return Rubric Name
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * 
 	 * @return Returns an ArrayList of the criteria of the rubric
@@ -62,13 +77,14 @@ public class Rubric {
 	public ArrayList<RubricRow> getCriteria() {
 		return criteria;
 	}
-	
+
 	/**
 	 * Creates a rubric class based on a .rubric file input
+	 * 
 	 * @pre input String must be in the proper format of a .rubric file
 	 * @param input .rubric file text as String
-	 * @param name name of rubric
-	 * @return Rubric containing 
+	 * @param name  name of rubric
+	 * @return Rubric containing
 	 */
 	public static Rubric makeRubric(String input, String name) {
 
@@ -80,19 +96,30 @@ public class Rubric {
 			if (input.charAt(i) == '`') {
 				temp.add(input.substring(start, i));
 				start = i + 2;
-			}
-			else if (input.charAt(i) == lineSeparator.charAt(0)) {
+			} else if (input.charAt(i) == lineSeparator.charAt(0)) {
 				temp.add(input.substring(start, i));
 				start = i + 1;
 				rubric.addCriteria(temp);
 				temp = new RubricRow();
 			}
 		}
-		
+
 		return rubric;
 	}
-	
-	
+
+	public static List<String[]> makeRubric(String path) {
+		List<String[]> records = new ArrayList<>();
+		try (CSVReader csvReader = new CSVReader(new FileReader(path));) {
+		    String[] values = null;
+		    while ((values = csvReader.readNext()) != null) {
+		        records.add(values);
+		    }
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return records;
+	}
+
 	@Override
 	public String toString() {
 		String output = name + "\n";
@@ -101,5 +128,5 @@ public class Rubric {
 		}
 		return output;
 	}
-	
+
 }
