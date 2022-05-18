@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +34,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	private JList<String> list;
 	private JButton newSubmission;
 	private JButton view;
+	private JButton back;
 	/**
 	 * Shows past submissions of the student and allows user to submit new assignments.
 	 * @param classroom Classroom object that the student is viewing
@@ -81,10 +83,19 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		JScrollPane scroll = new JScrollPane(list);
 		panel.add(scroll, BorderLayout.CENTER);
 
+
+		JPanel bottom = new JPanel();
 		
 		view = new JButton("view");
 		view.addActionListener(this);
-		panel.add(view, BorderLayout.PAGE_END);
+		bottom.add(view);
+		
+		back = new JButton("back");
+		back.addActionListener(this);
+		bottom.add(back);
+		
+		panel.add(bottom, BorderLayout.PAGE_END);
+		
 		
 		add(panel);
 		
@@ -111,6 +122,9 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 				window.setResizable(true);
 				window.setVisible(true);
 			}
+		}
+		else if (e.getSource().equals(back)) {
+			this.setVisible(false);
 		}
 		
 	}
