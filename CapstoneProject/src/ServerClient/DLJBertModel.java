@@ -73,6 +73,7 @@ public class DLJBertModel {
 				.setSampling(batchSize, true) // make sample size and random access
 				.optLimit(limit)
 				.addFeature(new CsvDataset.Feature("review_body", new BertFeaturizer(tokenizer, maxLength)))
+				//.addFeature(new CsvDataset.Feature("sentence2", new BertFeaturizer(tokenizer, maxLength)))
 				.addLabel(new CsvDataset.Feature("star_rating", (buf, data) -> buf.put(Float.parseFloat(data) - 1.0f)))
 				.optDataBatchifier(PaddingStackBatchifier.builder().optIncludeValidLengths(false)
 						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(paddingToken)).build()) 
@@ -80,7 +81,6 @@ public class DLJBertModel {
 	}
 
 	public void process() throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
-
 		// MXNet base model
 		String modelUrls = "https://resources.djl.ai/test-models/distilbert.zip";
 		if ("PyTorch".equals(Engine.getInstance().getEngineName())) {
@@ -118,13 +118,15 @@ public class DLJBertModel {
 				// classification layer
 				.add(Linear.builder().setUnits(768).build()) // pre classifier
 				.add(Activation::relu).add(Dropout.builder().optRate(0.2f).build())
-				.add(Linear.builder().setUnits(2).build()) // 5 star rating
+				.add(Linear.builder().setUnits(2).build()) // 2 star rating
 				.addSingleton(nd -> nd.get(":,0")); // Take [CLS] as the head
+		
 		Model model = Model.newInstance("AmazonReviewRatingClassification");
 		model.setBlock(classifier);
 		
 		try {
 			train(model, embedding);
+			predict(model, embedding);
 		} catch(IOException e) {
 			e.printStackTrace();
 		} catch (TranslateException e) {
@@ -134,21 +136,20 @@ public class DLJBertModel {
 
 		
 	public void train(Model model, ZooModel<NDList, NDList> embedding) throws IOException, TranslateException {
-		// Train the model
-
 		// Prepare the vocabulary
 		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build();
 		// Prepare dataset
-		int maxTokenLength = 64; // cutoff tokens length
+		int maxTokenLength = 500; // cutoff tokens length
 		int batchSize = 8;
 		int limit = Integer.MAX_VALUE;
 		// int limit = 512; // uncomment for quick testing
 
 		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
 		CsvDataset amazonReviewDataset = getDataset(batchSize, tokenizer, maxTokenLength, limit);
+		
 		// split data with 7:3 train:valid ratio
-		RandomAccessDataset[] datasets = amazonReviewDataset.randomSplit(7, 2);
+		RandomAccessDataset[] datasets = amazonReviewDataset.randomSplit(7, 3);
 		RandomAccessDataset trainingSet = datasets[0];
 		RandomAccessDataset validationSet = datasets[1];
 
@@ -161,6 +162,7 @@ public class DLJBertModel {
 			model2.setProperty("Accuracy", String.format("%.5f", accuracy));
 			model2.setProperty("Loss", String.format("%.5f", result.getValidateLoss()));
 		});
+		
 		DefaultTrainingConfig config = new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss()) // loss type
 				.addEvaluator(new Accuracy()).optDevices(Engine.getInstance().getDevices(1)) // train using single GPU
 				.addTrainingListeners(TrainingListener.Defaults.logging("build/model")).addTrainingListeners(listener);
