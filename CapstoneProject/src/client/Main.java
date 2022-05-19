@@ -1,5 +1,6 @@
 package client;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,6 +31,9 @@ public class Main {
 	    	JFrame w = new JFrame("GRADEME Client");
 	    	w.setBounds(100, 100, 800, 600);
 	    	w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    	
+	    	ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
+	    	w.setIconImage(logo.getImage());
 	    	
 	    	if (user == 0) {
 	    		screen = new StudentScreen();

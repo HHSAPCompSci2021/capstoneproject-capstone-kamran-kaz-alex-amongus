@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -84,6 +85,8 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 				JFrame window = new SubmissionScreen(classroom, student, index);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
+		    	window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
 			}

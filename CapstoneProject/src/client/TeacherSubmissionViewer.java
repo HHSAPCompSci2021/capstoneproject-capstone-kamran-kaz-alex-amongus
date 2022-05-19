@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -89,17 +90,20 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		if (e.getSource().equals(view)) {
 			int index1 = ungradedList.getSelectedIndex();
 			int index2 = gradedList.getSelectedIndex();
+			ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
 			
 			if (index1 > -1) {
 				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index1), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
 			} else if (index2 > -1) {
 				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
 			}			

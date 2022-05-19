@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -102,12 +103,13 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
 		
 		if (e.getSource().equals(newSubmission)) {
 			JFrame window = new SelectAssignmentScreen(student, classroom);
 			window.setBounds(100, 100, 800, 600);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			window.setIconImage(logo.getImage());
 			window.setResizable(true);
 			window.setVisible(true);
 		}
@@ -118,6 +120,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 				JFrame window = new ViewSubmissionScreen(selected, student);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
 			}

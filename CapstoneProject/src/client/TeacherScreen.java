@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -106,6 +107,8 @@ public class TeacherScreen extends JPanel implements ActionListener{
 				JFrame window = new AssignmentViewer(classroom, teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
+		    	window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
 			}

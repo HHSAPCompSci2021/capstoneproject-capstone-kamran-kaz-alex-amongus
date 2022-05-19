@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -97,6 +98,8 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 				JFrame window = new TeacherSubmissionViewer(classroom, index, teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
+		    	window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
 			}
