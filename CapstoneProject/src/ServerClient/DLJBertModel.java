@@ -50,10 +50,16 @@ import ai.djl.translate.Translator;
 import ai.djl.translate.TranslatorContext;
 
 /**
- * A BERT Model Version using the Deep Java Library BERT Wrapper.
- * Adapted from DLJ Examples
+ * A BERT Model Version using the Deep Java Library Bi-directional Encoders for Transformers (BERT) Wrapper. This model uses the DistilBERT 
+ * version of the greater BERT model, a lighter, faster model with less parameters. We are using BERT's built in tokenizer to convert the 
+ * input strings into numerical tokens that capture a feature of the text. There are two private data classes contained within this model as 
+ * overrides in order to specialize the BERT model for classification and similarity calculations. 
+ * 
+ * Adapted from DLJ Examples.
  * 
  * @author Kamran Hussain
+ * @version 1.0.1
+ * 
  *
  */
 public class DLJBertModel {
@@ -61,15 +67,35 @@ public class DLJBertModel {
 	private ZooModel<NDList, NDList> embedding;
 	private Model model;
 
+	/**
+	 * Creates a new DLJ BERT model object and builds the necessary engines and support frameworks.
+	 */
 	public DLJBertModel() {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
+		
+		try {
+			buildModel();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
+	/**
+	 * The BERT Featurizer that tokenizes the input data and does preprocessing
+	 * @author Kamran Hussain
+	 *
+	 */
 	private final class BertFeaturizer implements CsvDataset.Featurizer {
 
 		private final BertFullTokenizer tokenizer;
 		private final int maxLength; // the cut-off length
 
+		/**
+		 * Creates a new featurizer and uses it to tokenize the input data.
+		 * @param tokenizer  A BERT tokenizer that is loaded and used to produce numerical vector representations of the input data
+		 * @param maxLength The max length of the token vectors
+		 * @postcondition The Model WILL crash if the model cannot be loaded for any reason
+		 */
 		public BertFeaturizer(BertFullTokenizer tokenizer, int maxLength) {
 			this.tokenizer = tokenizer;
 			this.maxLength = maxLength;
@@ -90,6 +116,15 @@ public class DLJBertModel {
 		}
 	}
 
+	/**
+	 * Reads a CSV and creates a new dataset with the given parameters
+	 * @param batchSize Training Batch size that will be incorporated into the dataset
+	 * @param tokenizer The BERT Tokenizer object completely loaded and pretrained for tokenization
+	 * @param maxLength Maximum token length for the model, tune to highest possible accounting for training time and processing power
+	 * @param limit Set limit on token sizes
+	 * @param file File to read into a dataset. Must be a Comma Separated Value (CSV) file.
+	 * @return
+	 */
 	private CsvDataset getDataset(int batchSize, BertFullTokenizer tokenizer, int maxLength, int limit, String file) {
 		Path datasetPath = FileSystems.getDefault().getPath("resources", file);
 		float paddingToken = tokenizer.getVocabulary().getIndex("[PAD]");
@@ -100,15 +135,19 @@ public class DLJBertModel {
 				.addFeature(new CsvDataset.Feature("sentence1", new BertFeaturizer(tokenizer, maxLength)))
 				.addFeature(new CsvDataset.Feature("sentence2", new BertFeaturizer(tokenizer, maxLength)))
 				.addLabel(new CsvDataset.Feature("label", (buf, data) -> buf.put(Float.parseFloat(data) - 1.0f)))
-				.addCategoricalLabel("sentence1")
-				.addCategoricalLabel("sentence1")
-				.addCategoricalLabel("label")
 				.optDataBatchifier(PaddingStackBatchifier.builder().optIncludeValidLengths(false)
 						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(paddingToken)).build()) 
 				.build();
 	}
 
-	public void process() throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
+	/**
+	 * Procedural code for building and loading the model then creating the necessary datasets. 
+	 * @throws ModelNotFoundException If the BERT model cannot be located from a save or downloaded from the hugging face hub or DeeJavaLibrary
+	 * @throws MalformedModelException If the model is loaded improperly or missing some weights/dependencies.
+	 * @throws IOException If dependencies cannot be found or properly loaded.
+	 * @throws TranslateException If an error occurs when setting the weights of the model.
+	 */
+	public void buildModel() throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
 		// MXNet base model
 		String modelUrls = "https://resources.djl.ai/test-models/distilbert.zip";
 		if ("PyTorch".equals(Engine.getInstance().getEngineName())) {
@@ -161,7 +200,11 @@ public class DLJBertModel {
 		}
 	}
 
-		
+	/**
+	 * Trains the model by loading datasets and beginning the training loop. Calculates training time and loss while operating.
+	 * @throws IOException If any dependencies or output directories are unaccessible
+	 * @throws TranslateException If the translator model is unable to accept and properly process the input data
+	 */
 	public void train() throws IOException, TranslateException {
 		// Prepare the vocabulary
 		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
@@ -170,7 +213,7 @@ public class DLJBertModel {
 		int maxTokenLength = 500; // cutoff tokens length
 		int batchSize = 8;
 		int limit = Integer.MAX_VALUE;
-		// int limit = 512; // uncomment for quick testing
+		//int limit = 512; // uncomment for quick testing
 
 		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
 		
@@ -206,6 +249,13 @@ public class DLJBertModel {
 		model.save(Paths.get("build/model"), "SemanticSimilarityClassification.param");
 	}
 	
+	/**
+	 * Predicts the similarity and whether or not the students essay satisfies the requirements outlined by the rubric.
+	 * @param document The student essay to comapre to the rubric
+	 * @param rubricCategory The String of the rubric category loaded from the dataset
+	 * @throws TranslateException If an error occurs during prediction in the predictor layer.
+	 * @throws IOException If any resources or dependencies cannot be found.
+	 */
 	public void predict(String document, String rubricCategory) throws TranslateException, IOException {
 		BertFullTokenizer tokenizer = new BertFullTokenizer(DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build(), true);
@@ -214,6 +264,7 @@ public class DLJBertModel {
 		predictor.predict(document); //need to modify to accept two string inputs
 	}
 
+	
 	private class ModelTranslator implements Translator<String, Classifications> {
 
 		private BertFullTokenizer tokenizer;
@@ -251,7 +302,7 @@ public class DLJBertModel {
 	
 	public static void main(String[] args) {
 		try {
-			new DLJBertModel().process();
+			new DLJBertModel();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

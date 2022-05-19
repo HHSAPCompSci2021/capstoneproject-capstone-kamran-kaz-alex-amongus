@@ -26,7 +26,6 @@
 	</repositories>
 
 	<properties>
-		<nd4j.version>0.0.3.5.5.3</nd4j.version>
 		<dl4j.version>0.0.3.3.3.alpha1</dl4j.version>
 	</properties>
 
@@ -50,6 +49,11 @@
 			<groupId>ai.djl</groupId>
 			<artifactId>basicdataset</artifactId>
 			<version>0.17.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.deeplearning4j</groupId>
+			<artifactId>deeplearning4j-nlp</artifactId>
+			<version>${dl4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

@@ -3,13 +3,19 @@ package ServerClient;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.deeplearning4j.models.word2vec.Word2Vec;
+import org.nd4j.linalg.ops.transforms.Transforms;
+
 import ai.djl.ModelException;
 import ai.djl.translate.TranslateException;
 import data.Submission;
 
 /**
- * The class that grades essays and checks for plagiarism. This loads the model
- * and updates the students grade. It also checks for plagiarism.
+ * Automatically grades essays and checks for plagiarism. This loads the model
+ * and updates the students grade. it will loop through the ungraded essays and 
+ * queue them into the grader. When the model returns, it finds the rubric
+ * item with the highest correspondence and assigns that grade. When the calculations
+ * are complete, the grade is updated in the database.
  * 
  * @author Kamran Hussain
  *
@@ -23,7 +29,8 @@ public class Grader {
 	}
 
 	/**
-	 * Calculates the student grades for each category and runs the student essay and rubric category through the model.
+	 * Calculates the student grades for each category and runs the student 
+	 * essay and rubric categories through the model for inferencing.
 	 * 
 	 * @param document Student essay as a string
 	 * @param rubric Assignment rubric as an array of strings
