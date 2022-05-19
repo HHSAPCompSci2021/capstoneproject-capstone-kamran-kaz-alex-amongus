@@ -41,6 +41,9 @@ public class Grader {
 	 * @return An array of grades for each rubric category
 	 */
 	public String[] getGrade(String document, String[][] rubric) {
+		if(isPlagiarized(document)) {
+			return new String[] {"Plagiarized"};
+		}
 		
 		String[] labels = new String[] {"A", "B", "C", "D", "F"};
 		try {
