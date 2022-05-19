@@ -50,24 +50,20 @@ public class Grader {
 			String[] grades = new String[rubric.length];
 			for (int i = 0; i < rubric.length; i++) {
 				//check this rubric row
-				ArrayList<Float> similarity = new ArrayList<>();
-				for (int j = 0; j < rubric[i].length; j++) {
-					similarity.add(model.predict(document, rubric[i][j]));
+				int j = 0;
+				String match = "";
+				while(!match.equals("correlation")) {
+					match = model.predict(document, rubric[i][j]);
+					j++;
 				}
-				
-				//add the greatest similarity index to the grade array
-				float greatestSim = 0;
-				for(int a = 0; i<similarity.size(); i++) {
-					if(similarity.get(i) > greatestSim) {
-						greatestSim = similarity.get(i);
-					}
-				}
-				grades[i] = labels[similarity.indexOf(greatestSim)];
+				grades[i] = labels[j];
 			}
 			return grades;
-		} catch (IOException | TranslateException | ModelException e) {
+		} catch (IOException | TranslateException e) {
 			e.printStackTrace();
 		}
+		
+		return new String[] {"Un-Graded"};
 	}
 	
 	public boolean isPlagiarized(String stdntDoc) {

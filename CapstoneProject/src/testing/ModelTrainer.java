@@ -13,13 +13,14 @@ public class ModelTrainer {
 		BertSemanticGraderModel model = new BertSemanticGraderModel();
 		
 		try {
-			model.loadAndTrainModel(2, 32, 500);
-		} catch (ModelNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(model.predict("Hello World", "Hey there world"));
+			//model.loadAndTrainModel(2, 32, 500);
+//		} catch (ModelNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (MalformedModelException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
