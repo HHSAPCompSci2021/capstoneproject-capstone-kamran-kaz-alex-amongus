@@ -14,9 +14,10 @@ import com.opencsv.exceptions.CsvValidationException;
 
 /**
  * Models an assignment for a classroom. The Rubric class contains the name of
- * the submission and a list of RubricRow objects that contain grading criteria
- * 
- * @author Kaz
+ * the submission and a list of RubricRow objects that contain grading criteria.
+ * The data is similar to a 2D array. It is recommended to initialize the Rubric through the input of a csv file.
+ * The first column lists the names of the grading criteria. The top row lists the score that is given to each of the aspects of criteria. 
+ * @author Kaz Nakao
  *
  */
 public class Rubric {
@@ -81,45 +82,34 @@ public class Rubric {
 	/**
 	 * Creates a rubric class based on a .rubric file input
 	 * 
-	 * @pre input String must be in the proper format of a .rubric file
-	 * @param input .rubric file text as String
+	 * @pre input String must be in the proper format of a .csv file
+	 * @param input the path to the .csv file on the computer
 	 * @param name  name of rubric
 	 * @return Rubric containing
 	 */
-	public static Rubric makeRubric(String input, String name) {
+	public static Rubric makeRubric(String path, String name) {
 
-		String lineSeparator = System.getProperty("line.separator");
-		int start = 0;
 		Rubric rubric = new Rubric(name);
-		RubricRow temp = new RubricRow();
-		for (int i = 0; i < input.length(); i++) {
-			if (input.charAt(i) == '`') {
-				temp.add(input.substring(start, i));
-				start = i + 2;
-			} else if (input.charAt(i) == lineSeparator.charAt(0)) {
-				temp.add(input.substring(start, i));
-				start = i + 1;
-				rubric.addCriteria(temp);
-				temp = new RubricRow();
-			}
-		}
-
-		return rubric;
-	}
-
-	public static List<String[]> makeRubric(String path) {
+		
 		List<String[]> records = new ArrayList<>();
 		try (CSVReader csvReader = new CSVReader(new FileReader(path));) {
 		    String[] values = null;
 		    while ((values = csvReader.readNext()) != null) {
 		        records.add(values);
+		        RubricRow row = new RubricRow();
+		        for (String s : values) {
+		        	row.add(s);
+		        }
+		        rubric.addCriteria(row);
 		    }
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return records;
+		
+		return rubric;
 	}
 
+	
 	@Override
 	public String toString() {
 		String output = name + "\n";

@@ -97,44 +97,21 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 			String name = JOptionPane.showInputDialog("What is the name of the new assignment");
 			
 			JFileChooser choose = new JFileChooser(userDir);
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Rubric Files", "rubric", "text");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv", "text");
 			choose.setFileFilter(filter);
 			int returnVal = choose.showOpenDialog(null);
 			
 			String input = null;
+			Rubric newAssignment = null;
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				try {
-					input = readFile(choose.getSelectedFile().getPath());
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
+				newAssignment = Rubric.makeRubric(choose.getSelectedFile().getPath(), name);
+				classroom.addAssignment(newAssignment);
+				
+				String key = DatabaseModifier.getKey(classroom);
+				
+				DatabaseModifier.set(key, classroom);
 			}
 			
-			Rubric newAssignment = Rubric.makeRubric(input, name);
-			classroom.addAssignment(newAssignment);
-			
-			String key = DatabaseModifier.getKey(classroom);
-			
-			DatabaseModifier.set(key, classroom);
 		}
 	}
-	
-	private String readFile(String inputFile) throws IOException{
-		Scanner scan = null;
-		StringBuffer fileData = new StringBuffer();
-		try {
-			FileReader reader = new FileReader(inputFile);
-			scan = new Scanner(reader);
-			while(scan.hasNext()) {
-				fileData.append(scan.nextLine());
-				fileData.append(lineSeparator);
-			}
-		} finally {
-			if (scan != null) 
-				scan.close();
-		}
-		return fileData.toString();
-	}
-	
-	
 }
