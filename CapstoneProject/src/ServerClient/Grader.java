@@ -2,13 +2,17 @@ package ServerClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.nd4j.linalg.ops.transforms.Transforms;
 
 import ai.djl.ModelException;
 import ai.djl.translate.TranslateException;
+
 import data.Submission;
+import data.Classroom;
 
 /**
  * Automatically grades essays and checks for plagiarism. This loads the model
@@ -62,6 +66,17 @@ public class Grader {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isPlagiarized(String stdntDoc) {
+		//get the database essays that have already been graded
+		HashMap<String, Classroom> storedEssays = new HashMap<>();
+		
+		for(Map.Entry<String, Classroom> essay : storedEssays.entrySet()) {
+			return cosineSimForSentence(stdntDoc, essay.getKey()) > 85.0 || literalSimilarity(stdntDoc, essay.getKey()) > 40;
+		}
+		
+		return false;
+	}
 
 	/**
 	 * Calculates the semantic similarity of two student essays
@@ -84,6 +99,7 @@ public class Grader {
 	 * @return A percentage representing how literally similar the two essays are
 	 */
 	public double literalSimilarity(String studentDocument1, String studentDocument2) {
+		if(studentDocument1.equals(studentDocument2)) return 100.0;
 		String copy1 = String.copyValueOf(studentDocument1.toCharArray());
 		String copy2 = String.copyValueOf(studentDocument2.toCharArray());
 		copy1.replaceAll(" ", "");
@@ -95,16 +111,5 @@ public class Grader {
 			}
 		}
 		return (percentage / studentDocument1.length()) * 100;
-	}
-
-	/**
-	 * Checks if the two student documents
-	 * 
-	 * @param studentDocument1
-	 * @param studentDocument2
-	 * @return True if the documents have more than 40% literal similarity
-	 */
-	public boolean isPlagiarized(String studentDocument1, String studentDocument2) {
-		return literalSimilarity(studentDocument1, studentDocument2) > 40.0;
 	}
 }

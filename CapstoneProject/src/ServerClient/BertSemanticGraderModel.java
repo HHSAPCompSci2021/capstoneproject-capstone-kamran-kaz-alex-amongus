@@ -192,6 +192,8 @@ public class BertSemanticGraderModel {
 		model = Model.newInstance("SentenceSimilarityClassification");
 		model.setBlock(classifier);
 		
+		System.out.println("MODEL LOADED PROPERLY\nNREADY FOR INFERENCING OR TRAINING");
+		
 		try {
 			train();
 		} catch(IOException e) {
@@ -298,15 +300,6 @@ public class BertSemanticGraderModel {
 		@Override
 		public Classifications processOutput(TranslatorContext ctx, NDList list) {
 			return new Classifications(ranks, list.singletonOrThrow().softmax(0));
-		}
-	}
-	
-	public static void main(String[] args) {
-		try {
-			new BertSemanticGraderModel();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 }

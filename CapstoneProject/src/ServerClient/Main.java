@@ -17,27 +17,22 @@ public class Main {
 
 	public static void main(String[] args) throws IOException, TranslateException, ModelException {
 		
-		// get essays & rubric
+		// Load essays and rubric from database
+		
+		
+		//Put them into the hashmap
 		HashMap<String, String[][]> map = new HashMap<>();
 		
+		//
 		Grader g = new Grader();
 		
+		//grades
 		for (Map.Entry<String, String[][]> entry : map.entrySet()) {
-			// entry.getKey(), entry.getValue()
+			// get grade from grader
 			String[] grade = g.getGrade(entry.getKey(), entry.getValue());
-			
 		}
 		
-		// ["essay", String[][]] 
-		// [0, 1]
-		// [0, 1]
-		
-		
-		
-		// loop and feed to grader
-		
-		
-		
+		//Updates database if hashmap is empty
 		
 		
 	}
