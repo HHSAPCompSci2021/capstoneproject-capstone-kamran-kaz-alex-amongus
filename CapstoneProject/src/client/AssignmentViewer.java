@@ -38,6 +38,7 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 	private Teacher teacher;
 	
 	private JButton go;
+	private JButton back;
 	private JButton createAssignment;
 	
 	public AssignmentViewer(Classroom classroom, Teacher teacher) {
@@ -71,10 +72,17 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 		JScrollPane scroll = new JScrollPane(list);
 		panel.add(scroll, BorderLayout.CENTER);
 		
+		JPanel bottom = new JPanel();		
+		
 		go = new JButton("view");
 		go.addActionListener(this);
-		panel.add(go, BorderLayout.PAGE_END);
+		back = new JButton("back");
+		back.addActionListener(this);
 		
+		bottom.add(go);
+		bottom.add(back);
+		
+		panel.add(bottom, BorderLayout.PAGE_END);
 		add(panel);
 		
 	}
@@ -110,8 +118,10 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 				String key = DatabaseModifier.getKey(classroom);
 				
 				DatabaseModifier.set(key, classroom);
-			}
-			
+			}	
+		}
+		else if (e.getSource().equals(back)) {
+			this.setVisible(false);
 		}
 	}
 }
