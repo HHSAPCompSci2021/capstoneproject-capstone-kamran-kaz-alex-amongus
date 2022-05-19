@@ -62,7 +62,7 @@ import ai.djl.translate.TranslatorContext;
  * 
  *
  */
-public class DLJBertModel {
+public class BertSemanticGraderModel {
 	
 	private ZooModel<NDList, NDList> embedding;
 	private Model model;
@@ -70,7 +70,7 @@ public class DLJBertModel {
 	/**
 	 * Creates a new DLJ BERT model object and builds the necessary engines and support frameworks.
 	 */
-	public DLJBertModel() {
+	public BertSemanticGraderModel() {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
 		
 		try {
@@ -303,7 +303,7 @@ public class DLJBertModel {
 	
 	public static void main(String[] args) {
 		try {
-			new DLJBertModel();
+			new BertSemanticGraderModel();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

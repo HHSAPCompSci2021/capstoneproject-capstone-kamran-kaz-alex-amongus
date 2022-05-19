@@ -22,10 +22,10 @@ import data.Submission;
  */
 public class Grader {
 
-	private DLJBertModel model;
+	private BertSemanticGraderModel model;
 
 	public Grader() {
-		model = new DLJBertModel();
+		model = new BertSemanticGraderModel();
 	}
 
 	/**
