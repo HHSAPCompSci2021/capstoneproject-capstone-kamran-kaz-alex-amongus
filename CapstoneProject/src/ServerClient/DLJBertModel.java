@@ -123,19 +123,20 @@ public class DLJBertModel {
 	 * @param maxLength Maximum token length for the model, tune to highest possible accounting for training time and processing power
 	 * @param limit Set limit on token sizes
 	 * @param file File to read into a dataset. Must be a Comma Separated Value (CSV) file.
-	 * @return
+	 * @return A CsvDataset Object containing the loaded data for training
 	 */
 	private CsvDataset getDataset(int batchSize, BertFullTokenizer tokenizer, int maxLength, int limit, String file) {
 		Path datasetPath = FileSystems.getDefault().getPath("resources", file);
 		float paddingToken = tokenizer.getVocabulary().getIndex("[PAD]");
 		return CsvDataset.builder().optCsvFile(datasetPath) // load from file
-				.setCsvFormat(CSVFormat.DEFAULT.withHeader("sentence1","sentence2", "label").withSkipHeaderRecord()) // Setting CSV loading format
+				.setCsvFormat(CSVFormat.DEFAULT.withHeader()) // Setting CSV loading format
 				.setSampling(batchSize, true) // make sample size and random access
 				.optLimit(limit) //limit on token sizes
 				.addFeature(new CsvDataset.Feature("sentence1", new BertFeaturizer(tokenizer, maxLength)))
 				.addFeature(new CsvDataset.Feature("sentence2", new BertFeaturizer(tokenizer, maxLength)))
 				.addLabel(new CsvDataset.Feature("label", (buf, data) -> buf.put(Float.parseFloat(data) - 1.0f)))
-				.optDataBatchifier(PaddingStackBatchifier.builder().optIncludeValidLengths(false)
+				.optDataBatchifier(PaddingStackBatchifier.builder()
+						.optIncludeValidLengths(false)
 						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(paddingToken)).build()) 
 				.build();
 	}
