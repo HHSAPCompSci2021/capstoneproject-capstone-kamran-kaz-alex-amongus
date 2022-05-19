@@ -29,7 +29,7 @@ public class Main {
 		// Load essays and rubric from database
 		DatabaseModifier.setupDatabase(); //initializes firebase things on machine
 		
-		HashMap<String, Classroom> classrooms = DatabaseModifier.getClassrooms();
+		
 		//Put them into the hashmap
 		//
 		Grader g = new Grader();
@@ -38,19 +38,22 @@ public class Main {
 		//Finds the ungraded classrooms and collects them as a HashMap of submissions and rubrics as 2D arrays
 		//Get the grade for the assignment from the model, update the grade of the submisson
 		//After going through all of the ungraded assignments in the classroom, updates all the submissions. 
-		for (Map.Entry<String, Classroom> classroom : classrooms.entrySet()) {
-			String key = classroom.getKey();
-			HashMap<Submission, String[][]> submission = getSubmissions(classroom.getValue());
-			//grades
-			for (Map.Entry<Submission, String[][]> entry : submission.entrySet()) {
-				// get grade from grader
-				String[] grade = g.getGrade(entry.getKey().getContent(), entry.getValue());
-				entry.getKey().setGrade(grade.toString());
-			}
-			
-			DatabaseModifier.set(key, classroom.getValue());
-		}
 		
+		while (true) {
+			HashMap<String, Classroom> classrooms = DatabaseModifier.getClassrooms();
+			for (Map.Entry<String, Classroom> classroom : classrooms.entrySet()) {
+				String key = classroom.getKey();
+				HashMap<Submission, String[][]> submission = getSubmissions(classroom.getValue());
+				//grades
+				for (Map.Entry<Submission, String[][]> entry : submission.entrySet()) {
+					// get grade from grader
+					String[] grade = g.getGrade(entry.getKey().getContent(), entry.getValue());
+					entry.getKey().setGrade(grade.toString());
+				}
+				
+				DatabaseModifier.set(key, classroom.getValue());
+			}
+		}
 		//Updates database if hashmap is empty
 		
 		
@@ -82,4 +85,6 @@ public class Main {
 		
 		return map;
 	}
+	
+	
 }
