@@ -58,7 +58,7 @@ import ai.djl.translate.TranslatorContext;
  * Adapted from DLJ Examples.
  * 
  * @author Kamran Hussain
- * @version 1.0.1
+ * @version 1.0.2
  * 
  *
  */
@@ -69,6 +69,7 @@ public class BertSemanticGraderModel {
 
 	/**
 	 * Creates a new DLJ BERT model object and builds the necessary engines and support frameworks.
+	 * Automatically calls the buildModel method to load an existing model into memory.
 	 */
 	public BertSemanticGraderModel() {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
@@ -81,9 +82,8 @@ public class BertSemanticGraderModel {
 	}
 
 	/**
-	 * The BERT Featurizer that tokenizes the input data and does preprocessing
+	 * The BERT Featurizer that tokenizes the input data and does basic preprocessing
 	 * @author Kamran Hussain
-	 *
 	 */
 	private final class BertFeaturizer implements CsvDataset.Featurizer {
 
@@ -193,29 +193,25 @@ public class BertSemanticGraderModel {
 		model.setBlock(classifier);
 		
 		System.out.println("MODEL LOADED PROPERLY\nNREADY FOR INFERENCING OR TRAINING");
-		
-		try {
-			train();
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch (TranslateException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
 	 * Trains the model by loading datasets and beginning the training loop. Calculates training time and loss while operating.
+	 * This method should ONLY be called when training the model and should NOT be called for inferencing
+	 * 
+	 * @param epoch The number of training epochs to execute
+	 * @param batchSize Training Batch Size for speeding training and optimizing hardware usage
+	 * @param maxTokenLength Maximum token length for tokenized inputs
+	 * @param limit Token maximum size limit, should be set to Integer.MAX_VALUE for maximum token size
+	 * 
 	 * @throws IOException If any dependencies or output directories are unaccessible
 	 * @throws TranslateException If the translator model is unable to accept and properly process the input data
 	 */
-	public void train() throws IOException, TranslateException {
+	private void train(int epoch, int batchSize, int maxTokenLength, int limit) throws IOException, TranslateException {
 		// Prepare the vocabulary
 		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build();
-		// Prepare dataset
-		int maxTokenLength = 500; // cutoff tokens length
-		int batchSize = 8;
-		int limit = Integer.MAX_VALUE;
+		
 		//int limit = 512; // uncomment for quick testing
 
 		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
@@ -237,8 +233,6 @@ public class BertSemanticGraderModel {
 		DefaultTrainingConfig config = new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss()) // loss type
 				.addEvaluator(new Accuracy()).optDevices(Engine.getInstance().getDevices(1)) // train using single GPU
 				.addTrainingListeners(TrainingListener.Defaults.logging("build/model")).addTrainingListeners(listener);
-
-		int epoch = 2;
 
 		Trainer trainer = model.newTrainer(config);
 		trainer.setMetrics(new Metrics());
@@ -277,7 +271,7 @@ public class BertSemanticGraderModel {
 		public ModelTranslator(BertFullTokenizer tokenizer) {
 			this.tokenizer = tokenizer;
 			vocab = tokenizer.getVocabulary();
-			ranks = Arrays.asList("1", "2", "3"); // 1 is correspondence and 2 is contradiction
+			ranks = Arrays.asList("correlation", "contradiction", "neutral"); // 1 is correspondence and 2 is contradiction, 3 is neutral
 		}
 
 		@Override
@@ -301,5 +295,21 @@ public class BertSemanticGraderModel {
 		public Classifications processOutput(TranslatorContext ctx, NDList list) {
 			return new Classifications(ranks, list.singletonOrThrow().softmax(0));
 		}
+	}
+
+	/**
+	 * Loads and trains the model from a single method
+	 * 
+	 * @param epoch
+	 * @param batchSize
+	 * @param maxTokenLength
+	 * @throws ModelNotFoundException
+	 * @throws MalformedModelException
+	 * @throws IOException
+	 * @throws TranslateException
+	 */
+	public final void loadAndTrainModel(int epoch, int batchSize, int maxTokenLength) throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
+		buildModel();
+		train(epoch, batchSize, maxTokenLength, Integer.MAX_VALUE);
 	}
 }
