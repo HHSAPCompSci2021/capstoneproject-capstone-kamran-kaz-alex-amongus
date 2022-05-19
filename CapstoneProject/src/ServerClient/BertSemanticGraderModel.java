@@ -300,13 +300,13 @@ public class BertSemanticGraderModel {
 	/**
 	 * Loads and trains the model from a single method
 	 * 
-	 * @param epoch
-	 * @param batchSize
-	 * @param maxTokenLength
-	 * @throws ModelNotFoundException
-	 * @throws MalformedModelException
-	 * @throws IOException
-	 * @throws TranslateException
+	 * @param epoch Number of training epochs to execute
+	 * @param batchSize Batch size for optimized training on hardware
+	 * @param maxTokenLength Maximum token size length
+	 * @throws ModelNotFoundException If there is an issue building the model
+	 * @throws MalformedModelException If there is an issue building the model or initializing weights
+	 * @throws IOException If the model or dependencies cannot be found
+	 * @throws TranslateException If the model cannot be inferenced or trained.
 	 */
 	public final void loadAndTrainModel(int epoch, int batchSize, int maxTokenLength) throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
 		buildModel();
