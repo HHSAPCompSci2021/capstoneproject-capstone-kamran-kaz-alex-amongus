@@ -116,14 +116,14 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		else if (e.getSource().equals(createClass)) {
 			String name = JOptionPane.showInputDialog("Choose a name for the classroom");
 			
-			if (name != null && name != "") {
+			if (name != null && !name.equals("")) {
 				Classroom classroom = new Classroom(name);
 				ArrayList<Teacher> teachers = classroom.getTeachers();
 				
 				classroom.addTeacher(teacher);
 				DatabaseModifier.addClassroom(classroom);				
 			}
-			else if (name == "") {
+			else if (name.equals("")) {
 				String[] options = { "OK" };
 				JOptionPane.showOptionDialog(null, "Classroom name cannot be blank.", 
 			    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
