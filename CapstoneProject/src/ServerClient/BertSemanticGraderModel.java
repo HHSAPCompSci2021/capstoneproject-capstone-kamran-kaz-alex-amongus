@@ -192,7 +192,7 @@ public class BertSemanticGraderModel {
 		model = Model.newInstance("SentenceSimilarityClassification");
 		model.setBlock(classifier);
 		
-		System.out.println("MODEL LOADED PROPERLY\nNREADY FOR INFERENCING OR TRAINING");
+		System.out.println("MODEL LOADED PROPERLY\nREADY FOR INFERENCING OR TRAINING");
 	}
 
 	/**
@@ -306,10 +306,9 @@ public class BertSemanticGraderModel {
 	 * @throws ModelNotFoundException If there is an issue building the model
 	 * @throws MalformedModelException If there is an issue building the model or initializing weights
 	 * @throws IOException If the model or dependencies cannot be found
-	 * @throws TranslateException If the model cannot be inferenced or trained.
+	 * @throws TranslateException If the model cannot be inferenced or trained
 	 */
 	public final void loadAndTrainModel(int epoch, int batchSize, int maxTokenLength) throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
-		buildModel();
 		train(epoch, batchSize, maxTokenLength, Integer.MAX_VALUE);
 	}
 }
