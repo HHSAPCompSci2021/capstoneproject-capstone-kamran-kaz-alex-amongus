@@ -1,31 +1,53 @@
 package ServerClient;
 
-import ai.djl.*;
-import ai.djl.basicdataset.tabular.*;
-import ai.djl.basicdataset.utils.*;
-import ai.djl.engine.*;
-import ai.djl.inference.*;
-import ai.djl.metric.*;
-import ai.djl.modality.*;
-import ai.djl.modality.nlp.*;
-import ai.djl.modality.nlp.bert.*;
-import ai.djl.ndarray.*;
-import ai.djl.ndarray.types.*;
-import ai.djl.nn.*;
-import ai.djl.nn.core.*;
-import ai.djl.nn.norm.*;
-import ai.djl.repository.zoo.*;
-import ai.djl.training.*;
-import ai.djl.training.dataset.*;
-import ai.djl.training.evaluator.*;
-import ai.djl.training.listener.*;
-import ai.djl.training.loss.*;
-import ai.djl.training.util.*;
-import ai.djl.translate.*;
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import org.apache.commons.csv.*;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.csv.CSVFormat;
+
+import ai.djl.Application;
+import ai.djl.MalformedModelException;
+import ai.djl.Model;
+import ai.djl.basicdataset.tabular.CsvDataset;
+import ai.djl.basicdataset.utils.DynamicBuffer;
+import ai.djl.engine.Engine;
+import ai.djl.inference.Predictor;
+import ai.djl.metric.Metrics;
+import ai.djl.modality.Classifications;
+import ai.djl.modality.nlp.DefaultVocabulary;
+import ai.djl.modality.nlp.Vocabulary;
+import ai.djl.modality.nlp.bert.BertFullTokenizer;
+import ai.djl.ndarray.NDArray;
+import ai.djl.ndarray.NDList;
+import ai.djl.ndarray.types.DataType;
+import ai.djl.ndarray.types.Shape;
+import ai.djl.nn.Activation;
+import ai.djl.nn.Block;
+import ai.djl.nn.SequentialBlock;
+import ai.djl.nn.core.Linear;
+import ai.djl.nn.norm.Dropout;
+import ai.djl.repository.zoo.Criteria;
+import ai.djl.repository.zoo.ModelNotFoundException;
+import ai.djl.repository.zoo.ZooModel;
+import ai.djl.training.DefaultTrainingConfig;
+import ai.djl.training.EasyTrain;
+import ai.djl.training.Trainer;
+import ai.djl.training.TrainingResult;
+import ai.djl.training.dataset.RandomAccessDataset;
+import ai.djl.training.evaluator.Accuracy;
+import ai.djl.training.listener.SaveModelTrainingListener;
+import ai.djl.training.listener.TrainingListener;
+import ai.djl.training.loss.Loss;
+import ai.djl.training.util.ProgressBar;
+import ai.djl.translate.Batchifier;
+import ai.djl.translate.PaddingStackBatchifier;
+import ai.djl.translate.TranslateException;
+import ai.djl.translate.Translator;
+import ai.djl.translate.TranslatorContext;
 
 /**
  * A BERT Model Version using the Deep Java Library BERT Wrapper.
@@ -69,7 +91,7 @@ public class DLJBertModel {
 		Path datasetPath = FileSystems.getDefault().getPath("resources", file);
 		float paddingToken = tokenizer.getVocabulary().getIndex("[PAD]");
 		return CsvDataset.builder().optCsvFile(datasetPath) // load from file
-				.setCsvFormat(CSVFormat.DEFAULT) // Setting CSV loading format
+				.setCsvFormat(CSVFormat.DEFAULT.withHeader("sentence1","sentence2", "label").withSkipHeaderRecord()) // Setting CSV loading format
 				.setSampling(batchSize, true) // make sample size and random access
 				.optLimit(limit) //limit on token sizes
 				.addFeature(new CsvDataset.Feature("sentence1", new BertFeaturizer(tokenizer, maxLength)))
@@ -77,7 +99,7 @@ public class DLJBertModel {
 				.addLabel(new CsvDataset.Feature("label", (buf, data) -> buf.put(Float.parseFloat(data) - 1.0f)))
 				.addCategoricalLabel("sentence1")
 				.addCategoricalLabel("sentence1")
-				.addCategoricalFeature("label")
+				.addCategoricalLabel("label")
 				.optDataBatchifier(PaddingStackBatchifier.builder().optIncludeValidLengths(false)
 						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(paddingToken)).build()) 
 				.build();
