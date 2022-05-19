@@ -41,14 +41,17 @@ public class Main {
 		
 		while (true) {
 			HashMap<String, Classroom> classrooms = DatabaseModifier.getClassrooms();
+			System.out.println("Fetching classrooms");
 			for (Map.Entry<String, Classroom> classroom : classrooms.entrySet()) {
 				String key = classroom.getKey();
 				HashMap<Submission, String[][]> submission = getSubmissions(classroom.getValue());
+				System.out.println(submission);
 				//grades
 				for (Map.Entry<Submission, String[][]> entry : submission.entrySet()) {
 					// get grade from grader
 					String[] grade = g.getGrade(entry.getKey().getContent(), entry.getValue());
-					entry.getKey().setGrade(grade.toString());
+					
+					entry.getKey().setGrade(getGrades(grade));
 				}
 				
 				DatabaseModifier.set(key, classroom.getValue());
@@ -59,6 +62,11 @@ public class Main {
 		
 	}
 	
+	/**
+	 * Gets the collection of ungraded submissions along with the rubrics that come along with it.
+	 * @param classroom The classroom from which the ungraded submissions are being called from
+	 * @return A HashMap with a submission object as the key and the rubric as a 2D array as the parameter
+	 */
 	public static HashMap<Submission, String[][]> getSubmissions(Classroom classroom) {
 		
 		HashMap<Submission, String[][]> map = new HashMap<Submission, String[][]>();
@@ -86,5 +94,12 @@ public class Main {
 		return map;
 	}
 	
+	private static String getGrades(String[] grades) {
+		String output = "";
+		for (String grade : grades) {
+			output += grade;
+		}
+		return output;
+	}
 	
 }
