@@ -83,6 +83,7 @@ public class BertSemanticGraderModel {
 
 	/**
 	 * The BERT Featurizer that tokenizes the input data and does basic preprocessing
+	 * 
 	 * @author Kamran Hussain
 	 */
 	private final class BertFeaturizer implements CsvDataset.Featurizer {
@@ -92,8 +93,10 @@ public class BertSemanticGraderModel {
 
 		/**
 		 * Creates a new featurizer and uses it to tokenize the input data.
+		 * 
 		 * @param tokenizer  A BERT tokenizer that is loaded and used to produce numerical vector representations of the input data
 		 * @param maxLength The max length of the token vectors
+		 * 
 		 * @postcondition The Model WILL crash if the model cannot be loaded for any reason
 		 */
 		public BertFeaturizer(BertFullTokenizer tokenizer, int maxLength) {
@@ -118,11 +121,13 @@ public class BertSemanticGraderModel {
 
 	/**
 	 * Reads a CSV and creates a new dataset with the given parameters
+	 * 
 	 * @param batchSize Training Batch size that will be incorporated into the dataset
 	 * @param tokenizer The BERT Tokenizer object completely loaded and pretrained for tokenization
 	 * @param maxLength Maximum token length for the model, tune to highest possible accounting for training time and processing power
 	 * @param limit Set limit on token sizes
 	 * @param file File to read into a dataset. Must be a Comma Separated Value (CSV) file.
+	 * 
 	 * @return A CsvDataset Object containing the loaded data for training
 	 */
 	private CsvDataset getDataset(int batchSize, BertFullTokenizer tokenizer, int maxLength, int limit, String file) {
@@ -143,6 +148,7 @@ public class BertSemanticGraderModel {
 
 	/**
 	 * Procedural code for building and loading the model then creating the necessary datasets. 
+	 * 
 	 * @throws ModelNotFoundException If the BERT model cannot be located from a save or downloaded from the hugging face hub or DeeJavaLibrary
 	 * @throws MalformedModelException If the model is loaded improperly or missing some weights/dependencies.
 	 * @throws IOException If dependencies cannot be found or properly loaded.
@@ -248,17 +254,19 @@ public class BertSemanticGraderModel {
 	
 	/**
 	 * Predicts the similarity and whether or not the students essay satisfies the requirements outlined by the rubric.
+	 * 
 	 * @param document The student essay to comapre to the rubric
 	 * @param rubricCategory The String of the rubric category loaded from the dataset
+	 * 
 	 * @throws TranslateException If an error occurs during prediction in the predictor layer.
 	 * @throws IOException If any resources or dependencies cannot be found.
 	 */
-	public void predict(String document, String rubricCategory) throws TranslateException, IOException {
+	public String predict(String document, String rubricCategory) throws TranslateException, IOException {
 		BertFullTokenizer tokenizer = new BertFullTokenizer(DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build(), true);
 		Predictor<String, Classifications> predictor = model.newPredictor(new ModelTranslator(tokenizer));
 
-		predictor.predict(document); //need to modify to accept two string inputs
+		return predictor.predict(document).getAsString(); //need to modify to accept two string inputs
 	}
 
 	
@@ -303,6 +311,7 @@ public class BertSemanticGraderModel {
 	 * @param epoch Number of training epochs to execute
 	 * @param batchSize Batch size for optimized training on hardware
 	 * @param maxTokenLength Maximum token size length
+	 * 
 	 * @throws ModelNotFoundException If there is an issue building the model
 	 * @throws MalformedModelException If there is an issue building the model or initializing weights
 	 * @throws IOException If the model or dependencies cannot be found
