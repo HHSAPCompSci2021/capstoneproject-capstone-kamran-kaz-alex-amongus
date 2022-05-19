@@ -53,10 +53,13 @@ import ai.djl.translate.TranslatorContext;
  * A BERT Model Version using the Deep Java Library BERT Wrapper.
  * Adapted from DLJ Examples
  * 
- * @author kamran hussain
+ * @author Kamran Hussain
  *
  */
 public class DLJBertModel {
+	
+	private ZooModel<NDList, NDList> embedding;
+	private Model model;
 
 	public DLJBertModel() {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
@@ -114,7 +117,7 @@ public class DLJBertModel {
 
 		Criteria<NDList, NDList> criteria = Criteria.builder().optApplication(Application.NLP.WORD_EMBEDDING)
 				.setTypes(NDList.class, NDList.class).optModelUrls(modelUrls).optProgress(new ProgressBar()).build();
-		ZooModel<NDList, NDList> embedding = criteria.loadModel();
+		embedding = criteria.loadModel();
 
 		Predictor<NDList, NDList> embedder = embedding.newPredictor();
 		Block classifier = new SequentialBlock().add( // Text embedding layer
@@ -146,12 +149,11 @@ public class DLJBertModel {
 				.add(Linear.builder().setUnits(2).build()) // 2 star rating
 				.addSingleton(nd -> nd.get(":,0")); // Take [CLS] as the head
 		
-		Model model = Model.newInstance("SentenceSimilarityClassification");
+		model = Model.newInstance("SentenceSimilarityClassification");
 		model.setBlock(classifier);
 		
 		try {
-			train(model, embedding);
-			predict(model, embedding);
+			train();
 		} catch(IOException e) {
 			e.printStackTrace();
 		} catch (TranslateException e) {
@@ -160,7 +162,7 @@ public class DLJBertModel {
 	}
 
 		
-	public void train(Model model, ZooModel<NDList, NDList> embedding) throws IOException, TranslateException {
+	public void train() throws IOException, TranslateException {
 		// Prepare the vocabulary
 		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build();
@@ -174,7 +176,7 @@ public class DLJBertModel {
 		
 		// load the training and evaluation dataset's
 		RandomAccessDataset trainingSet = getDataset(batchSize, tokenizer, maxTokenLength, limit, "snli-1.0-train-cleaned.csv");
-		RandomAccessDataset validationSet = getDataset(batchSize, tokenizer, maxTokenLength, limit, "snli-1.0-train-cleaned.csv");
+		RandomAccessDataset validationSet = getDataset(batchSize, tokenizer, maxTokenLength, limit, "snli-1.0-test-cleaned.csv");
 
 		SaveModelTrainingListener listener = new SaveModelTrainingListener("build/model");
 		listener.setSaveModelCallback(trainer -> {
@@ -201,16 +203,15 @@ public class DLJBertModel {
 		EasyTrain.fit(trainer, epoch, trainingSet, validationSet);
 		System.out.println(trainer.getTrainingResult());
 
-		model.save(Paths.get("build/model"), "amazon-review.param");
+		model.save(Paths.get("build/model"), "SemanticSimilarityClassification.param");
 	}
 	
-	public void predict(Model model, ZooModel<NDList, NDList> embedding) throws TranslateException, IOException {
+	public void predict(String document, String rubricCategory) throws TranslateException, IOException {
 		BertFullTokenizer tokenizer = new BertFullTokenizer(DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build(), true);
-		String review = "It works great, but it takes too long to update itself and slows the system";
 		Predictor<String, Classifications> predictor = model.newPredictor(new ModelTranslator(tokenizer));
 
-		predictor.predict(review);
+		predictor.predict(document); //need to modify to accept two string inputs
 	}
 
 	private class ModelTranslator implements Translator<String, Classifications> {
@@ -222,7 +223,7 @@ public class DLJBertModel {
 		public ModelTranslator(BertFullTokenizer tokenizer) {
 			this.tokenizer = tokenizer;
 			vocab = tokenizer.getVocabulary();
-			ranks = Arrays.asList("1", "2"); // 1 is correspondence and 2 is contradiction
+			ranks = Arrays.asList("1", "2", "3"); // 1 is correspondence and 2 is contradiction
 		}
 
 		@Override

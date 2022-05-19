@@ -16,10 +16,10 @@ import data.Submission;
  */
 public class Grader {
 
-	private CustomModel model;
+	private DLJBertModel model;
 
 	public Grader() {
-		model = new CustomModel();
+		model = new DLJBertModel();
 	}
 
 	/**
