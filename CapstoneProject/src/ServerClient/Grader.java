@@ -86,7 +86,9 @@ public class Grader {
 		}
 		
 		for(Submission s : graded) {
-			return cosineSimForSentence(stdntDoc, s.getContent()) > 85.0 || literalSimilarity(stdntDoc, s.getContent()) > 40;
+			 if (cosineSimForSentence(stdntDoc, s.getContent()) > 85.0 || literalSimilarity(stdntDoc, s.getContent()) > 40) {
+				 return true;
+			 }
 		}
 		
 		return false;

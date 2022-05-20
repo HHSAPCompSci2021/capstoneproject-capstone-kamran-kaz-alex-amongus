@@ -139,15 +139,23 @@ public class StudentScreen extends JPanel implements ActionListener{
 				idResponse = JOptionPane.showOptionDialog(null, "Please enter an ID to proceed.", "GRADEME",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, idOptions, idOptions[0]);	
 			} else {
+				boolean isValid = true;
+				
 				char[] chars = id.toCharArray();
 				for (char c : chars) {
 					if (!Character.isDigit(c)) {
+						isValid = false;
 						id = null;
-						String[] options = { "OK" };
-						JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
-								"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 					}
-				}				
+				}	
+				
+				if (!isValid) {
+					String[] options = { "OK" };
+					JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
+							"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+				}
+				
 			}
 		} while (id == null && idResponse == 0);
 		
