@@ -56,7 +56,7 @@ public class Rubric {
 	/**
 	 * Adds a new criteria point to the rubric
 	 * 
-	 * @param newCriteria
+	 * @param newCriteria new criteria
 	 */
 	public void addCriteria(RubricRow newCriteria) {
 		criteria.add(newCriteria);
@@ -83,8 +83,8 @@ public class Rubric {
 	 * Creates a rubric class based on a .rubric file input
 	 * 
 	 * @pre input String must be in the proper format of a .csv file
-	 * @param input the path to the .csv file on the computer
-	 * @param name  name of rubric
+	 * @param path the path to the .csv file on the computer
+	 * @param name name of rubric
 	 * @return Rubric containing
 	 */
 	public static Rubric makeRubric(String path, String name) {

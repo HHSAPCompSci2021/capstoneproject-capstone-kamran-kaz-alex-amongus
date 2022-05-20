@@ -85,7 +85,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 	
 	/**
 	 * 
-	 * @return A HashMap<String, Classroom> where the key is the location of the classroom in the database. The classroom that it maps to corresponds to the classroom object that is stored in the database.
+	 * @return A HashMap of String key, Classroom value where the key is the location of the classroom in the database. The classroom that it maps to corresponds to the classroom object that is stored in the database.
 	 */
 	public HashMap<String, Classroom> getClassrooms() {
 		return classrooms;

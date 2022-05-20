@@ -77,7 +77,7 @@ public class BertSemanticGraderModel {
 	 * Creates a new DLJ BERT model object and builds the necessary engines and
 	 * support frameworks. Automatically calls the buildModel method to load an
 	 * existing model into memory.
-	 * @param createNewModel
+	 * @param createNewModel boolean representing whether to create model
 	 */
 	public BertSemanticGraderModel(boolean createNewModel) {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");

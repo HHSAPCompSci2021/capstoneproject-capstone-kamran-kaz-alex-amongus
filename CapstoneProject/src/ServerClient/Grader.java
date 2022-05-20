@@ -110,8 +110,8 @@ public class Grader {
 	/**
 	 * Compares the similarity
 	 * 
-	 * @param studentDocument1
-	 * @param studentDocument2
+	 * @param studentDocument1 first student document
+	 * @param studentDocument2 second student document
 	 * @return A percentage representing how literally similar the two essays are
 	 */
 	public double literalSimilarity(String studentDocument1, String studentDocument2) {
