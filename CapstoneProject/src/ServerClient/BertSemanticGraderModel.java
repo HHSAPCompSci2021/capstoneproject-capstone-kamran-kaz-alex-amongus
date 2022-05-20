@@ -192,7 +192,7 @@ public class BertSemanticGraderModel {
 				// classification layer
 				.add(Linear.builder().setUnits(768).build()) // pre classifier
 				.add(Activation::relu).add(Dropout.builder().optRate(0.2f).build())
-				.add(Linear.builder().setUnits(2).build()) // 2 star rating
+				.add(Linear.builder().setUnits(3).build()) // 2 star rating
 				.addSingleton(nd -> nd.get(":,0")); // Take [CLS] as the head
 		
 		model = Model.newInstance("SentenceSimilarityClassification");
@@ -237,7 +237,7 @@ public class BertSemanticGraderModel {
 		});
 		
 		DefaultTrainingConfig config = new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss()) // loss type
-				.addEvaluator(new Accuracy()).optDevices(Engine.getInstance().getDevices(1)) // train using single GPU
+				.addEvaluator(new Accuracy()).optDevices(Engine.getInstance().getDevices(2)) // train using single GPU
 				.addTrainingListeners(TrainingListener.Defaults.logging("build/model")).addTrainingListeners(listener);
 
 		Trainer trainer = model.newTrainer(config);
