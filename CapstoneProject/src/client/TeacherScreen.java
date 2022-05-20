@@ -45,7 +45,7 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		
 		setupTeacher();
 		
-		updateGUI();
+		setup();
 		
 	}
 	
@@ -137,7 +137,7 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	/**
 	 * shows list of classrooms
 	 */
-	private void updateGUI() {
+	private void setup() {
 		JPanel panel = new JPanel();
 		JLabel title = new JLabel("Select a Classroom");
 		createClass = new JButton("Create a new classroom");

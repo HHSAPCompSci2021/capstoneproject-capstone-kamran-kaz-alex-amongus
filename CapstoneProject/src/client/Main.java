@@ -6,7 +6,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import data.DatabaseModifier;
-
+/**
+ * Client App main method
+ * @author Kaz Nakao
+ *
+ */
 public class Main {
 	
 	public static void main(String[] args) {

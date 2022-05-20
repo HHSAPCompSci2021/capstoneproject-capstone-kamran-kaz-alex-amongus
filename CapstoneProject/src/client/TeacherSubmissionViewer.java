@@ -17,7 +17,12 @@ import javax.swing.JScrollPane;
 import data.Classroom;
 import data.Submission;
 import data.Teacher;
-
+/**
+ * Allows a teacher t0 view all of the submissions that have been made to a particular assignment in a classroom. 
+ * The assignments have been divided into two lists: ungraded and graded.
+ * @author Kaz Nakao
+ *
+ */
 public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 
 	private int rubric;
@@ -31,6 +36,12 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	
 	private JButton view, back;
 	
+	/**
+	 * 
+	 * @param classroom Classroom that the assignment is being viewed in
+	 * @param rubric Index of the rubric
+	 * @param teacher Teacher that is accessing the submissions
+	 */
 	public TeacherSubmissionViewer(Classroom classroom, int rubric, Teacher teacher) {
 		
 		this.classroom = classroom;

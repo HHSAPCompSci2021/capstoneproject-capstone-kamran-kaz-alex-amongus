@@ -17,7 +17,11 @@ import data.Classroom;
 import data.DatabaseModifier;
 import data.Student;
 import data.Submission;
-
+/**
+ * Creates a screen to make a submission to a particular assignment in a classroom that has been selected in the GUI
+ * @author Kaz Nakao
+ *
+ */
 public class SubmissionScreen extends JFrame implements ActionListener{
 
 	public final static String fileSeparator = System.getProperty("file.separator");
@@ -32,10 +36,10 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	
 	
 	/**
-	 * Creates a new 
-	 * @param classroom
-	 * @param student
-	 * @param rubric
+	 * Creates a new Submission Screen to submit essay to 
+	 * @param classroom Classroom to submit essay to
+	 * @param student Student user that the submission is going to be made to
+	 * @param rubric The rubric index that will be used for the assignment submission
 	 */
 	public SubmissionScreen(Classroom classroom, Student student, int rubric) {
 		this.classroom = classroom;

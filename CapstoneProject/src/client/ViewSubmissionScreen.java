@@ -14,7 +14,11 @@ import javax.swing.JTextArea;
 import data.Student;
 import data.Submission;
 import data.Teacher;
-
+/**
+ * Allows a user to view a submission. Important information about the submission is listed at the top. The essay content is located in the center of the screen
+ * @author Kaz Nakao
+ *
+ */
 public class ViewSubmissionScreen extends JFrame implements ActionListener{
 
 

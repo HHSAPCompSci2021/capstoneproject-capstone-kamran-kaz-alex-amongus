@@ -25,7 +25,11 @@ import data.DatabaseModifier;
 import data.Rubric;
 import data.RubricRow;
 import data.Teacher;
-
+/**
+ * Allows a teacher user to view all of the assignments in a classroom or create a new assignment for the classroom.
+ * @author Kaz Nakao
+ *
+ */
 public class AssignmentViewer extends JFrame implements ActionListener {
 
 	
@@ -41,7 +45,11 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 	private JButton go;
 	private JButton back;
 	private JButton createAssignment;
-	
+	/**
+	 * 
+	 * @param classroom Classroom to view
+	 * @param teacher Teacher user that is accessing the classroom
+	 */
 	public AssignmentViewer(Classroom classroom, Teacher teacher) {
 		super("Assignments");
 		

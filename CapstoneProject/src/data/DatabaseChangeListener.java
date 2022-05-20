@@ -10,13 +10,16 @@ import com.google.firebase.database.DatabaseError;
 /**
  * Handles changes with Firebase database reference
  * 
- * @author Alex Wang, John Shelby for assistance in Firebase logic
+ * @author Alex Wang, Kaz Nakao, John Shelby for assistance in Firebase logic
  *
  */
 public class DatabaseChangeListener implements ChildEventListener {
 	private ConcurrentLinkedQueue<Runnable> tasks;
 	private HashMap<String, Classroom> classrooms;
 
+	/**
+	 * Creates a new DatabaseChangeListener objects
+	 */
 	public DatabaseChangeListener() { // This threading strategy will work with Processing programs. Just use this
 										// code inside your PApplet.
 		tasks = new ConcurrentLinkedQueue<Runnable>();
@@ -88,7 +91,10 @@ public class DatabaseChangeListener implements ChildEventListener {
 		return classrooms;
 	}
 	
-	
+	/**
+	 * Updates the hashmap upon updates in the server
+	 * @param dataSnapshot The datasnapshot from when the event was triggered in the database
+	 */
 	private void updateMap(DataSnapshot dataSnapshot) {
 		String key = dataSnapshot.getKey();
 		Classroom classroom = dataSnapshot.getValue(Classroom.class);
