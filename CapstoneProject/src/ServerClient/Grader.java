@@ -30,7 +30,7 @@ public class Grader {
 	private BertSemanticGraderModel model;
 
 	public Grader() {
-		model = new BertSemanticGraderModel();
+		model = new BertSemanticGraderModel(false);
 	}
 
 	/**

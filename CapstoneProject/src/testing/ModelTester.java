@@ -13,7 +13,7 @@ public class ModelTester {
 			String in1 = kboard.nextLine();
 			System.out.println("Enter second phrase: ");
 			String in2 = kboard.nextLine();
-			new BertSemanticGraderModel().predict("Hello World", "Hi there");
+			new BertSemanticGraderModel(false).predict(in1, in2);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

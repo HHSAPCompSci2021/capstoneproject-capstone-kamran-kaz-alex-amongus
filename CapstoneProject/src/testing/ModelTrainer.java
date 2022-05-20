@@ -10,7 +10,7 @@ import ai.djl.translate.TranslateException;
 public class ModelTrainer {
 
 	public static void main(String[] args) {
-		BertSemanticGraderModel model = new BertSemanticGraderModel();
+		BertSemanticGraderModel model = new BertSemanticGraderModel(true);
 		
 		try {
 			//System.out.println(model.predict("Hello World", "Hey there world"));
