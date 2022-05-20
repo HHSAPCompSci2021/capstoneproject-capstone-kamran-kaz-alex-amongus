@@ -44,6 +44,9 @@ public class StudentScreen extends JPanel implements ActionListener{
 		constructView();
 	}
 	
+	/**
+	 * Sets up JPanel and all relevant components; constructs the student's view of the classroom.
+	 */
 	public void constructView() {
 		JLabel title = new JLabel("Classrooms");
 		add(title, BorderLayout.PAGE_START);
@@ -85,57 +88,17 @@ public class StudentScreen extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(refresh)) {
-			System.out.println("\n\n-------------------START-------------------");
-			setVisible(false);
-			//Get the components in the panel
+			// remove old components
 			Component[] componentList = getComponents();
-			//Loop through the components
+			
 			for(Component c : componentList){
 			    remove(c);
 			}
-			//IMPORTANT
+			
 			revalidate();
 			repaint();
 			
-			
-			JLabel title = new JLabel("Classrooms");
-			add(title, BorderLayout.PAGE_START);
-			
-			
-			String options[] = new String[classrooms.size()];
-			classList = new ArrayList<Classroom>();
-			Set<String> keys = classrooms.keySet();
-			int i = 0;
-			for (String key : keys) {
-				Classroom classroom = classrooms.get(key);
-				String name = classroom.getName();
-				options[i] = name;
-				classList.add(classroom);
-				i++;
-			}
-			
-			list = new JList<String>(options);
-			list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-			list.setLayoutOrientation(JList.VERTICAL);
-			list.setVisibleRowCount(-1);
-			
-			JScrollPane scroll = new JScrollPane(list);
-			add(scroll, BorderLayout.CENTER);
-			
-			JPanel bottom = new JPanel();
-			
-			JButton submit = new JButton("go to class");
-			submit.addActionListener(this);
-			bottom.add(submit);
-			
-			refresh = new JButton("refresh");
-			refresh.addActionListener(this);
-			bottom.add(refresh);
-			
-			add(bottom, BorderLayout.PAGE_END);
-			
-			setVisible(true);
-			System.out.println("-----------------------------END----------------------\n\n");
+			constructView();
 		}
 		else {
 			int index = list.getSelectedIndex();
