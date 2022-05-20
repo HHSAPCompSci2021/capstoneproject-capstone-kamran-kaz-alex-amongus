@@ -77,6 +77,7 @@ public class BertSemanticGraderModel {
 	 * Creates a new DLJ BERT model object and builds the necessary engines and
 	 * support frameworks. Automatically calls the buildModel method to load an
 	 * existing model into memory.
+	 * @param createNewModel
 	 */
 	public BertSemanticGraderModel(boolean createNewModel) {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
@@ -128,8 +129,6 @@ public class BertSemanticGraderModel {
 
 	/**
 	 * Procedural code for building and loading the model then creating the necessary datasets. 
-	 * 
-	 * @param newModel Loads the untrained bert model if True, pertrained model if false
 	 * 
 	 * @throws ModelNotFoundException If the BERT model cannot be located from a save or downloaded from the hugging face hub or DeeJavaLibrary
 	 * @throws MalformedModelException If the model is loaded improperly or missing some weights/dependencies.
@@ -265,6 +264,7 @@ public class BertSemanticGraderModel {
 	 * @throws TranslateException If an error occurs during prediction in the
 	 *                            predictor layer.
 	 * @throws IOException        If any resources or dependencies cannot be found.
+	 * @return String response of predictor's prediction
 	 */
 	public String predict(String document, String rubricCategory) throws TranslateException, IOException {
 		Predictor<String, Classifications> predictor = model.newPredictor(new ModelTranslator(tokenizer));
