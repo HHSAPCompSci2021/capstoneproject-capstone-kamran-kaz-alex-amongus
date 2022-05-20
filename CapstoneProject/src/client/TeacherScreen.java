@@ -69,22 +69,40 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		}
 		
 		String id = null;
+		int idResponse = 0;
+		String[] idOptions = {"Re-enter ID", "Exit program"};
 		
-		while (id == null) {
+		// promopt ID number unless user chooses exit
+		do {
 			id = JOptionPane.showInputDialog("What is your id number?");
-			// alternative - change this line to in while() - can't quit in that case
-			
-			char[] chars = id.toCharArray();
-			for (char c : chars) {
-				if (!Character.isDigit(c)) {
-					id = null;
+			if (id == null) {
+				idResponse = JOptionPane.showOptionDialog(null, "Please enter an ID to proceed.", "GRADEME",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, idOptions, idOptions[0]);	
+			} else {
+				boolean isValid = true;
+				
+				char[] chars = id.toCharArray();
+				for (char c : chars) {
+					if (!Character.isDigit(c)) {
+						isValid = false;
+						id = null;
+					}
+				}	
+				
+				if (!isValid) {
 					String[] options = { "OK" };
 					JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
-				    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+							"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
 				}
+				
 			}
-		}
+		} while (id == null && idResponse == 0);
 		
+		// user chose to exit
+		if (idResponse == 1) {
+			System.exit(0);
+		}
 		
 		teacher = new Teacher(name, id);
 		
@@ -96,7 +114,6 @@ public class TeacherScreen extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource().equals(submit)) {
 			int index = list.getSelectedIndex();
 			System.out.println("selected index: " + index);
