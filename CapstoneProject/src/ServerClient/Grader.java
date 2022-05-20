@@ -13,6 +13,7 @@ import ai.djl.translate.TranslateException;
 
 import data.Submission;
 import data.Classroom;
+import data.DatabaseModifier;
 
 /**
  * Automatically grades essays and checks for plagiarism. This loads the model
@@ -66,12 +67,26 @@ public class Grader {
 		return new String[] {"Un-Graded"};
 	}
 	
+	/**
+	 * Checks for plagiarism using cosine similarity and literal similarity checks
+	 * @param stdntDoc content of a particular submission
+	 * @return true if the document is deemed to be plagiarized and false if it is not
+	 */
 	public boolean isPlagiarized(String stdntDoc) {
 		//get the database essays that have already been graded
-		HashMap<String, Classroom> storedEssays = new HashMap<>();
+		HashMap<String, Classroom> storedEssays = DatabaseModifier.getClassrooms();
 		
-		for(Map.Entry<String, Classroom> essay : storedEssays.entrySet()) {
-			return cosineSimForSentence(stdntDoc, essay.getKey()) > 85.0 || literalSimilarity(stdntDoc, essay.getKey()) > 40;
+		ArrayList<Submission> graded = new ArrayList<Submission>();
+		
+		for (Classroom c : storedEssays.values()) {
+			for (int i = 0; i < c.getAssignments().size(); i++ ) {
+				ArrayList<Submission> temp = c.getGraded(i);
+				graded.addAll(temp);
+			}
+		}
+		
+		for(Submission s : graded) {
+			return cosineSimForSentence(stdntDoc, s.getContent()) > 85.0 || literalSimilarity(stdntDoc, s.getContent()) > 40;
 		}
 		
 		return false;
