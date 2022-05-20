@@ -40,6 +40,7 @@ public class Main {
 		//After going through all of the ungraded assignments in the classroom, updates all the submissions. 
 		
 		while (true) {
+			//refresh the collection of classrooms
 			HashMap<String, Classroom> classrooms = DatabaseModifier.getClassrooms();
 			System.out.println("Fetching classrooms");
 			for (Map.Entry<String, Classroom> classroom : classrooms.entrySet()) {
@@ -51,9 +52,12 @@ public class Main {
 					// get grade from grader
 					String[] grade = g.getGrade(entry.getKey().getContent(), entry.getValue());
 					
+					// set grade
 					entry.getKey().setGrade(getGrades(grade));
+					System.out.println("graded: " + entry.getValue());
+					
 				}
-				
+				//update database
 				DatabaseModifier.set(key, classroom.getValue());
 			}
 		}
@@ -95,11 +99,22 @@ public class Main {
 	}
 	
 	private static String getGrades(String[] grades) {
-		String output = "";
-		for (String grade : grades) {
-			output += grade;
+		String[] labels = new String[] {"A", "B", "C", "D", "F"};
+		int[] score = new int[] {5, 4, 3, 2, 1};
+		float sum = 0;
+		for (int i = 0; i < grades.length; i++) {
+			int match = 0;
+			for (int j = 0; j < labels.length; j++) {
+				if (labels[j].equals(grades[i])) {
+					match = j;
+					break;
+				}
+			}
+			sum += score[match];
 		}
-		return output;
+		sum /= grades.length;
+		Integer grade = (int)sum;
+		return grade.toString();
 	}
 	
 }
