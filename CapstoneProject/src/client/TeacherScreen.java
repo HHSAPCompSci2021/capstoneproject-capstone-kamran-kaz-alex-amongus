@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import data.Teacher;
 /**
  * 
  * Models the Teacher GUI. Will be able to click on an assignment and be able to view the 
- * @author Kaz Nakao
+ * @author Kaz Nakao, Alex Wang
  *
  */
 public class TeacherScreen extends JPanel implements ActionListener{
@@ -33,8 +34,7 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	private ArrayList<Classroom> classList;
 	private Teacher teacher;
 	
-	private JButton createClass;
-	private JButton submit;
+	private JButton createClass, submit, refresh;
 	
 	/**
 	 * Creates a screen for teacher screen. Will be able to view all submissions.
@@ -44,7 +44,6 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		super(new BorderLayout());
 		
 		setupTeacher();
-		
 		setup();
 		
 	}
@@ -147,7 +146,19 @@ public class TeacherScreen extends JPanel implements ActionListener{
 			}
 			else {
 				System.out.println("Exitted classroom creation.");
+			}	
+		}
+		else if (e.getSource().equals(refresh)) {
+			Component[] componentList = getComponents();
+			
+			for (Component c : componentList) {
+				remove(c);
 			}
+			
+			revalidate();
+			repaint();
+			
+			setup();
 		}
 	}
 	
@@ -183,9 +194,17 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		JScrollPane scroll = new JScrollPane(list);
 		add(scroll, BorderLayout.CENTER);
 		
+		JPanel bottom = new JPanel();
+		
 		submit = new JButton("go to class");
 		submit.addActionListener(this);
-		add(submit, BorderLayout.PAGE_END);
+		bottom.add(submit);
+		
+		refresh = new JButton("refresh");
+		refresh.addActionListener(this);
+		bottom.add(refresh);
+		
+		add(bottom, BorderLayout.PAGE_END);
 	}
 	
 }
