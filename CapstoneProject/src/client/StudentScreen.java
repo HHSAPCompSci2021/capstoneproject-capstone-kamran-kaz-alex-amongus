@@ -1,6 +1,7 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import data.DatabaseModifier;
 import data.Student;
 /**
  * The screen for the students. Displays the classrooms. 
- * @author Kaz Nakao
+ * @author Kaz Nakao, Alex Wang
  *
  */
 public class StudentScreen extends JPanel implements ActionListener{
@@ -32,15 +33,18 @@ public class StudentScreen extends JPanel implements ActionListener{
 	private HashMap<String, Classroom> classrooms;
 	private ArrayList<Classroom> classList;
 	private JList<String> list;
+	private JButton refresh;
 	
 	/** 
 	 * Sets up the submission screen as a JPanel. Shows the screen for student's submissions and an option for submitting a new submission.
 	 */
 	public StudentScreen() {
 		super(new BorderLayout());
-		
 		setupStudent();
-		
+		constructView();
+	}
+	
+	public void constructView() {
 		JLabel title = new JLabel("Classrooms");
 		add(title, BorderLayout.PAGE_START);
 		
@@ -65,28 +69,91 @@ public class StudentScreen extends JPanel implements ActionListener{
 		JScrollPane scroll = new JScrollPane(list);
 		add(scroll, BorderLayout.CENTER);
 		
+		JPanel bottom = new JPanel();
+		
 		JButton submit = new JButton("go to class");
 		submit.addActionListener(this);
-		add(submit, BorderLayout.PAGE_END);
+		bottom.add(submit);
 		
+		refresh = new JButton("refresh");
+		refresh.addActionListener(this);
+		bottom.add(refresh);
+		
+		add(bottom, BorderLayout.PAGE_END);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int index = list.getSelectedIndex();
-		System.out.println("selected index: " + index);
-		if (index > -1) {
-			Classroom classroom = classList.get(index);
-			String key = getKey(classroom);
-			//System.out.println("key: " + key);
-			JFrame window = new StudentClassroomScreen(classroom, key, student);
-			window.setBounds(100, 100, 800, 600);
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
-	    	window.setIconImage(logo.getImage());
-			window.setResizable(true);
-			window.setVisible(true);
+		if (e.getSource().equals(refresh)) {
+			System.out.println("\n\n-------------------START-------------------");
+			setVisible(false);
+			//Get the components in the panel
+			Component[] componentList = getComponents();
+			//Loop through the components
+			for(Component c : componentList){
+			    remove(c);
+			}
+			//IMPORTANT
+			revalidate();
+			repaint();
+			
+			
+			JLabel title = new JLabel("Classrooms");
+			add(title, BorderLayout.PAGE_START);
+			
+			
+			String options[] = new String[classrooms.size()];
+			classList = new ArrayList<Classroom>();
+			Set<String> keys = classrooms.keySet();
+			int i = 0;
+			for (String key : keys) {
+				Classroom classroom = classrooms.get(key);
+				String name = classroom.getName();
+				options[i] = name;
+				classList.add(classroom);
+				i++;
+			}
+			
+			list = new JList<String>(options);
+			list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+			list.setLayoutOrientation(JList.VERTICAL);
+			list.setVisibleRowCount(-1);
+			
+			JScrollPane scroll = new JScrollPane(list);
+			add(scroll, BorderLayout.CENTER);
+			
+			JPanel bottom = new JPanel();
+			
+			JButton submit = new JButton("go to class");
+			submit.addActionListener(this);
+			bottom.add(submit);
+			
+			refresh = new JButton("refresh");
+			refresh.addActionListener(this);
+			bottom.add(refresh);
+			
+			add(bottom, BorderLayout.PAGE_END);
+			
+			setVisible(true);
+			System.out.println("-----------------------------END----------------------\n\n");
 		}
+		else {
+			int index = list.getSelectedIndex();
+			System.out.println("selected index: " + index);
+			if (index > -1) {
+				Classroom classroom = classList.get(index);
+				String key = getKey(classroom);
+				//System.out.println("key: " + key);
+				JFrame window = new StudentClassroomScreen(classroom, key, student);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
+				window.setIconImage(logo.getImage());
+				window.setResizable(true);
+				window.setVisible(true);
+			}			
+		}
+		
 	}
 	
 	
