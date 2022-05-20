@@ -178,7 +178,7 @@ public class BertSemanticGraderModel {
 				.addSingleton(nd -> nd.get(":,0")); // Take [CLS] as the head
 		
 		model = Model.newInstance("SentenceSimilarityClassification");
-		model.load(Paths.get("build/model/SemanticSimilarityClassification"));
+		model.load(Paths.get("build/model/SemanticSimilarityClassification-param-0000"));
 		model.setBlock(classifier);
 		
 		System.out.println("MODEL LOADED PROPERLY\nREADY FOR INFERENCING OR TRAINING");
