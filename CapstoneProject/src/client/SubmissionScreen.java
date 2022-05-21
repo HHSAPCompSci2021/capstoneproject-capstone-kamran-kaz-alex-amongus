@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -105,8 +106,16 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		if (!textInput.getText().isEmpty()) {
 			Submission submission = new Submission(textInput.getText(), input, rubric);
-			student.add(submission);
+			
 			String key = DatabaseModifier.getKey(classroom);
+			Classroom classroom = DatabaseModifier.getClassrooms().get(key);
+			
+			for (Student s : classroom.getStudents()) {
+				if (s.equals(student)) {
+					s.add(submission);
+					break;
+				}
+			}
 			DatabaseModifier.set(key, classroom);
 			this.setVisible(false);
 		}
