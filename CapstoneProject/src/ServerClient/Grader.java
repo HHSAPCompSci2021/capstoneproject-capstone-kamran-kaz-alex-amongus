@@ -63,6 +63,9 @@ public class Grader {
 				String match = "";
 				while(!match.equals("correlation")) {
 					match = model.predict(document, rubric[i][j]);
+					if(j == labels.length) {
+						match = "correlation";
+					}
 					j++;
 				}
 				grades[i] = labels[j];
