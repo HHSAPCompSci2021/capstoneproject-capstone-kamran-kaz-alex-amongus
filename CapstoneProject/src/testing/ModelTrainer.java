@@ -14,7 +14,7 @@ public class ModelTrainer {
 		
 		try {
 			//System.out.println(model.predict("Hello World", "Hey there world"));
-			model.loadAndTrainModel(2, 8, 500);
+			model.loadAndTrainModel(2, 8, 500, "snli-1.0-train-cleaned.csv", "snli-1.0-test-cleaned.csv");
 		} catch (ModelNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
