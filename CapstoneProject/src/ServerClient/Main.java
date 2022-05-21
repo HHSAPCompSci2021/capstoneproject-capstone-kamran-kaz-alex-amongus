@@ -31,7 +31,6 @@ public class Main {
 		
 		
 		//Put them into the hashmap
-		//
 		Grader g = new Grader();
 		
 		//Goes through each classroom in the database
@@ -62,8 +61,6 @@ public class Main {
 			}
 		}
 		//Updates database if hashmap is empty
-		
-		
 	}
 	
 	/**
