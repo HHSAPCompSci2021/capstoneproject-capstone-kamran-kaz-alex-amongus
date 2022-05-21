@@ -317,12 +317,11 @@ public class BertSemanticGraderModel {
 		return model;
 	}
 	
-	public double predictPretraint(String document, String rubricCategory, ComputationGraph model) {
+	public double predictTrained(String document, String rubricCategory, ComputationGraph model) {
 		int inputs = 10;
 		INDArray features = Nd4j.zeros(inputs);
 		for (int i=0; i<inputs; i++) 
 		    features.putScalar(new int[] {i}, Math.random() < 0.5 ? 0 : 1);
-		
 		return model.output(features).getDouble(0);
 	}
 	
