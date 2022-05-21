@@ -58,7 +58,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>	
+			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.32</version>
 		</dependency>
 		<dependency>
@@ -72,13 +72,18 @@
 			<version>1.5.3</version>
 		</dependency>
 		<dependency>
-   			<groupId>com.opencsv</groupId>
-    		<artifactId>opencsv</artifactId>
-    		<version>5.6</version>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>5.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.deeplearning4j</groupId>
 			<artifactId>deeplearning4j-nlp</artifactId>
+			<version>${dl4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.deeplearning4j</groupId>
+			<artifactId>deeplearning4j-modelimport</artifactId>
 			<version>${dl4j.version}</version>
 		</dependency>
 	</dependencies>

@@ -8,6 +8,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
+import org.datavec.api.util.ClassPathResource;
+import org.deeplearning4j.nn.conf.ComputationGraphConfiguration;
+import org.deeplearning4j.nn.graph.ComputationGraph;
+import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
+import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
+import org.deeplearning4j.nn.modelimport.keras.exceptions.UnsupportedKerasConfigurationException;
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
 
 import ai.djl.Application;
 import ai.djl.MalformedModelException;
@@ -290,6 +299,31 @@ public class BertSemanticGraderModel {
 	public final void loadAndTrainModel(int epoch, int batchSize, int maxTokenLength, String trainFile, String testFile)
 			throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
 		train(epoch, batchSize, maxTokenLength, Integer.MAX_VALUE, trainFile, testFile);
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	/**
+	 * Loads the trained BERT model from the directory in its saved and compiled configuration
+	 * 
+	 * @throws IOException If the directory cannot be found
+	 * @throws InvalidKerasConfigurationException If the model is not saved in the proper format
+	 * @throws UnsupportedKerasConfigurationException If the model is not stored in the proper configuration
+	 */
+	public ComputationGraph loadTrained() throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
+		String fullModel = new ClassPathResource("full_model.h5").getFile().getPath();
+		ComputationGraph model = KerasModelImport.importKerasModelAndWeights(fullModel);
+
+		return model;
+	}
+	
+	public double predictPretraint(String document, String rubricCategory, ComputationGraph model) {
+		int inputs = 10;
+		INDArray features = Nd4j.zeros(inputs);
+		for (int i=0; i<inputs; i++) 
+		    features.putScalar(new int[] {i}, Math.random() < 0.5 ? 0 : 1);
+		
+		return model.output(features).getDouble(0);
 	}
 	
 	/**
