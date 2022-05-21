@@ -11,7 +11,7 @@ import data.DatabaseModifier;
  * @author Kaz Nakao
  *
  */
-public class Main {
+public class ClientApp {
 	
 	public static void main(String[] args) {
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
