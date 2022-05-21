@@ -18,7 +18,6 @@ import ai.djl.engine.Engine;
 import ai.djl.inference.Predictor;
 import ai.djl.metric.Metrics;
 import ai.djl.modality.Classifications;
-import ai.djl.modality.cv.translator.ImageClassificationTranslator;
 import ai.djl.modality.nlp.DefaultVocabulary;
 import ai.djl.modality.nlp.Vocabulary;
 import ai.djl.modality.nlp.bert.BertFullTokenizer;
@@ -70,8 +69,6 @@ public class BertSemanticGraderModel {
 
 	private ZooModel<NDList, NDList> embedding;
 	private Model model;
-	private BertFullTokenizer tokenizer;
-	private ModelTranslator translator;
 
 	/**
 	 * Creates a new DLJ BERT model object and builds the necessary engines and
@@ -83,14 +80,11 @@ public class BertSemanticGraderModel {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
 		
 		try {
-			buildModel();
-			//loadModel();
-			
-			// Prepare the vocabulary
-			DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
-					.optUnknownToken("[UNK]").build();
-
-			tokenizer = new BertFullTokenizer(vocabulary, true);
+			if(createNewModel)
+				buildModel();
+			else
+				loadModel();
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -115,6 +109,7 @@ public class BertSemanticGraderModel {
 	private CsvDataset getDataset(int batchSize, BertFullTokenizer tokenizer, int maxLength, int limit, String file) {
 		Path datasetPath = FileSystems.getDefault().getPath("resources", file);
 		float paddingToken = tokenizer.getVocabulary().getIndex("[PAD]");
+		float separatorToken = tokenizer.getVocabulary().getIndex("[SEP]");
 		return CsvDataset.builder().optCsvFile(datasetPath) // load from file
 				.setCsvFormat(CSVFormat.DEFAULT.withHeader()) // Setting CSV loading format
 				.setSampling(batchSize, true) // make sample size and random access
@@ -141,6 +136,7 @@ public class BertSemanticGraderModel {
 		if ("PyTorch".equals(Engine.getInstance().getEngineName())) {
 			modelUrls = "https://resources.djl.ai/test-models/traced_distilbert_wikipedia_uncased.zip";
 		}
+		
 		//Building the model from URL
 		Criteria<NDList, NDList> criteria = Criteria.builder().optApplication(Application.NLP.WORD_EMBEDDING)
 				.setTypes(NDList.class, NDList.class).optModelUrls(modelUrls).optProgress(new ProgressBar()).build();
@@ -175,12 +171,12 @@ public class BertSemanticGraderModel {
 				.add(Activation::relu).add(Dropout.builder().optRate(0.2f).build())
 				.add(Linear.builder().setUnits(3).build()) // 2 star rating
 				.addSingleton(nd -> nd.get(":,0")); // Take [CLS] as the head
+				//.addSingleton(nd -> nd.get(":,1")); //Find the [SEP] for second head
 		
 		model = Model.newInstance("SentenceSimilarityClassification");
-		model.load(Paths.get("build/model/SemanticSimilarityClassification-param-0000"));
 		model.setBlock(classifier);
 		
-		System.out.println("MODEL LOADED PROPERLY\nREADY FOR INFERENCING OR TRAINING");
+		System.out.println("MODEL LOADED PROPERLY\nREADY FOR INFERENCING OR TRAINING...");
 	}
 
 	/**
@@ -201,6 +197,11 @@ public class BertSemanticGraderModel {
 	 *                            properly process the input data
 	 */
 	private void train(int epoch, int batchSize, int maxTokenLength, int limit) throws IOException, TranslateException {
+		// Prepare the vocabulary
+		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
+				.optUnknownToken("[UNK]").build();
+
+		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
 		
 		// load the training and evaluation dataset's
 		RandomAccessDataset trainingSet = getDataset(batchSize, tokenizer, maxTokenLength, limit,
@@ -208,7 +209,7 @@ public class BertSemanticGraderModel {
 		RandomAccessDataset validationSet = getDataset(batchSize, tokenizer, maxTokenLength, limit,
 				"snli-1.0-test-cleaned.csv");
 
-		SaveModelTrainingListener listener = new SaveModelTrainingListener("build/model");
+		SaveModelTrainingListener listener = new SaveModelTrainingListener("build/model/");
 		listener.setSaveModelCallback(trainer -> {
 			TrainingResult result = trainer.getTrainingResult();
 			Model model2 = trainer.getModel();
@@ -219,8 +220,8 @@ public class BertSemanticGraderModel {
 		});
 
 		DefaultTrainingConfig config = new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss()) // loss type
-				.addEvaluator(new Accuracy()).optDevices(Engine.getInstance().getDevices(2)) // train using single GPU
-				.addTrainingListeners(TrainingListener.Defaults.logging("build/model")).addTrainingListeners(listener);
+				.addEvaluator(new Accuracy()).optDevices(Engine.getInstance().getDevices(1)) // train using single GPU
+				.addTrainingListeners(TrainingListener.Defaults.logging("build/model/")).addTrainingListeners(listener);
 
 		Trainer trainer = model.newTrainer(config);
 		trainer.setMetrics(new Metrics());
@@ -231,7 +232,8 @@ public class BertSemanticGraderModel {
 		EasyTrain.fit(trainer, epoch, trainingSet, validationSet);
 		System.out.println(trainer.getTrainingResult());
 
-		model.save(Paths.get("build/model"), "SemanticSimilarityClassification.param");
+		model.save(Paths.get("build/model"), "SemanticSimilarityClassification");
+		embedding.save(Paths.get("build/model"), "SemanticSimilarityClassification");
 	}
 	
 	/**
@@ -242,15 +244,8 @@ public class BertSemanticGraderModel {
 	 * @throws IOException If the model directory cannot be found
 	 */
 	public void loadModel() throws ModelNotFoundException, MalformedModelException, IOException {
-		Criteria<String, Classifications> criteria = Criteria.builder()
-				.setTypes(String.class, Classifications.class)
-				.optTranslator(translator)
-				.optModelPath(Paths.get("/build/models", "SemanticSimilarityClassification"))
-				.optModelName("SemanticSimilarityClassification")
-				.optProgress(new ProgressBar())
-				.build();
-
-		model = criteria.loadModel();
+		model = Model.newInstance("SemanticGraderModel");
+		model.load(Paths.get("build/model/"), "SemanticSimilarityClassification");
 	}
 
 	/**
@@ -267,8 +262,12 @@ public class BertSemanticGraderModel {
 	 * @return String response of predictor's prediction
 	 */
 	public String predict(String document, String rubricCategory) throws TranslateException, IOException {
+		// Prepare the vocabulary
+		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
+				.optUnknownToken("[UNK]").optUnknownToken("[SEP]").build();
+		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
+					
 		Predictor<String, Classifications> predictor = model.newPredictor(new ModelTranslator(tokenizer));
-
 		return predictor.predict(document).getAsString(); // need to modify to accept two string inputs
 	}
 	

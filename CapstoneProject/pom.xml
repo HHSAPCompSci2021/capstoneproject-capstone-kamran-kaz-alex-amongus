@@ -26,7 +26,7 @@
 	</repositories>
 
 	<properties>
-		<dl4j.version>0.0.3.3.3.alpha1</dl4j.version>
+		<dl4j.version>1.0.0-M2</dl4j.version>
 	</properties>
 
 	<dependencies>
