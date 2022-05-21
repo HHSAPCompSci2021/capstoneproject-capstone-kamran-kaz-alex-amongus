@@ -1,0 +1,102 @@
+,Unnamed: 0,similarity,sentence1,sentence2,label
+0,0,contradiction,"Two male clowns, one in a plaid suit and the other in black, performing a musical number in a theater setting.",The clowns are in the dressing room.,0
+1,1,contradiction,A man is playing music with a trumpet.,A man playing music with a guitar.,0
+2,2,neutral,A man with a hard hat carries a tree branch.,The man with the hard hat had cut down a tree.,2
+3,3,entailment,An old bearded man holding a fruit.,An elderly bearded man holding a piece of fruit in his hand.,1
+4,4,contradiction,A man in a blue coat looks at his feet in a bazaar.,A man is looking up at the ceiling in a grocery store.,0
+5,5,neutral,A blond woman wearing a green shirt and blue jeans walks away.,A woman walks away in anger.,2
+6,6,entailment,A mom and son having fun at the lake during winter.`,The mom and son are a family.,1
+7,7,entailment,A white female wearing white shorts and yellow top throws a stick in a nature scene.,A woman is wearing shorts,1
+8,8,contradiction,A man in a white t-shirt sits holds a newborn baby with a small hat on.,The baby is flying a plane.,0
+9,9,entailment,"An obese man dressed in only shorts, parking a red motor scooter",a person on a scooter,1
+10,10,entailment,Some Japanese people enjoy a fireworks shows from a local street.,A group of people are standing outside at night.,1
+11,11,entailment,Two cowboys in a pen with a big spotted cow that has a rope around it's middle.,There are two men.,1
+12,12,neutral,A big black dog chases a big brown dog with a green object in his mouth while another big brown dog tags behind.,The dogs have collars on.,2
+13,13,contradiction,A woman smiling while raising her right hand.,The grumpy man left the building.,0
+14,14,neutral,Two women in flowered Asian garb pose and smile.,two women take a picture,2
+15,15,neutral,A woman attempts to mini-golf while water pouring down from above interferes.,A woman on a date.,2
+16,16,contradiction,A brown horse jumps through its paddock.,The horse is green,0
+17,17,entailment,white bench looking out onto the ocean with dog.,A human looking out.,1
+18,18,neutral,a large group of people in red uniforms are playing in a band.,The band is playing for a football game.,2
+19,19,entailment,Two clowns speak into a microphone.,Two clowns talking.,1
+20,20,entailment,A shirtless man wearing light blue shorts and a baseball cap stands at the front of a boat.,The man is sailing.,1
+21,21,neutral,Three blond girls and two blond women are playing with a jump rope in the dirt.,There are people competing in the jump rope championship.,2
+22,22,neutral,Two young boys play with a puzzle in a classroom.,Two friends are playing a puzzle at home with there parents,2
+23,23,contradiction,A group stands in the distance while the sky casts interesting light on some clouds.,A group of people watching a movie.,0
+24,24,contradiction,An outdoor cafe with people sitting while a man in white shirt is walking toward them.,A man is sitting at a table waiting for his date.,0
+25,25,neutral,An asian man giving a speech.,An asian man stands outside and gives a speech to a group,2
+26,26,entailment,A child in medieval clothes points at something on a table.,The child is watching something.,1
+27,27,neutral,Two boys sand next to a drinking fountain in a park.,Two boys are waiting their turn for a drink.,2
+28,28,neutral,A person walks through the snow wearing snowshoes with a fence in the background.,A man walks through heavy snow wearing green snowshoes in front of a wooden fence.,2
+29,29,neutral,A man in a black cap and blue shirt is looking for gold.,The man is a professional gold miner.,2
+30,30,neutral,A girl is standing in a field pushing up her hat with one finger and her hand is covering most of her face.,A girl is standing in a field pushing up her baseball hat with one finger and her hand is covering most of her face.,2
+31,31,contradiction,A group of five men in uniform are posing for the camera.,The men are naked.,0
+32,32,contradiction,These people are having a wrestling match.,People are wearing boxing gloves.,0
+33,33,contradiction,The boy is jumping in the air.,The girl jumps in air to keep from stepping on a pebble.,0
+34,34,neutral,A boy in a red poncho is reading while leaning on a pole.,A boy in a red poncho is reading The Hobbit while leaning on a pole.,2
+35,35,neutral,A worker wearing a hazard cone on his head and holding a flare being photographed by two photographers as he leads a parade.,It is summer.,2
+36,36,neutral,"A woman and three children, holding hands with each other, are crossing the street.",The woman is the mother of the three children.,2
+37,37,entailment,A dark-skinned child blowing some bubbles using his mouth.,A child is blowing bubbles.,1
+38,38,contradiction,Woman with stuffed animal display.,A woman is selling fruit.,0
+39,39,entailment,There is a woman in a black jacket and sunglasses and a man in a white shirt with his back turned.,Two people of opposite genders are not facing each other.,1
+40,40,contradiction,A group of people gather and holding different types of flags.,People are watching a parade while eating ice cream.,0
+41,41,neutral,A technician readying his equipment.,The man is outside.,2
+42,42,contradiction,A man crashing on the waves.,a man swimming at a peaceful lake,0
+43,43,contradiction,A man holding a cellphone and a woman holding a shopping bag stand in front of a wall covered in street art.,A man doesn't own a cellphone.,0
+44,44,neutral,Workers sell Coca Cola Products to customers.,The workers are selling Coca Cola Products to help raise sales.,2
+45,45,neutral,Two people wearing hats are standing in a field tending to a crop.,The two people are men.,2
+46,46,neutral,A native person doing a dance.,a native american performing a traditional dance,2
+47,47,contradiction,"A young boy and a young girl ride a bicycle down a street, with dirt and small trees around them.",Two adults are walking along the pier.,0
+48,48,entailment,A man on Rollerblades grinding down a concrete handrail.,A man doing tricks on a handrail.,1
+49,49,entailment,A guy with glasses and a beard in a suit is surrounded by photographers.,A guy with glasses is and a beard is near cameras.,1
+50,50,neutral,Several people dressed in brightly colored clothing are standing in a row.,A group of people are standing outside in a row.,2
+51,51,entailment,Two men stop to talk near a sign outside.,Men are talking,1
+52,52,neutral,A guy jumps off of rocks into the water.,A guy jumps 20 feet into the water.,2
+53,53,contradiction,A young woman wearing sunglasses and several necklaces drinks from a bottle of water in an outdoor setting.,The woman is sitting on a couch at home.,0
+54,54,neutral,Two Formula race cars on an Eni sponsored racetrack.,The cars are in the middle of a race.,2
+55,55,neutral,Two young barefooted girls are climbing an old lava flow with their father and mother following close behind.,A family are climbing an old lava flow.,2
+56,56,entailment,A kid are playing with leaves by the sidewalk.,A child is playing by the street.,1
+57,57,contradiction,A young child in a blue flowery dress walks along a sidewalk near a gated wall.,A young child in a black spandex body suit walks along a sidewalk near a gated wall.,0
+58,58,entailment,A tan dog jumping up at a woman in a skirt and a black and tan dog walking away.,There are animals near a woman.,1
+59,59,contradiction,A young asian girl is sliding down a pole on outdoor playground equipment.,The girl is watching television.,0
+60,60,neutral,A white-haired woman in cooking vegetables.,The vegetables being cooked are onions and peppers.,2
+61,61,entailment,A young child is petting an animal.,A little boy is petting a dog.,1
+62,62,contradiction,A man in a yellow shirt wearing a tool belt examines something on a roof on a clear day.,The man is riding his motorcycle to the park.,0
+63,63,contradiction,One man in a vest and tie plants a kiss on the cheek of another happy man.,The men are in outer space.,0
+64,64,entailment,"One man wearing a green jacket, blue jeans, boots and a gray cowboy hat standing beside a barn watching the sun",A person stands outside.,1
+65,65,neutral,Group of men and women waiting for a bus.,Some people wait for a greyhound bus.,2
+66,66,neutral,Two people hugging while two other people stare down on them.,The people are looking down on the hugging couple.,2
+67,67,contradiction,a summer snowboarder going for an indy grab while jumping in the air.,The snowboarder performs a rail grind.,0
+68,68,neutral,A white dog with a yellow toy in his mouth runs through a nature trail towards the camera.,Someone's dog is lost and traveling alone.,2
+69,69,contradiction,Two blond-hair ladies are sitting on a park bench near a body of water.,Two ladies are at work in the cubicle farm hoping the day ends quickly.,0
+70,70,contradiction,Bikers stopped on a road.,Men talking and riding bikes.,0
+71,71,entailment,"A pensive young man of Indian descent, sitting on the ground resting against a tree, with other people engaged in conversation in the background.",A man is sitting and listening to the conversations.,1
+72,72,neutral,"A couple on a beach, the woman is touching the man's face.",Two lovers are sharing an intimate moment on the beach.,2
+73,73,neutral,A man and a woman are sharing a meal at an outside restaurant.,a man and a woman are on their first date,2
+74,74,entailment,A crowd of people looking at something.,Crowd of people looking at something,1
+75,75,neutral,Three people in costume walking on sidewalk.,Three people in costume are actors.,2
+76,76,neutral,A band of women plays music on a brightly-bannered stage as a lone young woman with brown hair looks on.,There is a sad woman.,2
+77,77,neutral,A cheerleading team is posing in a pyramid in front of a crowd of watchers.,A team of cheerleaders are together.,2
+78,78,neutral,A youth standing nest to a metal fence with a black shirt on and a cigarette in their mouth.,child on a smoke break from working on the farm,2
+79,79,contradiction,A shoe shiner waits for customers.,A person shining shoes.,0
+80,80,neutral,A golden retriever is jumping off a wooden porch,A puppy leaps off the porch to play with a bone on the grass.,2
+81,81,neutral,"An unknown man works a grill in a kitchen wearing a coca cola shirt, there is much types of food to be seen.",A coke fan has a barbecue for his friends.,2
+82,82,entailment,A child smiling for a picture.,A child posing for a picture.,1
+83,83,contradiction,A man wearing a plaid hat sits in a lawn chair reading a magazine,A woman wearing a plaid hat sits in a lawn chair reading a magazine,0
+84,84,neutral,A guy riding a skateboard in front of a graffiti wall.,A teenager is riding his board and looking at a wall of graffiti,2
+85,85,contradiction,"A boy wearing a bike helmet, jeans, and a striped shirt and a girl wearing a green shirt and jeans ride bikes with training wheels down a sidewalk.",Two dogs are sniffing bikes.,0
+86,86,entailment,A girl and a guy sitting on the ground while the girl is blowing bubbles.,A girl is blowing bubbles.,1
+87,87,contradiction,A man in all black carries a vegetable.,The man is sleeping.,0
+88,88,entailment,"Several women running in a race, while the crowd looks on.",Several women running in a race,1
+89,89,neutral,Two men playing rugby collide.,The men are wearing grey uniforms.,2
+90,90,entailment,A guy in an olive-green sweater and blue jeans is playing with a blond-haired toddler in a yard using toy golf clubs.,A man and child are playing outside.,1
+91,91,neutral,A young woman is posing on a mini-scooter while another woman sets up a camera in a park.,The photographer is being paid by the woman posing.,2
+92,92,contradiction,A group of children have fun in sack race.,some childrens standing in a park,0
+93,93,entailment,A golden retriever puppy stands in front of two people looking over a railing.,The people are standing near a puppy.,1
+94,94,neutral,A basketball team of 8 girls is doing a hand huddle.,The basketball team of 8 girls are african american.,2
+95,95,neutral,A woman and two girls dressed in pink.,Three people are at a dance.,2
+96,96,entailment,Two men are cooking in the kitchen using rice milk.,Two guys cook using some rice milk.,1
+97,97,neutral,"A man is preparing to tee off in golf, and there is a big crowd watching him.",The man is sweating from all the pressure.,2
+98,98,contradiction,A woman slipping backwards in the snow.,the woman slips on a bug,0
+99,99,entailment,A young girl with curly hair with a white shirt with a skull and bones picture on it.,A young girl has curly hair.,1
+100,100,contradiction,"There is a man with a moustache, cap and backpack standing by a bridge that running crosses water.",Some ducks eat bread.,0

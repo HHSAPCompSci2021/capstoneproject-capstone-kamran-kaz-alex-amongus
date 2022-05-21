@@ -8,7 +8,9 @@ import java.util.Map;
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.nd4j.linalg.ops.transforms.Transforms;
 
+import ai.djl.MalformedModelException;
 import ai.djl.ModelException;
+import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.translate.TranslateException;
 
 import data.Submission;
@@ -30,7 +32,13 @@ public class Grader {
 	private BertSemanticGraderModel model;
 
 	public Grader() {
-		model = new BertSemanticGraderModel(false);
+		model = new BertSemanticGraderModel(true);
+		try {
+			model.loadAndTrainModel(1, 4, 500, "snli-1.0-train-cleaned-short.csv", "snli-1.0-test-cleaned-short.csv");
+		} catch (ModelNotFoundException | MalformedModelException | TranslateException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 
 	/**

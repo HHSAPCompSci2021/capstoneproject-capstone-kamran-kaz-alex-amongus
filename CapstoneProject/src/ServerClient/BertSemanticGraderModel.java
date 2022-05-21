@@ -119,6 +119,8 @@ public class BertSemanticGraderModel {
 				.addLabel(new CsvDataset.Feature("label", (buf, data) -> buf.put(Float.parseFloat(data) - 1.0f)))
 				.optDataBatchifier(PaddingStackBatchifier.builder().optIncludeValidLengths(false)
 						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(paddingToken)).build())
+				.optDataBatchifier(PaddingStackBatchifier.builder().optIncludeValidLengths(false)
+						.addPad(0, 0, (m) -> m.ones(new Shape(1)).mul(separatorToken)).build())
 				.build();
 	}
 
@@ -166,6 +168,7 @@ public class BertSemanticGraderModel {
 						throw new IllegalArgumentException("embedding error", e);
 					}
 				})
+				
 				// classification layer
 				.add(Linear.builder().setUnits(768).build()) // pre classifier
 				.add(Activation::relu).add(Dropout.builder().optRate(0.2f).build())
@@ -196,7 +199,7 @@ public class BertSemanticGraderModel {
 	 * @throws TranslateException If the translator model is unable to accept and
 	 *                            properly process the input data
 	 */
-	private void train(int epoch, int batchSize, int maxTokenLength, int limit) throws IOException, TranslateException {
+	private void train(int epoch, int batchSize, int maxTokenLength, int limit, String trainDataset, String testDataset) throws IOException, TranslateException {
 		// Prepare the vocabulary
 		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build();
@@ -205,7 +208,7 @@ public class BertSemanticGraderModel {
 		
 		// load the training and evaluation dataset's
 		RandomAccessDataset trainingSet = getDataset(batchSize, tokenizer, maxTokenLength, limit,
-				"snli-1.0-train-cleaned.csv");
+				trainDataset);
 		RandomAccessDataset validationSet = getDataset(batchSize, tokenizer, maxTokenLength, limit,
 				"snli-1.0-test-cleaned.csv");
 
@@ -284,9 +287,9 @@ public class BertSemanticGraderModel {
 	 * @throws IOException             If the model or dependencies cannot be found
 	 * @throws TranslateException      If the model cannot be inferenced or trained
 	 */
-	public final void loadAndTrainModel(int epoch, int batchSize, int maxTokenLength)
+	public final void loadAndTrainModel(int epoch, int batchSize, int maxTokenLength, String trainFile, String testFile)
 			throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
-		train(epoch, batchSize, maxTokenLength, Integer.MAX_VALUE);
+		train(epoch, batchSize, maxTokenLength, Integer.MAX_VALUE, trainFile, testFile);
 	}
 	
 	/**
