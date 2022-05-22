@@ -72,15 +72,6 @@ public class DatabaseChangeListener implements ChildEventListener {
 	@Override
 	public void onChildRemoved(DataSnapshot arg0) {
 		System.out.println("onChildRemoved() called");
-//		tasks.add(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				currentDrawing.clear();
-//			}
-//			
-//		});
-
 	}
 	
 	/**
@@ -98,7 +89,6 @@ public class DatabaseChangeListener implements ChildEventListener {
 	private void updateMap(DataSnapshot dataSnapshot) {
 		String key = dataSnapshot.getKey();
 		Classroom classroom = dataSnapshot.getValue(Classroom.class);
-		
 		classrooms.put(key, classroom);
 	}
 }

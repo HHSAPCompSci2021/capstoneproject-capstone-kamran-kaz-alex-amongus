@@ -21,7 +21,6 @@ import data.Teacher;
  */
 public class ViewSubmissionScreen extends JFrame implements ActionListener{
 
-
 	/**
 	 * Creates a screen that will let you view the contents of your submission.
 	 * @param submission Submission that you want to view
@@ -41,14 +40,12 @@ public class ViewSubmissionScreen extends JFrame implements ActionListener{
 	 */
 	public ViewSubmissionScreen(Submission submission, Teacher teacher) {
 		String title = teacher.getName() + "    " + submission.getName() + "     " + "Grade : " + submission.getGrade();
-		
 		setup(submission, title);
 	}
 	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		this.setVisible(false);
 	}
 	

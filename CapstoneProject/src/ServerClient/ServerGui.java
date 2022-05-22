@@ -33,7 +33,6 @@ public class ServerGui  {
 	public static void main(String[] args) {
 		ServerGui serverGui = new ServerGui();
 		
-		
 		// testing code
 		Scanner in = new Scanner(System.in);
 		

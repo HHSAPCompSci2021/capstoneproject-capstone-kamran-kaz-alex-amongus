@@ -43,7 +43,6 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	 * @param teacher Teacher that is accessing the submissions
 	 */
 	public TeacherSubmissionViewer(Classroom classroom, int rubric, Teacher teacher) {
-		
 		this.classroom = classroom;
 		this.rubric = rubric;
 		this.teacher = teacher;

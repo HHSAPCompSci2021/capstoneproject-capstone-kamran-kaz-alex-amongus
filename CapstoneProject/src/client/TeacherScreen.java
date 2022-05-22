@@ -89,7 +89,6 @@ public class TeacherScreen extends JPanel implements ActionListener{
 					String[] options = { "OK" };
 					JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
 							"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-
 				}
 				
 			}
@@ -101,11 +100,7 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		}
 		
 		teacher = new Teacher(name, id);
-		
 		classrooms = DatabaseModifier.getClassrooms();
-		
-		
-		
 	}
 
 	@Override
@@ -187,7 +182,6 @@ public class TeacherScreen extends JPanel implements ActionListener{
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
 		
-
 		JScrollPane scroll = new JScrollPane(list);
 		add(scroll, BorderLayout.CENTER);
 		

@@ -42,10 +42,9 @@ public class DatabaseModifier {
 			
 			DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 			
-			// structure = root/classrooms
 			classroomsRef = database.child("classrooms");
 			
-			// always keep local variables synced up
+			// always keep local variables synced
 			DBChangeListener = new DatabaseChangeListener();
 			classroomsRef.addChildEventListener(DBChangeListener);
 		} catch (IOException e) {

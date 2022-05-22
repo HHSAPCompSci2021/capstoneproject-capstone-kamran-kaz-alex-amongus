@@ -22,7 +22,6 @@ public class Main {
 	private static final String ArrayList = null;
 
 	public static void main(String[] args) throws IOException, TranslateException, ModelException {
-		
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 	    root.setLevel(ch.qos.logback.classic.Level.ERROR);
 	    

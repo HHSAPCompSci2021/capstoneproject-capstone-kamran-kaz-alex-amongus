@@ -88,7 +88,6 @@ public class Rubric {
 	 * @return Rubric containing
 	 */
 	public static Rubric makeRubric(String path, String name) {
-
 		Rubric rubric = new Rubric(name);
 		
 		List<String[]> records = new ArrayList<>();
