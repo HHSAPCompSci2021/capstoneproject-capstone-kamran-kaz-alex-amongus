@@ -37,7 +37,6 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 	public final static String userDir = System.getProperty("user.dir");
 	public final static String lineSeparator = System.getProperty("line.separator");
 	
-	
 	private Classroom classroom;
 	private JList<String> list;
 	private Teacher teacher;
@@ -98,7 +97,6 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource().equals(go)) {
 			int index = list.getSelectedIndex();
 			System.out.println("selected index: " + index);
@@ -127,7 +125,6 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 				classroom.addAssignment(newAssignment);
 				
 				String key = DatabaseModifier.getKey(classroom);
-				
 				DatabaseModifier.set(key, classroom);
 			}	
 		}

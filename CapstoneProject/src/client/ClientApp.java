@@ -47,7 +47,6 @@ public class ClientApp {
 	    		screen = new TeacherScreen();
 	    	}
 	    	
-	    	
 	    	w.add(screen);
 	    	w.setResizable(true);
 	    	w.setVisible(true);	    	

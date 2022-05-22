@@ -45,7 +45,6 @@ public class DatabaseModifier {
 			// structure = root/classrooms
 			classroomsRef = database.child("classrooms");
 			
-			
 			// always keep local variables synced up
 			DBChangeListener = new DatabaseChangeListener();
 			classroomsRef.addChildEventListener(DBChangeListener);
@@ -89,11 +88,6 @@ public class DatabaseModifier {
 		DatabaseReference classroomRef = classroomsRef.child(classroomID);
 		Map<String, Object> studentAddition = new HashMap<>();
 		studentAddition.put("students/1", student);
-		
-//		classroomRef.child("students").child("groupA"). addValueEventListener(...);
-		
-		// current bug - code does not add student obejct to a list of students -- instead it replaces all under students/
-		
 		classroomRef.updateChildrenAsync(studentAddition);	
 	}
 	

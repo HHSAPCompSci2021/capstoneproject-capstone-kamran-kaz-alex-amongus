@@ -40,12 +40,9 @@ public class TeacherScreen extends JPanel implements ActionListener{
 	 * Creates a screen for teacher screen. Will be able to view all submissions.
 	 */
 	public TeacherScreen() {
-		
 		super(new BorderLayout());
-		
 		setupTeacher();
 		setup();
-		
 	}
 	
 	

@@ -28,7 +28,6 @@ import data.Student;
  */
 public class StudentScreen extends JPanel implements ActionListener{
 	
-	
 	private Student student;
 	private HashMap<String, Classroom> classrooms;
 	private ArrayList<Classroom> classList;
@@ -50,7 +49,6 @@ public class StudentScreen extends JPanel implements ActionListener{
 	public void constructView() {
 		JLabel title = new JLabel("Classrooms");
 		add(title, BorderLayout.PAGE_START);
-		
 		
 		String options[] = new String[classrooms.size()];
 		classList = new ArrayList<Classroom>();
@@ -115,8 +113,7 @@ public class StudentScreen extends JPanel implements ActionListener{
 				window.setResizable(true);
 				window.setVisible(true);
 			}			
-		}
-		
+		}	
 	}
 	
 	
@@ -199,8 +196,6 @@ public class StudentScreen extends JPanel implements ActionListener{
 		
 		classrooms = DatabaseModifier.getClassrooms();
 		
-		System.out.println("found classrooms");
-		
+		System.out.println("found classrooms");	
 	}
-
 }

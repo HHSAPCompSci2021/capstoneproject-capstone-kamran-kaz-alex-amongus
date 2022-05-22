@@ -94,13 +94,5 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 		else if (e.getSource().equals(back)) {
 			this.setVisible(false);
 		}
-		
-		
-		
-		
 	}
-	
-
-	
-
 }

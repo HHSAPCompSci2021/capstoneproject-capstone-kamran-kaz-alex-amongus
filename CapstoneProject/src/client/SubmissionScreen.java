@@ -35,7 +35,6 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 	private String input;
 	private JTextField textInput;
 	
-	
 	/**
 	 * Creates a new Submission Screen to submit essay to 
 	 * @param classroom Classroom to submit essay to
@@ -50,9 +49,7 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 		JFileChooser chooser = new JFileChooser(userDir);
 		int returnVal = chooser.showOpenDialog(null);
 		
-		
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
-	    	
 	    	try {
 	    		input = readFile(chooser.getSelectedFile().getPath());
 	    		System.out.println(input);
@@ -103,7 +100,6 @@ public class SubmissionScreen extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (!textInput.getText().isEmpty()) {
 			Submission submission = new Submission(textInput.getText(), input, rubric);
 			
