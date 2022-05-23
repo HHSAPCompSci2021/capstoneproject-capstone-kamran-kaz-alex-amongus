@@ -4,6 +4,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import com.formdev.flatlaf.intellijthemes.FlatDraculaIJTheme;
 
 import data.DatabaseModifier;
 /**
@@ -16,6 +18,8 @@ public class ClientApp {
 	public static void main(String[] args) {
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 	    root.setLevel(ch.qos.logback.classic.Level.ERROR);
+	    
+//	    FlatDraculaIJTheme.install();
 	    
 	    JPanel screen = null;
 	    
@@ -32,6 +36,9 @@ public class ClientApp {
 	    	
 	    	//DatabaseModifier.addClassroom(new Classroom("dummy classroom"));
 	    	
+//	    	UIManager.setLookAndFeel(new FlatLightLaf());
+	    	
+	    	
 	    	JFrame w = new JFrame("GRADEME Client");
 	    	w.setBounds(100, 100, 800, 600);
 	    	w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,6 +54,8 @@ public class ClientApp {
 	    		screen = new TeacherScreen();
 	    	}
 	    	
+	    	
+	    	
 	    	w.add(screen);
 	    	w.setResizable(true);
 	    	w.setVisible(true);	    	
@@ -55,5 +64,7 @@ public class ClientApp {
 	    }
 	    
 	}
+	
+	
 
 }
