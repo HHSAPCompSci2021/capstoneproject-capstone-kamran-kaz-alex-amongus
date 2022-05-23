@@ -321,21 +321,24 @@ public class BertSemanticGraderModel {
 	 * @throws UnsupportedKerasConfigurationException If the model is not stored in
 	 *                                                the proper configuration
 	 */
-	public ComputationGraph loadTrained()
+	public MultiLayerNetwork loadTrained()
 			throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
 		String fullModel = new ClassPathResource("full_model.h5").getFile().getPath();
-		ComputationGraph model = KerasModelImport.importKerasModelAndWeights(fullModel);
+		MultiLayerNetwork model = KerasModelImport.importKerasSequentialModelAndWeights(fullModel);
 
 		return model;
 	}
 
-	public double predictTrained(String document, String rubricCategory, ComputationGraph model) {
+	public String predictTrained(String document, String rubricCategory, MultiLayerNetwork model) {
 		int inputs = 10;
 		INDArray features = Nd4j.zeros(inputs);
 		for (int i = 0; i < inputs; i++)
 			features.putScalar(new int[] { i }, Math.random() < 0.5 ? 0 : 1);
 
-		return model.output(features).getDouble(0);
+		int prediction = (int) Math.round(model.output(features).getDouble(0));
+		
+		String[] labels = new String[] {"contradication", "corresponding", "neutral"};
+		return labels[prediction];
 	}
 
 	/**
