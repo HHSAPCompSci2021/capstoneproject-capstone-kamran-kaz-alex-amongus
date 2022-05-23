@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import com.formdev.flatlaf.intellijthemes.FlatDraculaIJTheme;
 
 import data.DatabaseModifier;
@@ -19,7 +21,7 @@ public class ClientApp {
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 	    root.setLevel(ch.qos.logback.classic.Level.ERROR);
 	    
-//	    FlatDraculaIJTheme.install();
+	    FlatDraculaIJTheme.installLafInfo();
 	    
 	    JPanel screen = null;
 	    
@@ -36,7 +38,12 @@ public class ClientApp {
 	    	
 	    	//DatabaseModifier.addClassroom(new Classroom("dummy classroom"));
 	    	
-//	    	UIManager.setLookAndFeel(new FlatLightLaf());
+	    	try {
+				UIManager.setLookAndFeel(new FlatDraculaIJTheme());
+			} catch (UnsupportedLookAndFeelException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	
 	    	
 	    	JFrame w = new JFrame("GRADEME Client");
