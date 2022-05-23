@@ -83,17 +83,18 @@ public class BertSemanticGraderModel {
 	 * Creates a new DLJ BERT model object and builds the necessary engines and
 	 * support frameworks. Automatically calls the buildModel method to load an
 	 * existing model into memory.
+	 * 
 	 * @param createNewModel boolean representing whether to create model
 	 */
 	public BertSemanticGraderModel(boolean createNewModel) {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
-		
+
 		try {
-			if(createNewModel)
+			if (createNewModel)
 				buildModel();
 			else
 				loadModel();
-				
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -134,12 +135,18 @@ public class BertSemanticGraderModel {
 	}
 
 	/**
-	 * Procedural code for building and loading the model then creating the necessary datasets. 
+	 * Procedural code for building and loading the model then creating the
+	 * necessary datasets.
 	 * 
-	 * @throws ModelNotFoundException If the BERT model cannot be located from a save or downloaded from the hugging face hub or DeeJavaLibrary
-	 * @throws MalformedModelException If the model is loaded improperly or missing some weights/dependencies.
-	 * @throws IOException If dependencies cannot be found or properly loaded.
-	 * @throws TranslateException If an error occurs when setting the weights of the model.
+	 * @throws ModelNotFoundException  If the BERT model cannot be located from a
+	 *                                 save or downloaded from the hugging face hub
+	 *                                 or DeeJavaLibrary
+	 * @throws MalformedModelException If the model is loaded improperly or missing
+	 *                                 some weights/dependencies.
+	 * @throws IOException             If dependencies cannot be found or properly
+	 *                                 loaded.
+	 * @throws TranslateException      If an error occurs when setting the weights
+	 *                                 of the model.
 	 */
 	public void buildModel() throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
 		// MXNet base model
@@ -147,8 +154,8 @@ public class BertSemanticGraderModel {
 		if ("PyTorch".equals(Engine.getInstance().getEngineName())) {
 			modelUrls = "https://resources.djl.ai/test-models/traced_distilbert_wikipedia_uncased.zip";
 		}
-		
-		//Building the model from URL
+
+		// Building the model from URL
 		Criteria<NDList, NDList> criteria = Criteria.builder().optApplication(Application.NLP.WORD_EMBEDDING)
 				.setTypes(NDList.class, NDList.class).optModelUrls(modelUrls).optProgress(new ProgressBar()).build();
 		embedding = criteria.loadModel();
@@ -177,17 +184,17 @@ public class BertSemanticGraderModel {
 						throw new IllegalArgumentException("embedding error", e);
 					}
 				})
-				
+
 				// classification layer
 				.add(Linear.builder().setUnits(768).build()) // pre classifier
 				.add(Activation::relu).add(Dropout.builder().optRate(0.2f).build())
 				.add(Linear.builder().setUnits(3).build()) // 2 star rating
 				.addSingleton(nd -> nd.get(":,0")); // Take [CLS] as the head
-				//.addSingleton(nd -> nd.get(":,1")); //Find the [SEP] for second head
-		
+		// .addSingleton(nd -> nd.get(":,1")); //Find the [SEP] for second head
+
 		model = Model.newInstance("SentenceSimilarityClassification");
 		model.setBlock(classifier);
-		
+
 		System.out.println("MODEL LOADED PROPERLY\nREADY FOR INFERENCING OR TRAINING...");
 	}
 
@@ -208,16 +215,16 @@ public class BertSemanticGraderModel {
 	 * @throws TranslateException If the translator model is unable to accept and
 	 *                            properly process the input data
 	 */
-	private void train(int epoch, int batchSize, int maxTokenLength, int limit, String trainDataset, String testDataset) throws IOException, TranslateException {
+	private void train(int epoch, int batchSize, int maxTokenLength, int limit, String trainDataset, String testDataset)
+			throws IOException, TranslateException {
 		// Prepare the vocabulary
 		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").build();
 
 		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
-		
+
 		// load the training and evaluation dataset's
-		RandomAccessDataset trainingSet = getDataset(batchSize, tokenizer, maxTokenLength, limit,
-				trainDataset);
+		RandomAccessDataset trainingSet = getDataset(batchSize, tokenizer, maxTokenLength, limit, trainDataset);
 		RandomAccessDataset validationSet = getDataset(batchSize, tokenizer, maxTokenLength, limit,
 				"snli-1.0-test-cleaned.csv");
 
@@ -247,13 +254,14 @@ public class BertSemanticGraderModel {
 		model.save(Paths.get("build/model"), "SemanticSimilarityClassification");
 		embedding.save(Paths.get("build/model"), "SemanticSimilarityClassification");
 	}
-	
+
 	/**
 	 * Loads the pretrained model from a file save
 	 * 
-	 * @throws ModelNotFoundException If the model cannot be found in the expected directory
+	 * @throws ModelNotFoundException  If the model cannot be found in the expected
+	 *                                 directory
 	 * @throws MalformedModelException If the model weights are not loaded properly
-	 * @throws IOException If the model directory cannot be found
+	 * @throws IOException             If the model directory cannot be found
 	 */
 	public void loadModel() throws ModelNotFoundException, MalformedModelException, IOException {
 		model = Model.newInstance("SemanticGraderModel");
@@ -278,11 +286,11 @@ public class BertSemanticGraderModel {
 		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
 				.optUnknownToken("[UNK]").optUnknownToken("[SEP]").build();
 		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
-					
+
 		Predictor<String, Classifications> predictor = model.newPredictor(new ModelTranslator(tokenizer));
 		return predictor.predict(document).getAsString(); // need to modify to accept two string inputs
 	}
-	
+
 	/**
 	 * Loads and trains the model from a single method
 	 * 
@@ -300,31 +308,36 @@ public class BertSemanticGraderModel {
 			throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
 		train(epoch, batchSize, maxTokenLength, Integer.MAX_VALUE, trainFile, testFile);
 	}
-	
-	
+
 	@SuppressWarnings("deprecation")
 	/**
-	 * Loads the trained BERT model from the directory in its saved and compiled configuration
+	 * Loads the trained BERT model from the directory in its saved and compiled
+	 * configuration
 	 * 
-	 * @throws IOException If the directory cannot be found
-	 * @throws InvalidKerasConfigurationException If the model is not saved in the proper format
-	 * @throws UnsupportedKerasConfigurationException If the model is not stored in the proper configuration
+	 * @throws IOException                            If the directory cannot be
+	 *                                                found
+	 * @throws InvalidKerasConfigurationException     If the model is not saved in
+	 *                                                the proper format
+	 * @throws UnsupportedKerasConfigurationException If the model is not stored in
+	 *                                                the proper configuration
 	 */
-	public ComputationGraph loadTrained() throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
+	public ComputationGraph loadTrained()
+			throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
 		String fullModel = new ClassPathResource("full_model.h5").getFile().getPath();
 		ComputationGraph model = KerasModelImport.importKerasModelAndWeights(fullModel);
 
 		return model;
 	}
-	
+
 	public double predictTrained(String document, String rubricCategory, ComputationGraph model) {
 		int inputs = 10;
 		INDArray features = Nd4j.zeros(inputs);
-		for (int i=0; i<inputs; i++) 
-		    features.putScalar(new int[] {i}, Math.random() < 0.5 ? 0 : 1);
+		for (int i = 0; i < inputs; i++)
+			features.putScalar(new int[] { i }, Math.random() < 0.5 ? 0 : 1);
+
 		return model.output(features).getDouble(0);
 	}
-	
+
 	/**
 	 * Data Class that handles data for the models translator
 	 * 
@@ -366,7 +379,7 @@ public class BertSemanticGraderModel {
 			return new Classifications(ranks, list.singletonOrThrow().softmax(0));
 		}
 	}
-	
+
 	/**
 	 * The BERT Featurizer that tokenizes the input data and does basic
 	 * preprocessing
