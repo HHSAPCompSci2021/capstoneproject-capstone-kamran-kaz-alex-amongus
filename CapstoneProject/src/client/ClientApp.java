@@ -12,7 +12,7 @@ import com.formdev.flatlaf.intellijthemes.FlatDraculaIJTheme;
 import data.DatabaseModifier;
 /**
  * Client App main method
- * @author Kaz Nakao
+ * @author Kaz Nakao, Alex Wang
  *
  */
 public class ClientApp {
@@ -21,9 +21,24 @@ public class ClientApp {
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 	    root.setLevel(ch.qos.logback.classic.Level.ERROR);
 	    
-	    FlatDraculaIJTheme.installLafInfo();
-	    
 	    JPanel screen = null;
+	    
+	    String[] modes = {"Light", "Dark"};
+	    
+	    int modeChoice = JOptionPane.showOptionDialog(null, "Select Viewing Mode", "GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, modes, modes[0]);
+	    
+	    if (modeChoice == 1) {	    	
+	    	FlatDraculaIJTheme.installLafInfo();
+	    	try {
+	    		UIManager.setLookAndFeel(new FlatDraculaIJTheme());
+	    	} catch (UnsupportedLookAndFeelException e) {
+	    		e.printStackTrace();
+	    	}
+	    }
+	    else if (modeChoice == -1) {
+	    	JOptionPane.showMessageDialog(screen, "No mode is selected. Default mode will be light mode.");
+
+	    }	    
 	    
 	    String[] options = { "Student", "Teacher" };
 	    
@@ -37,14 +52,6 @@ public class ClientApp {
 	    	System.out.println("synced with server");
 	    	
 	    	//DatabaseModifier.addClassroom(new Classroom("dummy classroom"));
-	    	
-	    	try {
-				UIManager.setLookAndFeel(new FlatDraculaIJTheme());
-			} catch (UnsupportedLookAndFeelException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    	
 	    	
 	    	JFrame w = new JFrame("GRADEME Client");
 	    	w.setBounds(100, 100, 800, 600);
