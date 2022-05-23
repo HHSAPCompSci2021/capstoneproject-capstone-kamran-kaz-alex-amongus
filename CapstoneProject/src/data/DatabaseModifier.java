@@ -118,14 +118,6 @@ public class DatabaseModifier {
 	 */
 	public static HashMap<String, Classroom> getClassrooms() {
 		HashMap<String, Classroom> classrooms = DBChangeListener.getClassrooms();
-		while (classrooms.size() == 0) {
-			try {
-				Thread.sleep(1000);
-				classrooms = DBChangeListener.getClassrooms();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 		return classrooms;
 	}
 	
