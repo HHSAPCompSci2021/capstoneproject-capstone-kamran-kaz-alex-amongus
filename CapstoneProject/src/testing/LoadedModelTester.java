@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.UnsupportedKerasConfigurationException;
 
@@ -21,7 +22,7 @@ public class LoadedModelTester {
 			String doc = kboard.nextLine();
 			System.out.println("Enter rubric param: ");
 			String rubric = kboard.nextLine();
-			MultiLayerNetwork mdl = model.loadTrained();
+			ComputationGraph mdl = model.loadTrained();
 			model.predictTrained(doc, rubric, mdl);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

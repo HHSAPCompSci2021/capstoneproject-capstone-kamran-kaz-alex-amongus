@@ -8,13 +8,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
-import org.datavec.api.util.ClassPathResource;
 import org.deeplearning4j.nn.conf.ComputationGraphConfiguration;
+import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.common.io.ClassPathResource;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
@@ -309,7 +310,6 @@ public class BertSemanticGraderModel {
 		train(epoch, batchSize, maxTokenLength, Integer.MAX_VALUE, trainFile, testFile);
 	}
 
-	@SuppressWarnings("deprecation")
 	/**
 	 * Loads the trained BERT model from the directory in its saved and compiled
 	 * configuration
@@ -321,24 +321,23 @@ public class BertSemanticGraderModel {
 	 * @throws UnsupportedKerasConfigurationException If the model is not stored in
 	 *                                                the proper configuration
 	 */
-	public MultiLayerNetwork loadTrained()
+	public ComputationGraph loadTrained()
 			throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
-		String fullModel = new ClassPathResource("full_model.h5").getFile().getPath();
-		MultiLayerNetwork model = KerasModelImport.importKerasSequentialModelAndWeights(fullModel);
-
+		ComputationGraph model = KerasModelImport.importKerasModelAndWeights("/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model/full_model.h5");
 		return model;
 	}
 
-	public String predictTrained(String document, String rubricCategory, MultiLayerNetwork model) {
+	public String predictTrained(String document, String rubricCategory, ComputationGraph model) {
 		int inputs = 10;
 		INDArray features = Nd4j.zeros(inputs);
 		for (int i = 0; i < inputs; i++)
 			features.putScalar(new int[] { i }, Math.random() < 0.5 ? 0 : 1);
 
-		int prediction = (int) Math.round(model.output(features).getDouble(0));
-		
-		String[] labels = new String[] {"contradication", "corresponding", "neutral"};
-		return labels[prediction];
+		return model.output(features).toString();
+//		int prediction = (int) Math.round(model.output(features).getDouble(0));
+//		
+//		String[] labels = new String[] {"contradication", "corresponding", "neutral"};
+//		return labels[prediction];
 	}
 
 	/**
