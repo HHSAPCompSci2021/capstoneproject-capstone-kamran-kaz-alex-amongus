@@ -111,7 +111,7 @@ public class Grader {
 	}
 
 	/**
-	 * Compares the similarity of two strings in terms of the repeating characters. 
+	 * Compares the similarity of two strings in terms of the repeating characters that exist in the two strings.
 	 * 
 	 * @param studentDocument1 first student document content
 	 * @param studentDocument2 second student document content

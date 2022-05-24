@@ -8,7 +8,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 /**
- * Handles changes with Firebase database reference
+ * Handles changes with Firebase database reference. 
+ * Whenever an action occurs in the Database, one of the DatabaseChangeListener's implemented methods will be called.
+ * onChildAdded() and onChildChanged() are used to detect edits in the database. A HashMap of key String and value Classroom is kept in sync with the Database. 
+ * The HashMap containing the information about the Database can be accessed. To keep the database in sync, the HashMap should only be used to read rather than to write. 
  * 
  * @author Alex Wang, Kaz Nakao, John Shelby for assistance in Firebase logic
  *
@@ -49,7 +52,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 		
 		updateMap(dataSnapshot);
 		
-		Classroom classroom = dataSnapshot.getValue(Classroom.class);
+		//Classroom classroom = dataSnapshot.getValue(Classroom.class);
 		//System.out.println("SYNCED, CLASSROOM = " + classroom.toString() + "\nCLASSROOMS: = " + classrooms.toString());
 	}
 
@@ -59,7 +62,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 		
 		updateMap(dataSnapshot);
 		
-		Classroom classroom = dataSnapshot.getValue(Classroom.class);
+		//Classroom classroom = dataSnapshot.getValue(Classroom.class);
 		//System.out.println("SYNCED, PRINT = " + classroom.toString() + "\nCLASSROOMS: = " + classrooms.toString());
 		
 	}
@@ -75,7 +78,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 	}
 	
 	/**
-	 * 
+	 * Return a HashMap with a key as a String of the locatio of the object in the database and values of classrooms as the value. The classroom objects are copies of the ones that exist in firebase.
 	 * @return A HashMap of String key, Classroom value where the key is the location of the classroom in the database. The classroom that it maps to corresponds to the classroom object that is stored in the database.
 	 */
 	public HashMap<String, Classroom> getClassrooms() {

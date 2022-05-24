@@ -67,14 +67,14 @@ public class Submission {
 	}
 	
 	/**
-	 *
+	 * Gets the title of the submission.
 	 * @return The title of the submission.
 	 */
 	public String getName() {
 		return name;
 	}
 	/**
-	 * 
+	 * Gets the "essay" of teh submission. The content of the submission
 	 * @return The content of the submission.
 	 */
 	public String getContent() {
@@ -82,7 +82,7 @@ public class Submission {
 	}
 	
 	/**
-	 * 
+	 * The grade of the submission. Will be "UNGRADED" by default.
 	 * @return The grade that has been given to the submission. If no grade has been given yet, the method will return an empty string.
 	 */
 	public String getGrade() {
@@ -90,7 +90,8 @@ public class Submission {
 	}
 	
 	/**
-	 * 
+	 * The rubric index that is being used to grade this assignment. The index corresponds to a rubric object
+	 * that exists in the list of rubric assignments in the classroom.
 	 * @return The index position of the rubric being used to grade this submission.
 	 */
 	public int getRubric() {
@@ -106,7 +107,7 @@ public class Submission {
 	}
 	
 	/**
-	 * 
+	 * Gets the date at which the submission was made. 
 	 * @return The date and time that the submission was made.
 	 */
 	public String getSubmissionDate() {

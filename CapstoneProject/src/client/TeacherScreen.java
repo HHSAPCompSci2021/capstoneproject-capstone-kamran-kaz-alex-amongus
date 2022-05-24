@@ -1,22 +1,15 @@
 package client;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Map.Entry;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 import data.Classroom;
 import data.DatabaseModifier;
@@ -27,106 +20,27 @@ import data.Teacher;
  * @author Kaz Nakao, Alex Wang
  *
  */
-public class TeacherScreen extends JPanel implements ActionListener{
+public class TeacherScreen extends HomeScreen implements ActionListener{
 	
-	private HashMap<String, Classroom> classrooms;
-	private JList<String> list;
-	private ArrayList<Classroom> classList;
 	private Teacher teacher;
 	
-	private JButton createClass, submit, refresh;
+	private JButton createClass;
 	
 	/**
 	 * Creates a screen for teacher screen. Will be able to view all submissions.
 	 */
 	public TeacherScreen() {
-		super(new BorderLayout());
-		setupTeacher();
 		setup();
 	}
 	
-	
-	/**
-	 * Creates teacher object on client to find a match on the database
-	 */
-	private void setupTeacher() {
-		String name;
-		int nameResponse = 0;
-		String[] nameOptions = {"Re-enter name", "Exit program"};
-		do {
-			name = JOptionPane.showInputDialog("What is your name?");
-			if (name == null) {
-				nameResponse = JOptionPane.showOptionDialog(null, "Please enter a name to proceed.", "GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, nameOptions, nameOptions[0]);
-			}
-		} while (name == null && nameResponse == 0);
-		
-		if (nameResponse == 1) {
-			System.exit(0);
-		}
-		
-		String id = null;
-		int idResponse = 0;
-		String[] idOptions = {"Re-enter ID", "Exit program"};
-		
-		// promopt ID number unless user chooses exit
-		do {
-			id = JOptionPane.showInputDialog("What is your id number?");
-			if (id == null) {
-				idResponse = JOptionPane.showOptionDialog(null, "Please enter an ID to proceed.", "GRADEME",
-						JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, idOptions, idOptions[0]);	
-			} else {
-				boolean isValid = true;
-				
-				char[] chars = id.toCharArray();
-				for (char c : chars) {
-					if (!Character.isDigit(c)) {
-						isValid = false;
-						id = null;
-					}
-				}	
-				
-				if (!isValid) {
-					String[] options = { "OK" };
-					JOptionPane.showOptionDialog(null, "ID number can only contain numbers", 
-							"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-				}
-				
-			}
-		} while (id == null && idResponse == 0);
-		
-		// user chose to exit
-		if (idResponse == 1) {
-			System.exit(0);
-		}
-		
-		teacher = new Teacher(name, id);
-		classrooms = DatabaseModifier.getClassrooms();
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(submit)) {
-			int index = list.getSelectedIndex();
-			System.out.println("selected index: " + index);
-			if (index > -1) {
-				Classroom classroom = classList.get(index);
-				String key = DatabaseModifier.getKey(classroom);
-				
-				JFrame window = new AssignmentViewer(classroom, teacher);
-				window.setBounds(100, 100, 800, 600);
-				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
-		    	window.setIconImage(logo.getImage());
-				window.setResizable(true);
-				window.setVisible(true);
-			}
-		}
-		else if (e.getSource().equals(createClass)) {
+		super.actionPerformed(e);
+		if (e.getSource().equals(createClass)) {
 			String name = JOptionPane.showInputDialog("Choose a name for the classroom");
 			
 			if (name != null && !name.equals("")) {
 				Classroom classroom = new Classroom(name);
-				ArrayList<Teacher> teachers = classroom.getTeachers();
 				
 				classroom.addTeacher(teacher);
 				DatabaseModifier.addClassroom(classroom);				
@@ -140,62 +54,34 @@ public class TeacherScreen extends JPanel implements ActionListener{
 				System.out.println("Exitted classroom creation.");
 			}	
 		}
-		else if (e.getSource().equals(refresh)) {
-			Component[] componentList = getComponents();
-			
-			for (Component c : componentList) {
-				remove(c);
-			}
-			
-			revalidate();
-			repaint();
-			
-			setup();
-		}
 	}
 	
 	/**
 	 * shows list of classrooms
 	 */
 	private void setup() {
-		JPanel panel = new JPanel();
-		JLabel title = new JLabel("Select a Classroom");
-		createClass = new JButton("Create a new classroom");
+		JPanel top = new JPanel();
+		JLabel title = new JLabel("Classrooms");
+		top.add(title, BorderLayout.PAGE_START);
+		createClass = new JButton("Create a New Classroom");
 		createClass.addActionListener(this);
-		panel.add(title);
-		panel.add(createClass);
-		add(panel, BorderLayout.PAGE_START);
+		top.add(createClass, BorderLayout.PAGE_START);
+		add(top, BorderLayout.PAGE_START);
+	}
+
+
+	@Override
+	public void identify(Entry<String, String> identification) {
+		// TODO Auto-generated method stub
+		teacher = new Teacher(identification.getKey(), identification.getValue());
+	}
+
+
+	@Override
+	public JFrame getScreen(Classroom classroom) {
+		// TODO Auto-generated method stub
 		
-		String[] options = new String[classrooms.size()];
-		classList = new ArrayList<Classroom>();
-		Set<String> keys = classrooms.keySet();
-		int i = 0;
-		for (String key : keys) {
-			Classroom classroom = classrooms.get(key);
-			classList.add(classroom);
-			options[i] = classroom.getName();
-			i++;
-		}
-		
-		list = new JList<String>(options);
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setVisibleRowCount(-1);
-		
-		JScrollPane scroll = new JScrollPane(list);
-		add(scroll, BorderLayout.CENTER);
-		
-		JPanel bottom = new JPanel();
-		
-		submit = new JButton("go to class");
-		submit.addActionListener(this);
-		bottom.add(submit);
-		
-		refresh = new JButton("refresh");
-		refresh.addActionListener(this);
-		bottom.add(refresh);
-		
-		add(bottom, BorderLayout.PAGE_END);
+		return new AssignmentViewer(classroom, teacher);
 	}
 	
 }

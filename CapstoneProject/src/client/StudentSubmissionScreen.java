@@ -26,10 +26,9 @@ import data.Submission;
  * @author Kaz
  *
  */
-public class StudentClassroomScreen extends JFrame implements ActionListener{
+public class StudentSubmissionScreen extends JFrame implements ActionListener{
 	
 	private Classroom classroom;
-	private String key;
 	private Student student;
 	
 	private JList<String> list;
@@ -39,13 +38,11 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	/**
 	 * Shows past submissions of the student and allows user to submit new assignments.
 	 * @param classroom Classroom object that the student is viewing
-	 * @param key The "key" location of the classroom in the database
 	 * @param s The student object that you are viewing the submission through
 	 */
-	public StudentClassroomScreen(Classroom classroom, String key, Student s) {
+	public StudentSubmissionScreen(Classroom classroom, Student s) {
 		super("Classroom Viewer");
 		this.classroom = classroom;
-		this.key = key;
 		this.student = s;
 		setup();
 	}
@@ -56,6 +53,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 	private void setup() {
 		
 		//GUI
+		
 		JPanel panel = new JPanel(new BorderLayout());
 		
 		JPanel top = new JPanel(new FlowLayout());
@@ -106,6 +104,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 		ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
 		
 		if (e.getSource().equals(newSubmission)) {
+			//JFrame window = new SelectAssignmentScreen(student, classroom);
 			JFrame window = new SelectAssignmentScreen(student, classroom);
 			window.setBounds(100, 100, 800, 600);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -142,6 +141,7 @@ public class StudentClassroomScreen extends JFrame implements ActionListener{
 			}
 		}
 		classroom.addStudent(student);
+		String key = DatabaseModifier.getKey(classroom);
 		DatabaseModifier.set(key, classroom);
 	}
 

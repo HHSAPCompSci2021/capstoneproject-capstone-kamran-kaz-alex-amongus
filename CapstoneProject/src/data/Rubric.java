@@ -1,16 +1,11 @@
 package data;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.csv.CSVFormat;
 
 import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 
 /**
  * Models an assignment for a classroom. The Rubric class contains the name of

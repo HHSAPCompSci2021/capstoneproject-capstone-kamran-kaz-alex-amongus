@@ -2,7 +2,9 @@ package data;
 
 import java.util.ArrayList;
 /**
- * The Classroom class models an online classroom. The classroom has a name, a list of teachers, and a list of students.  
+ * The Classroom class models an online classroom.
+ * A classroom has a list of students, teachers, assignments and has a name.
+ * Assignments are stored as Rubrics.
  * @author Kaz Nakao
  *
  */
@@ -60,7 +62,7 @@ public class Classroom {
 	}
 	
 	/**
-	 * 
+	 * Returns an ArrayList of students that are in the classroom
 	 * @return The ArrayList of students in the classroom
 	 */
 	public ArrayList<Student> getStudents() {
@@ -68,7 +70,7 @@ public class Classroom {
 	}
 	
 	/**
-	 * 
+	 * Returns an ArrayList of the teachers that are in the classroom
 	 * @return The ArrayList of teachers in the classroom
 	 */
 	public ArrayList<Teacher> getTeachers() {
@@ -76,7 +78,7 @@ public class Classroom {
 	}
 	
 	/**
-	 * 
+	 * Returns an ArrayList of the assignments or rubrics that are in the classroom.
 	 * @return A list of Rubric objects that represent the assignments in the classroom.
 	 */
 	public ArrayList<Rubric> getAssignments() {
