@@ -1,21 +1,14 @@
 package ServerClient;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.nd4j.linalg.ops.transforms.Transforms;
 
-import ai.djl.MalformedModelException;
-import ai.djl.ModelException;
-import ai.djl.repository.zoo.ModelNotFoundException;
-import ai.djl.translate.TranslateException;
-
-import data.Submission;
 import data.Classroom;
 import data.DatabaseModifier;
+import data.Submission;
 
 /**
  * Automatically grades essays and checks for plagiarism. This loads the model
@@ -34,11 +27,10 @@ public class Grader {
 	public Grader() {
 		model = new BertSemanticGraderModel(true);
 		try {
-			model.loadAndTrainModel(1, 4, 500, "snli-1.0-train-cleaned-short.csv", "snli-1.0-test-cleaned-short.csv");
-		} catch (ModelNotFoundException | MalformedModelException | TranslateException | IOException e) {
-			// TODO Auto-generated catch block
+			model.loadModel();
+		} catch(Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	/**
@@ -61,17 +53,17 @@ public class Grader {
 				//check this rubric row
 				int j = 0;
 				String match = "";
-				while(!match.equals("correlation")) {
+				while(!match.equals("corresponding")) {
 					match = model.predict(document, rubric[i][j]);
 					if(j == labels.length) {
-						match = "correlation";
+						match = "corresponding";
 					}
 					j++;
 				}
 				grades[i] = labels[j];
 			}
 			return grades;
-		} catch (IOException | TranslateException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		

@@ -24,6 +24,7 @@ import org.nd4j.autodiff.samediff.SameDiff;
 import org.nd4j.common.io.ClassPathResource;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
+import org.python.util.PythonInterpreter;
 
 import ai.djl.Application;
 import ai.djl.MalformedModelException;
@@ -85,6 +86,7 @@ public class BertSemanticGraderModel {
 
 	private ZooModel<NDList, NDList> embedding;
 	private Model model;
+	private PythonInterpreter serverInterface;
 
 	/**
 	 * Creates a new DLJ BERT model object and builds the necessary engines and
@@ -95,8 +97,7 @@ public class BertSemanticGraderModel {
 	 */
 	public BertSemanticGraderModel(boolean createNewModel) {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
-
-		KerasLayer.registerCustomLayer("TFBertModel", TFBertModel.class);
+		serverInterface = new PythonInterpreter();
 		
 		try {
 			if (createNewModel)
@@ -265,39 +266,27 @@ public class BertSemanticGraderModel {
 	}
 
 	/**
-	 * Loads the pretrained model from a file save
+	 * Loads the pretrained model from a file save and starts the model entry point server
 	 * 
 	 * @throws ModelNotFoundException  If the model cannot be found in the expected
 	 *                                 directory
 	 * @throws MalformedModelException If the model weights are not loaded properly
 	 * @throws IOException             If the model directory cannot be found
 	 */
-	public void loadModel() throws ModelNotFoundException, MalformedModelException, IOException {
-		model = Model.newInstance("SemanticGraderModel");
-		model.load(Paths.get("build/model/"), "SemanticSimilarityClassification");
+	public void loadModel() throws IOException {
+		try {
+			serverInterface.exec("import ModelServerInterface");
+		} catch (Exception e) {
+			throw new IOException("Something went wrong when building the model");
+		}
 	}
-
-	/**
-	 * Predicts the similarity and whether or not the students essay satisfies the
-	 * requirements outlined by the rubric.
-	 * 
-	 * @param document       The student essay to comapre to the rubric
-	 * @param rubricCategory The String of the rubric category loaded from the
-	 *                       dataset
-	 * 
-	 * @throws TranslateException If an error occurs during prediction in the
-	 *                            predictor layer.
-	 * @throws IOException        If any resources or dependencies cannot be found.
-	 * @return String response of predictor's prediction
-	 */
-	public String predict(String document, String rubricCategory) throws TranslateException, IOException {
-		// Prepare the vocabulary
-		DefaultVocabulary vocabulary = DefaultVocabulary.builder().addFromTextFile(embedding.getArtifact("vocab.txt"))
-				.optUnknownToken("[UNK]").optUnknownToken("[SEP]").build();
-		BertFullTokenizer tokenizer = new BertFullTokenizer(vocabulary, true);
-
-		Predictor<String, Classifications> predictor = model.newPredictor(new ModelTranslator(tokenizer));
-		return predictor.predict(document).getAsString(); // need to modify to accept two string inputs
+	
+	
+	public String predict(String document, String rubricCategory) {
+		serverInterface.exec("doc = '"+document+"'");
+		serverInterface.exec("rubr = '"+rubricCategory+"'");
+		serverInterface.exec("ModelServerInterface.check_similarity(doc, rubr)");
+		return serverInterface.get("pred").asString();
 	}
 
 	/**
@@ -316,79 +305,6 @@ public class BertSemanticGraderModel {
 	public final void loadAndTrainModel(int epoch, int batchSize, int maxTokenLength, String trainFile, String testFile)
 			throws ModelNotFoundException, MalformedModelException, IOException, TranslateException {
 		train(epoch, batchSize, maxTokenLength, Integer.MAX_VALUE, trainFile, testFile);
-	}
-
-	/**
-	 * Loads the trained BERT model from the directory in its saved and compiled
-	 * configuration
-	 * 
-	 * @throws IOException                            If the directory cannot be
-	 *                                                found
-	 * @throws InvalidKerasConfigurationException     If the model is not saved in
-	 *                                                the proper format
-	 * @throws UnsupportedKerasConfigurationException If the model is not stored in
-	 *                                                the proper configuration
-	 */
-	public ComputationGraph loadTrained()
-			throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
-		ComputationGraph model = KerasModelImport.importKerasModelAndWeights("/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model/full_model.h5");
-		
-		return model;
-	}
-
-	public String predictTrained(String document, String rubricCategory, ComputationGraph model) {
-		int inputs = 10;
-		INDArray features = Nd4j.zeros(inputs);
-		for (int i = 0; i < inputs; i++)
-			features.putScalar(new int[] { i }, Math.random() < 0.5 ? 0 : 1);
-
-		return model.output(features).toString();
-//		int prediction = (int) Math.round(model.output(features).getDouble(0));
-//		
-//		String[] labels = new String[] {"contradication", "corresponding", "neutral"};
-//		return labels[prediction];
-	}
-
-	/**
-	 * Data Class that handles data for the models translator
-	 * 
-	 * @author Kamran Hussain
-	 *
-	 */
-	private class ModelTranslator implements Translator<String, Classifications> {
-
-		private BertFullTokenizer tokenizer;
-		private Vocabulary vocab;
-		private List<String> ranks;
-
-		public ModelTranslator(BertFullTokenizer tokenizer) {
-			this.tokenizer = tokenizer;
-			vocab = tokenizer.getVocabulary();
-			ranks = Arrays.asList("correlation", "contradiction", "neutral"); // 1 is correspondence and 2 is
-																				// contradiction, 3 is neutral
-		}
-
-		@Override
-		public Batchifier getBatchifier() {
-			return Batchifier.STACK;
-		}
-
-		@Override
-		public NDList processInput(TranslatorContext ctx, String input) {
-			List<String> tokens = tokenizer.tokenize(input);
-			float[] indices = new float[tokens.size() + 2];
-			indices[0] = vocab.getIndex("[CLS]");
-			for (int i = 0; i < tokens.size(); i++) {
-				indices[i + 1] = vocab.getIndex(tokens.get(i));
-			}
-			indices[indices.length - 1] = vocab.getIndex("[SEP]");
-			return new NDList(ctx.getNDManager().create(indices));
-		}
-
-		@Override
-		public Classifications processOutput(TranslatorContext ctx, NDList list) {
-			return new Classifications(ranks, list.singletonOrThrow().softmax(0));
-		}
 	}
 
 	/**
@@ -431,14 +347,5 @@ public class BertSemanticGraderModel {
 			buf.put(vocab.getIndex("[SEP]"));
 		}
 	}
-	
-	public class TFBertModel extends KerasLayer {
 
-		protected TFBertModel(Map<String, Object> layerConfig)
-				throws InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
-			super(layerConfig);
-			// TODO Auto-generated constructor stub
-		}
-	    
-	}
 }
