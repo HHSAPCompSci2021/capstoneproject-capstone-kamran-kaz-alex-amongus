@@ -270,24 +270,29 @@ public class BertSemanticGraderModel {
 	 */
 	public void loadModel() throws IOException {
 		serverInterface.exec("import os"
-				+ "\nos.chdir(\"/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model\")"
-				+ "\nimport ModelServerInterface.py");
-		serverInterface.exec("import ModelServerInterface.py");
+				+ "\nos.chdir(\"/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model/\")");
 	}
 	
 	/**
-	 * Predicts the simiarlity between the inputted and outputted documents. 
+	 * Predicts the similarity between the inputted and outputted documents. 
 	 * 
 	 * @param document The Student essay or other document as a String.
 	 * @param rubricCategory The rubric category phrase to test the students essay against.
 	 * @return A string detailing the semantic relatedness of the two inputs, corresponding, contradiction, or neutral for gibberish
 	 */
 	public String predict(String document, String rubricCategory) {
-		serverInterface.exec("import ModelServerInterface.py");
-		serverInterface.exec("doc = '"+document+"'");
-		serverInterface.exec("rubr = '"+rubricCategory+"'");
-		serverInterface.exec("ModelServerInterface.check_similarity(doc, rubr)");
-		return serverInterface.get("pred").asString();
+		try {
+			serverInterface.exec("print(os.getcwd())");
+			serverInterface.exec("doc = '"+document+"'");
+			serverInterface.exec("rubr = '"+rubricCategory+"'");
+			serverInterface.exec("print(doc)");
+			serverInterface.exec("import ModelServerInterface.py");
+			serverInterface.exec("ModelServerInterface.check_similarity(doc, rubr)");
+			return serverInterface.get("pred").asString();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	/**
