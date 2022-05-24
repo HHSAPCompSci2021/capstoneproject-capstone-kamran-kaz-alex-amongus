@@ -79,7 +79,7 @@ public class Grader {
 	}
 	
 	/**
-	 * Checks for plagiarism using cosine similarity and literal similarity checks
+	 * Checks for plagiarism using cosine similarity and literal similarity checks. If either return a high enough threshhold, 
 	 * @param stdntDoc content of a particular submission
 	 * @return true if the document is deemed to be plagiarized and false if it is not
 	 */
@@ -106,7 +106,7 @@ public class Grader {
 	}
 
 	/**
-	 * Calculates the semantic similarity of two student essays
+	 * Calculates the semantic similarity of two student essays using cosine similarity.
 	 * 
 	 * @param studentDocument1 The first student essay as a String
 	 * @param studentDocument2 The second student essay as a String
@@ -119,10 +119,10 @@ public class Grader {
 	}
 
 	/**
-	 * Compares the similarity
+	 * Compares the similarity of two strings in terms of the repeating characters. 
 	 * 
-	 * @param studentDocument1 first student document
-	 * @param studentDocument2 second student document
+	 * @param studentDocument1 first student document content
+	 * @param studentDocument2 second student document content
 	 * @return A percentage representing how literally similar the two essays are
 	 */
 	public double literalSimilarity(String studentDocument1, String studentDocument2) {

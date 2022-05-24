@@ -44,7 +44,9 @@ public class ServerGui  {
 			// use appendLossData() with time parameter to visualize graph
 		}
 	}
-	
+	/**
+	 * GUI including graphs
+	 */
 	public ServerGui() {
 		lossData = new ArrayList<double[]>();
 		
