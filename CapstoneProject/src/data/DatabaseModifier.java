@@ -15,8 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Creates and interacts with Firebase; handles actions used to submit, fetch, and access essays, submissions, and other parts
- * 
- * @author Alex Wang, John Shelby for assistance in Firebase logic
+ * Allows the user to be able to add and set values inside the Database. 
+ * Values of the Database can be accessed through a HashMap that includes the classrooms. The HashMap should not be used to modify the Database. Access the key and then push the values of the classroom through the add() and set() methods
+ * @author Alex Wang, Kaz Nakao John Shelby for assistance in Firebase logic
  *
  */
 public class DatabaseModifier {
@@ -113,7 +114,8 @@ public class DatabaseModifier {
 	}
 	
 	/**
-	 * 
+	 * Returns a HashMap with key String and value Classroom to model the Database. 
+	 * This HashMap should not be modified. To modify the database, the add() and set() method equivalents should be used.
 	 * @return A HashMap that contains the keys of the locations of the classrooms as a key and classroom objects that are at each of those locations in the database
 	 */
 	public static HashMap<String, Classroom> getClassrooms() {

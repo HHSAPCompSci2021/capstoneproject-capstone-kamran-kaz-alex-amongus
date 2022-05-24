@@ -38,7 +38,6 @@ public class StudentSubmissionScreen extends JFrame implements ActionListener{
 	/**
 	 * Shows past submissions of the student and allows user to submit new assignments.
 	 * @param classroom Classroom object that the student is viewing
-	 * @param key The "key" location of the classroom in the database
 	 * @param s The student object that you are viewing the submission through
 	 */
 	public StudentSubmissionScreen(Classroom classroom, Student s) {

@@ -17,7 +17,7 @@ public class RubricRow {
 	}
 	
 	/**
-	 * 
+	 * Returns an ArrayList of Strings as one of the grading criteria of the rubric
 	 * @return A list of criteria of the particular aspect of the essay
 	 */
 	public ArrayList<String> getGrades() {
@@ -25,7 +25,7 @@ public class RubricRow {
 	}
 	
 	/**
-	 * 
+	 * Adds a grading criteria to the "row" in the rubric.
 	 * @param grade Adds a new aspect to the criteria of rubric
 	 */
 	public void add(String grade) {

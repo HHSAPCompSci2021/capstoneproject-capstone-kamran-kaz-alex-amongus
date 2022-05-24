@@ -49,6 +49,11 @@ public class ViewSubmissionScreen extends JFrame implements ActionListener{
 		this.setVisible(false);
 	}
 	
+	/**
+	 * Creates the GUI to view the submission contents.
+	 * @param submission The submission object that is being viewed
+	 * @param title The header of the page
+	 */
 	private void setup(Submission submission, String title) {
 		JPanel viewSubmission = new JPanel(new BorderLayout());
 		
