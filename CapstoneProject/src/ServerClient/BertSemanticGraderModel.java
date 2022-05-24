@@ -6,15 +6,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.deeplearning4j.nn.conf.ComputationGraphConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
+import org.deeplearning4j.nn.conf.inputs.InputType;
+import org.deeplearning4j.nn.conf.layers.samediff.SameDiffLambdaLayer;
 import org.deeplearning4j.nn.graph.ComputationGraph;
+import org.deeplearning4j.nn.modelimport.keras.KerasLayer;
 import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.autodiff.samediff.SDVariable;
+import org.nd4j.autodiff.samediff.SameDiff;
 import org.nd4j.common.io.ClassPathResource;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -90,6 +96,8 @@ public class BertSemanticGraderModel {
 	public BertSemanticGraderModel(boolean createNewModel) {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
 
+		KerasLayer.registerCustomLayer("TFBertModel", TFBertModel.class);
+		
 		try {
 			if (createNewModel)
 				buildModel();
@@ -324,6 +332,7 @@ public class BertSemanticGraderModel {
 	public ComputationGraph loadTrained()
 			throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
 		ComputationGraph model = KerasModelImport.importKerasModelAndWeights("/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model/full_model.h5");
+		
 		return model;
 	}
 
@@ -421,5 +430,15 @@ public class BertSemanticGraderModel {
 			tokens.forEach(token -> buf.put(vocab.getIndex(token)));
 			buf.put(vocab.getIndex("[SEP]"));
 		}
+	}
+	
+	public class TFBertModel extends KerasLayer {
+
+		protected TFBertModel(Map<String, Object> layerConfig)
+				throws InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
+			super(layerConfig);
+			// TODO Auto-generated constructor stub
+		}
+	    
 	}
 }
