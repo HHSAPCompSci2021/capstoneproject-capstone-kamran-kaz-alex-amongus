@@ -271,6 +271,9 @@ public class BertSemanticGraderModel {
 	public void loadModel() throws IOException {
 		serverInterface.exec("import os"
 				+ "\nos.chdir(\"/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model/\")");
+		serverInterface.exec("import sys"
+				+"\nsys.path.append('/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model')");
+		serverInterface.exec("sys.path.append('/Users/kamranhussain/opt/anaconda3/lib/python3.7/site-packages')");
 	}
 	
 	/**
@@ -282,13 +285,11 @@ public class BertSemanticGraderModel {
 	 */
 	public String predict(String document, String rubricCategory) {
 		try {
-			serverInterface.exec("print(os.getcwd())");
 			serverInterface.exec("doc = '"+document+"'");
 			serverInterface.exec("rubr = '"+rubricCategory+"'");
-			serverInterface.exec("print(doc)");
-			serverInterface.exec("import ModelServerInterface.py");
-			serverInterface.exec("ModelServerInterface.check_similarity(doc, rubr)");
-			return serverInterface.get("pred").asString();
+			serverInterface.exec("import ModelServerInterface");
+			//serverInterface.exec("ModelServerInterface.check_similarity(doc, rubr)");
+			return serverInterface.get("ModelServerInterface.check_similarity(doc, rubr)").asString();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

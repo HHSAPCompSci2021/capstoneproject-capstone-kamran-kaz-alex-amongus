@@ -169,7 +169,6 @@ with strategy.scope():
         metrics=["acc"],
     )
 
-print(f"Strategy: {strategy}")
 model.summary()
 
 model.load_weights("model_weights.h5")
