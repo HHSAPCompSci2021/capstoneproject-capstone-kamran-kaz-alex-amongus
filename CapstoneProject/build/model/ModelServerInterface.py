@@ -172,7 +172,7 @@ with strategy.scope():
 print(f"Strategy: {strategy}")
 model.summary()
 
-model.load_weights("C:\\Users\\Kamran\\Documents\\GitHub\\capstoneproject-capstone-kamran-kaz-alex-amongus\\CapstoneProject\\build\\model\\model_weights.h5")
+model.load_weights("model_weights.h5")
 
 
 """## Inference on custom sentences"""

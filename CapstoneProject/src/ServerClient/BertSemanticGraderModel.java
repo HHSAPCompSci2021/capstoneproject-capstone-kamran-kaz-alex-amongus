@@ -100,10 +100,8 @@ public class BertSemanticGraderModel {
 		serverInterface = new PythonInterpreter();
 		
 		try {
-			if (createNewModel)
-				buildModel();
-			else
-				loadModel();
+			buildModel();
+			loadModel();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -271,13 +269,10 @@ public class BertSemanticGraderModel {
 	 * @throws IOException             If the model directory or server resources cannot be loaded or found.
 	 */
 	public void loadModel() throws IOException {
-		try {
-			serverInterface.exec("import sys");
-			serverInterface.exec("sys.path.insert(0, '/Users/Kamran/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/src/ServerClient/ModelServerInterface.py'");
-			serverInterface.exec("import ModelServerInterface");
-		} catch (Exception e) {
-			throw new IOException("Something went wrong when building the model");
-		}
+		serverInterface.exec("import os"
+				+ "\nos.chdir(\"/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model\")"
+				+ "\nimport ModelServerInterface.py");
+		serverInterface.exec("import ModelServerInterface.py");
 	}
 	
 	/**
@@ -288,7 +283,7 @@ public class BertSemanticGraderModel {
 	 * @return A string detailing the semantic relatedness of the two inputs, corresponding, contradiction, or neutral for gibberish
 	 */
 	public String predict(String document, String rubricCategory) {
-		serverInterface.exec("import ModelServerInterface");
+		serverInterface.exec("import ModelServerInterface.py");
 		serverInterface.exec("doc = '"+document+"'");
 		serverInterface.exec("rubr = '"+rubricCategory+"'");
 		serverInterface.exec("ModelServerInterface.check_similarity(doc, rubr)");
