@@ -88,7 +88,7 @@ public class Classroom {
 	/**
 	 * Adds a Student object to the list of students in the classroom
 	 * @pre Student must be initialized.
-	 * @param student
+	 * @param student Student to be added to the classroom
 	 */
 	public void addStudent(Student student) {
 		if (student == null) 
@@ -99,7 +99,7 @@ public class Classroom {
 	/**
 	 * Adds a Teacher object to the list of teachers in the classroom
 	 * @pre Teacher must be initialized.
-	 * @param teacher
+	 * @param teacher Teacher to be added to the classroom
 	 */
 	public void addTeacher(Teacher teacher) {
 		if (teacher == null) 

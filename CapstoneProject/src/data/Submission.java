@@ -8,7 +8,9 @@ package data;
  *
  */
 public class Submission {
-	
+	/**
+	 * The default String for which ungraded assignments recieve
+	 */
 	public static final String UNGRADED = "UNGRADED";
 	
 	private String name;

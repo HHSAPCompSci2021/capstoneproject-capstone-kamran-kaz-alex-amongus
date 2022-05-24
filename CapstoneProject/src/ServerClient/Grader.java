@@ -24,6 +24,9 @@ public class Grader {
 
 	private BertSemanticGraderModel model;
 
+	/**
+	 * 
+	 */
 	public Grader() {
 		model = new BertSemanticGraderModel(true);
 		try {

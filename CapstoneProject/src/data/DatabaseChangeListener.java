@@ -29,6 +29,9 @@ public class DatabaseChangeListener implements ChildEventListener {
 		classrooms = new HashMap<String, Classroom>();
 	}
 
+	/**
+	 * Removes tasks from the queue
+	 */
 	public void post() {
 		while (!tasks.isEmpty()) {
 			Runnable r = tasks.remove();

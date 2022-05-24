@@ -25,8 +25,17 @@ import data.Submission;
  */
 public class SubmissionScreen extends JFrame implements ActionListener{
 
+	/**
+	 * File separator for the OS that is being used
+	 */
 	public final static String fileSeparator = System.getProperty("file.separator");
+	/**
+	 * The user directory
+	 */
 	public final static String userDir = System.getProperty("user.dir");
+	/**
+	 * The line separator that is used by the OS
+	 */
 	public final static String lineSeparator = System.getProperty("line.separator");
 	
 	private Classroom classroom;

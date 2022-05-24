@@ -30,7 +30,7 @@ public class SelectAssignmentScreen extends JFrame implements ActionListener{
 	private JButton submit;
 	private JButton back;
 	
-	JList<String> list;
+	private JList<String> list;
 	
 	/**
 	 * Creates a screen that allows the user to choose a assignment to submit to

@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"client","h":"","u":""},{"l":"ServerClient","h":"","u":""},{"l":"所有程序包","h":"","u":"allpackages-index.html"}]
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"client"},{"l":"data"},{"l":"ServerClient"}];updateSearchResults();

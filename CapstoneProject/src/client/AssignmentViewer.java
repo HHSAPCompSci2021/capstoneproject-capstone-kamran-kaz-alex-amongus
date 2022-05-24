@@ -32,9 +32,17 @@ import data.Teacher;
  */
 public class AssignmentViewer extends JFrame implements ActionListener {
 
-	
+	/**
+	 * File separator character used by the OS
+	 */
 	public final static String fileSeparator = System.getProperty("file.separator");
+	/**
+	 * User directory
+	 */
 	public final static String userDir = System.getProperty("user.dir");
+	/**
+	 * The line separator used by the OS
+	 */
 	public final static String lineSeparator = System.getProperty("line.separator");
 	
 	private Classroom classroom;
