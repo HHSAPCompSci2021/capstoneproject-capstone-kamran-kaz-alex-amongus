@@ -268,10 +268,7 @@ public class BertSemanticGraderModel {
 	/**
 	 * Loads the pretrained model from a file save and starts the model entry point server
 	 * 
-	 * @throws ModelNotFoundException  If the model cannot be found in the expected
-	 *                                 directory
-	 * @throws MalformedModelException If the model weights are not loaded properly
-	 * @throws IOException             If the model directory cannot be found
+	 * @throws IOException             If the model directory or server resources cannot be loaded or found.
 	 */
 	public void loadModel() throws IOException {
 		try {
@@ -281,7 +278,13 @@ public class BertSemanticGraderModel {
 		}
 	}
 	
-	
+	/**
+	 * Predicts a 
+	 * 
+	 * @param document The Student essay or other document as a String.
+	 * @param rubricCategory The rubric category phrase to test the students essay against.
+	 * @return A string detailing the semantic relatedness of the two inputs, corresponding, contradiction, or neutral for gibberish
+	 */
 	public String predict(String document, String rubricCategory) {
 		serverInterface.exec("doc = '"+document+"'");
 		serverInterface.exec("rubr = '"+rubricCategory+"'");
@@ -309,7 +312,7 @@ public class BertSemanticGraderModel {
 
 	/**
 	 * The BERT Featurizer that tokenizes the input data and does basic
-	 * preprocessing
+	 * preprocessing.
 	 * 
 	 * @author Kamran Hussain
 	 */
