@@ -276,7 +276,7 @@ public class BertSemanticGraderModel {
 	}
 	
 	/**
-	 * Predicts a 
+	 * Predicts the simiarlity between the inputted and outputted documents. 
 	 * 
 	 * @param document The Student essay or other document as a String.
 	 * @param rubricCategory The rubric category phrase to test the students essay against.
