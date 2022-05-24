@@ -25,8 +25,7 @@ import data.Teacher;
  */
 public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 
-	private int rubric;
-	private Classroom classroom;
+	
 	private Teacher teacher;
 	
 	private ArrayList<Submission> gradedSubmissions;
@@ -43,8 +42,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	 * @param teacher Teacher that is accessing the submissions
 	 */
 	public TeacherSubmissionViewer(Classroom classroom, int rubric, Teacher teacher) {
-		this.classroom = classroom;
-		this.rubric = rubric;
+		
 		this.teacher = teacher;
 		
 		gradedSubmissions = classroom.getGraded(rubric);

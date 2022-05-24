@@ -8,19 +8,15 @@ import java.util.ArrayList;
  * @author Kaz Nakao
  */
 
-public class Student {
+public class Student extends User{
 	
 	private ArrayList<Submission> submissions;
-	private String name;
-	private String id;
-	
 	/**
 	 * No args Constructor. The submissions for the student will be set to an empty list and the name and id will be set to an empty string.
 	 */
 	public Student() {
+		super();
 		submissions = new ArrayList<Submission>();
-		name = "";
-		id = "";
 	}
 	
 	/**
@@ -29,9 +25,8 @@ public class Student {
 	 * @param idnum ID number of the student
 	 */
 	public Student(String username, String idnum) {
+		super(username, idnum);
 		submissions = new ArrayList<Submission>();
-		name = username;
-		id = idnum;
 	}
 
 	/**
@@ -61,45 +56,18 @@ public class Student {
 	
 	
 	/**
-	 * 
+	 * Returns an arraylist of the submissions of the student in a particular classroom. 
 	 * @return An ArrayList of the submissions that the student has
 	 */
 	public ArrayList<Submission> getSubmissions() {
 		return submissions;
 	}
 	
-	/**
-	 * 
-	 * @return The name of the student
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	/**
-	 * 
-	 * @return The id number of the student as a String
-	 */
-	public String getId() {
-		return id;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		Student other = null;
-		if (obj instanceof Student) 
-			other = (Student)obj;
-		else 
-			throw new IllegalArgumentException("Must be type Student");
-		
-		return name.equals(other.getName()) && id.equals(other.getId());
-	}
 	
 	
 	@Override
 	public String toString() {
-		String output = "Name: " + name + ", ";
-		output += "ID: " + id;
+		String output = super.toString();
 		output += " submisisons: " + submissions.size();
 		return output;
 	}

@@ -49,7 +49,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 		
 		updateMap(dataSnapshot);
 		
-		Classroom classroom = dataSnapshot.getValue(Classroom.class);
+		//Classroom classroom = dataSnapshot.getValue(Classroom.class);
 		//System.out.println("SYNCED, CLASSROOM = " + classroom.toString() + "\nCLASSROOMS: = " + classrooms.toString());
 	}
 
@@ -59,7 +59,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 		
 		updateMap(dataSnapshot);
 		
-		Classroom classroom = dataSnapshot.getValue(Classroom.class);
+		//Classroom classroom = dataSnapshot.getValue(Classroom.class);
 		//System.out.println("SYNCED, PRINT = " + classroom.toString() + "\nCLASSROOMS: = " + classrooms.toString());
 		
 	}
