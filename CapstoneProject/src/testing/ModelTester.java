@@ -9,7 +9,7 @@ public class ModelTester {
 
 	public static void main(String[] args) {
 		try {
-			test();
+			System.out.println(test());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -17,8 +17,8 @@ public class ModelTester {
 	
 	public static String test() {
 		try {
-			ProcessBuilder pb = new ProcessBuilder("python3", System.getProperty("user.dir") 
-					+ "/build/model/ModelServerInterface.py", "Hello World", "hi world");
+			ProcessBuilder pb = new ProcessBuilder("python", System.getProperty("user.dir") 
+					+ "/build/model/ModelServerInterface.py", "Hello World", "Hi world");
 			
 			Process process = pb.start();
 			
@@ -29,10 +29,6 @@ public class ModelTester {
 			String lines = "";
 			while((lines=reader.readLine())!=null) {
 				System.out.println(lines);
-				
-				if("correspondingcontradictionneutral".indexOf(lines) > 0) {
-					res= lines;
-				}
 			}
 			
 			while((lines=readers.readLine()) != null) {

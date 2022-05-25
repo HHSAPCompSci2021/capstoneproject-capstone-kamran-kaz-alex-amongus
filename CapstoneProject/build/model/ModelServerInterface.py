@@ -175,7 +175,7 @@ with strategy.scope():
     )
 
 model.summary()
-model.load_weights("model_weights.h5")
+model.load_weights(os.getcwd()+"\\build\\model\\model_weights.h5")
 
 
 """## Inference on custom sentences"""

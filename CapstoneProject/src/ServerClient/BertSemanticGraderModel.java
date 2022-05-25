@@ -1,6 +1,8 @@
 package ServerClient;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -285,15 +287,30 @@ public class BertSemanticGraderModel {
 	 */
 	public String predict(String document, String rubricCategory) {
 		try {
-			serverInterface.exec("doc = '"+document+"'");
-			serverInterface.exec("rubr = '"+rubricCategory+"'");
-			serverInterface.exec("import ModelServerInterface");
-			//serverInterface.exec("ModelServerInterface.check_similarity(doc, rubr)");
-			return serverInterface.get("ModelServerInterface.check_similarity(doc, rubr)").asString();
+			ProcessBuilder pb = new ProcessBuilder("python", System.getProperty("user.dir") 
+					+ "/build/model/ModelServerInterface.py", document, rubricCategory);
+			
+			Process process = pb.start();
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			BufferedReader readers = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			
+			String res = "";
+			String lines = "";
+			while((lines=reader.readLine())!=null) {
+				System.out.println(lines);
+			}
+			
+			while((lines=readers.readLine()) != null) {
+				System.out.println(lines);
+			}
+			
+			return res;
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "";
+		return"";
 	}
 
 	/**
