@@ -25,17 +25,21 @@ public class ModelTester {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			BufferedReader readers = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			
+			String res = "";
 			String lines = "";
 			while((lines=reader.readLine())!=null) {
 				System.out.println(lines);
+				
+				if("correspondingcontradictionneutral".indexOf(lines) > 0) {
+					res= lines;
+				}
 			}
 			
 			while((lines=readers.readLine()) != null) {
 				System.out.println(lines);
-				
 			}
 			
-			return lines;
+			return res;
 			
 		} catch(Exception e) {
 			e.printStackTrace();
