@@ -35,11 +35,16 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import transformers
+import sys
+import os
 
-print(tf.__version__)
+# System Input Configuration
+print("Starting Grader Server")
+print('Arguments List:', str(sys.argv))
+workingdirectory=os.getcwd()
+
 
 """## Configuration"""
-
 max_length = 256  # Maximum length of input sentence to the model.
 batch_size = 32
 labels = ["contradiction", "corresponding", "neutral"] # Dataset labels
@@ -170,12 +175,10 @@ with strategy.scope():
     )
 
 model.summary()
-
 model.load_weights("model_weights.h5")
 
 
 """## Inference on custom sentences"""
-
 def check_similarity(sentence1, sentence2):
     sentence_pairs = np.array([[str(sentence1), str(sentence2)]])
     test_data = BertSemanticDataGenerator(
@@ -186,6 +189,6 @@ def check_similarity(sentence1, sentence2):
     idx = np.argmax(proba)
     pred = labels[idx]
     return pred
+    
 
-while(True):
-    print(check_similarity(input("Essay: "), input("Rubric: ")))
+print(check_similarity(sys.argv[1], sys.argv[2]))
