@@ -114,7 +114,6 @@ public class Main {
 			}
 		}
 		
-//		String grade = labels[(int)sum];
 		return response;
 	}
 	

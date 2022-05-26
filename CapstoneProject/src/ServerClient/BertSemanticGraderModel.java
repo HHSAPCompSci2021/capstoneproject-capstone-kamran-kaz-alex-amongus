@@ -6,12 +6,12 @@ import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.deeplearning4j.models.word2vec.Word2Vec;
+import org.deeplearning4j.models.fasttext.FastText;
 import org.deeplearning4j.nn.conf.ComputationGraphConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.inputs.InputType;
@@ -283,14 +283,11 @@ public class BertSemanticGraderModel {
 	 */
 	public String predict(String document, String rubricCategory) {
 		try {
-			System.out.println(rubricCategory);
-			System.out.println(document);
-			Word2Vec vector = new Word2Vec();
-			
+			FastText vector = new FastText();
 			//double sim = loadedModel.calcRelatednessOfWords(document, rubricCategory);
 			double sim = Transforms.cosineSim(vector.getWordVectorMatrix(document),
 					vector.getWordVectorMatrix(rubricCategory));
-			
+			System.out.println(sim);
 			if(sim > 70)
 				return "corresponding";
 			else 
