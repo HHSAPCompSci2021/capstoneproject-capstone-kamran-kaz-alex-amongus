@@ -105,7 +105,10 @@ public class DatabaseChangeListener implements ChildEventListener {
 		Classroom classroom = dataSnapshot.getValue(Classroom.class);
 		classrooms.put(key, classroom);
 	}
-	
+	/**
+	 * Updates the queue for grading assignments
+	 * @param dataSnapshot The datasnapshot from when the event was triggered in the database
+	 */
 	private void updateQueue(DataSnapshot dataSnapshot) {
 		String key = dataSnapshot.getKey();
 		Classroom classroom = dataSnapshot.getValue(Classroom.class);
