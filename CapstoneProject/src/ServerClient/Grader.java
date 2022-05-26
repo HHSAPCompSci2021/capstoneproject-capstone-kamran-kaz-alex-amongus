@@ -49,6 +49,8 @@ public class Grader {
 			return new String[] {"Plagiarized"};
 		}
 		
+		System.out.println("Grading...");
+		
 		String[] labels = new String[] {"A", "B", "C", "D", "F"};
 		try {
 			String[] grades = new String[rubric.length];
@@ -58,17 +60,20 @@ public class Grader {
 				String match = "";
 				while(!match.equals("corresponding")) {
 					match = model.predict(document, rubric[i][j]);
-					if(j == labels.length) {
+					if(j == labels.length-1) {
 						match = "corresponding";
 					}
 					j++;
 				}
 				grades[i] = labels[j];
 			}
+			
+			System.out.println("Done Grading");
 			return grades;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("Done Grading");
 		
 		return new String[] {"Un-Graded"};
 	}
@@ -109,8 +114,12 @@ public class Grader {
 	 */
 	public double cosineSimForSentence(String studentDocument1, String studentDocument2) {
 		Word2Vec vector = new Word2Vec();
-		return Transforms.cosineSim(vector.getWordVectorMatrix(studentDocument1),
-				vector.getWordVectorMatrix(studentDocument2)) * 100;
+		try {
+			return Transforms.cosineSim(vector.getWordVectorMatrix(studentDocument1),
+				vector.getWordVectorMatrix(studentDocument2));
+		} catch(java.lang.NullPointerException e) {
+			return 0.0;
+		}
 	}
 
 	/**
@@ -126,8 +135,13 @@ public class Grader {
 		String copy2 = String.copyValueOf(studentDocument2.toCharArray());
 		copy1.replaceAll(" ", "");
 		copy2.replaceAll(" ", "");
+		int longest = 0;
+		if(copy1.length() > copy2.length()) {
+			longest=copy2.length();
+		} else
+			longest=copy1.length();
 		double percentage = 0;
-		for (int i = 0; i < copy1.length(); i++) {
+		for (int i = 0; i < longest; i++) {
 			if (copy1.charAt(i) == copy2.charAt(i)) {
 				percentage++;
 			}

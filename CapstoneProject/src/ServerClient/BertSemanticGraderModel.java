@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
+import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.nn.conf.ComputationGraphConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.inputs.InputType;
@@ -26,7 +27,7 @@ import org.nd4j.autodiff.samediff.SameDiff;
 import org.nd4j.common.io.ClassPathResource;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
-import org.python.util.PythonInterpreter;
+import org.nd4j.linalg.ops.transforms.Transforms;
 
 import ai.djl.Application;
 import ai.djl.MalformedModelException;
@@ -68,6 +69,7 @@ import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
 import ai.djl.translate.TranslatorContext;
 
+
 /**
  * A BERT Model Version using the Deep Java Library Bi-directional Encoders for
  * Transformers (BERT) Wrapper. This model uses the DistilBERT version of the
@@ -88,7 +90,6 @@ public class BertSemanticGraderModel {
 
 	private ZooModel<NDList, NDList> embedding;
 	private Model model;
-	private PythonInterpreter serverInterface;
 
 	/**
 	 * Creates a new DLJ BERT model object and builds the necessary engines and
@@ -99,12 +100,9 @@ public class BertSemanticGraderModel {
 	 */
 	public BertSemanticGraderModel(boolean createNewModel) {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
-		serverInterface = new PythonInterpreter();
-		
 		try {
 			buildModel();
-			loadModel();
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -269,13 +267,11 @@ public class BertSemanticGraderModel {
 	 * Loads the pretrained model from a file save and starts the model entry point server
 	 * 
 	 * @throws IOException             If the model directory or server resources cannot be loaded or found.
+	 * @throws UnsupportedKerasConfigurationException 
+	 * @throws InvalidKerasConfigurationException 
 	 */
-	public void loadModel() throws IOException {
-		serverInterface.exec("import os"
-				+ "\nos.chdir(\"/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model/\")");
-		serverInterface.exec("import sys"
-				+"\nsys.path.append('/Users/kamranhussain/Documents/GitHub/capstoneproject-capstone-kamran-kaz-alex-amongus/CapstoneProject/build/model')");
-		serverInterface.exec("sys.path.append('/Users/kamranhussain/opt/anaconda3/lib/python3.7/site-packages')");
+	public void loadModel() throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
+		//loadedModel = new WuPalmer(db);
 	}
 	
 	/**
@@ -287,30 +283,22 @@ public class BertSemanticGraderModel {
 	 */
 	public String predict(String document, String rubricCategory) {
 		try {
-			ProcessBuilder pb = new ProcessBuilder("python", System.getProperty("user.dir") 
-					+ "/build/model/ModelServerInterface.py", document, rubricCategory);
+			Word2Vec vector = new Word2Vec();
 			
-			Process process = pb.start();
+			//double sim = loadedModel.calcRelatednessOfWords(document, rubricCategory);
+			double sim = Transforms.cosineSim(vector.getWordVectorMatrix(document),
+					vector.getWordVectorMatrix(rubricCategory));
 			
-			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			BufferedReader readers = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			if(sim > 70)
+				return "corresponding";
+			else 
+				return "contradicting";
 			
-			String res = "";
-			String lines = "";
-			while((lines=reader.readLine())!=null) {
-				System.out.println(lines);
-			}
-			
-			while((lines=readers.readLine()) != null) {
-				System.out.println(lines);
-			}
-			
-			return res;
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return"";
+		return "contradicting";
 	}
 
 	/**

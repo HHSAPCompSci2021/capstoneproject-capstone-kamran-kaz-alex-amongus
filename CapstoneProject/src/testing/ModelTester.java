@@ -9,7 +9,7 @@ public class ModelTester {
 
 	public static void main(String[] args) {
 		try {
-			System.out.println(test());
+			new BertSemanticGraderModel(false).loadModel();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -28,6 +28,8 @@ public class ModelTester {
 			String res = "";
 			String lines = "";
 			while((lines=reader.readLine())!=null) {
+				if((lines.indexOf("corresponding") > 0) || (lines.indexOf("contradicting") > 0) || (lines.indexOf("neutral") > 0)) 
+					res=lines;
 				System.out.println(lines);
 			}
 			
