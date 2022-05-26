@@ -92,6 +92,12 @@ public class Main {
 		return map;
 	}
 	
+	/**
+	 * Finds the average of the grades calculated by the model 
+	 * 
+	 * @param grades The string array of grades for each rubric category produced by the model
+	 * @return The final, overall grade that is averaged.
+	 */
 	private static String getGrades(String[] grades) {
 		String[] labels = new String[] {"A", "B", "C", "D", "F"};
 		int[] score = new int[] {5, 4, 3, 2, 1};
