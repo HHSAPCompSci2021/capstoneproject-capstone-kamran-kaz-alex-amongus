@@ -1,6 +1,7 @@
 package data;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -112,14 +113,14 @@ public class DatabaseChangeListener implements ChildEventListener {
 	private void updateQueue(DataSnapshot dataSnapshot) {
 		String key = dataSnapshot.getKey();
 		Classroom classroom = dataSnapshot.getValue(Classroom.class);
-		for (Student s : classroom.getStudents()) {
-			for (Submission submit : s.getSubmissions()) {
-				if (!submit.getGrade().equals(Submission.UNGRADED)) {
-					HashMap<String, Classroom> entry = new HashMap<String, Classroom>();
-					entry.put(key, classroom);
-					for (Map.Entry<String, Classroom> queueEntry : entry.entrySet()) {
-						tasks.add(queueEntry);
-					}
+		ArrayList<Rubric> assignments = classroom.getAssignments();
+		for (int i = 0; i < assignments.size(); i++) {
+			if (classroom.getUngraded(i).size() > 0) {
+				HashMap<String, Classroom> entry = new HashMap<String, Classroom>();
+				entry.put(key, classroom);
+				for (Map.Entry<String, Classroom> queueEntry : entry.entrySet()) {
+					tasks.add(queueEntry);
+					break;
 				}
 			}
 		}

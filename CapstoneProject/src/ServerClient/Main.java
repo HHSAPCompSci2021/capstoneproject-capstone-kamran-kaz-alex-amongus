@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import ai.djl.ModelException;
 import ai.djl.translate.TranslateException;
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import data.Classroom;
 import data.DatabaseModifier;
 import data.Rubric;
@@ -25,6 +26,7 @@ public class Main {
 	public static void main(String[] args) throws IOException, TranslateException, ModelException {
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 	    root.setLevel(ch.qos.logback.classic.Level.ERROR);
+	    Runtime.getRuntime().addShutdownHook(new ForceClosedMessage());
 	    
 		// Load essays and rubric from database
 		DatabaseModifier.setupDatabase(); //initializes firebase things on machine
@@ -33,10 +35,10 @@ public class Main {
 		//Put them into the hashmap
 		Grader g = new Grader();
 		
-		//Goes through each classroom in the database
-		//Finds the ungraded classrooms and collects them as a HashMap of submissions and rubrics as 2D arrays
-		//Get the grade for the assignment from the model, update the grade of the submisson
-		//After going through all of the ungraded assignments in the classroom, updates all the submissions. 
+		// Goes through each classroom in the database
+		// Finds the ungraded classrooms and collects them as a HashMap of submissions and rubrics as 2D arrays
+		// Get the grade for the assignment from the model, update the grade of the submisson
+		// After going through all of the ungraded assignments in the classroom, updates all the submissions. 
 		
 		ConcurrentLinkedQueue<Map.Entry<String, Classroom>> queue = DatabaseModifier.getQueue();
 		
@@ -48,7 +50,9 @@ public class Main {
 				HashMap<Submission, String[][]> ungraded = getSubmissions(classroom);
 				for (Map.Entry<Submission, String[][]> submit : ungraded.entrySet()) {
 					String content = submit.getKey().getContent();
-					g.getGrade(content, submit.getValue());
+					String[] grades = g.getGrade(content, submit.getValue());
+					String grade = getGrades(grades);
+					submit.getKey().setGrade(grade);
 				}
 				DatabaseModifier.set(entry.getKey(), classroom);
 			}
@@ -88,6 +92,12 @@ public class Main {
 		return map;
 	}
 	
+	/**
+	 * Finds the average of the grades calculated by the model 
+	 * 
+	 * @param grades The string array of grades for each rubric category produced by the model
+	 * @return The final, overall grade that is averaged.
+	 */
 	private static String getGrades(String[] grades) {
 		String[] labels = new String[] {"A", "B", "C", "D", "F"};
 		int[] score = new int[] {5, 4, 3, 2, 1};
@@ -102,9 +112,18 @@ public class Main {
 			}
 			sum += score[match];
 		}
-		sum /= grades.length;
-		Integer grade = (int)sum;
-		return grade.toString();
+		sum = (int)(sum / grades.length);
+		
+		String response = "";
+		
+		for (int i = 0; i < labels.length; i++) {
+			if (score[i] == (int)sum) {
+				response = labels[i];
+			}
+		}
+		
+		return response;
 	}
-	
 }
+
+

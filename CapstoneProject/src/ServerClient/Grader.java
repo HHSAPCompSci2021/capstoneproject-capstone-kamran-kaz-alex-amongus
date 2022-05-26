@@ -1,6 +1,7 @@
 package ServerClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.deeplearning4j.models.word2vec.Word2Vec;
@@ -45,6 +46,8 @@ public class Grader {
 	 * @return An array of grades for each rubric category
 	 */
 	public String[] getGrade(String document, String[][] rubric) {
+		System.out.println("Grading...");
+		
 		if(isPlagiarized(document)) {
 			return new String[] {"Plagiarized"};
 		}
@@ -52,25 +55,30 @@ public class Grader {
 		String[] labels = new String[] {"A", "B", "C", "D", "F"};
 		try {
 			String[] grades = new String[rubric.length];
-			for (int i = 0; i < rubric.length; i++) {
+			for (int i = 1; i < rubric.length; i++) {
 				//check this rubric row
-				int j = 0;
+				int j = -1;
 				String match = "";
 				while(!match.equals("corresponding")) {
-					match = model.predict(document, rubric[i][j]);
-					if(j == labels.length) {
-						match = "corresponding";
-					}
 					j++;
+					match = model.predict(document, rubric[j][i]);
+					if(j == labels.length-1) {
+						match = "corresponding";
+						break;
+					}
 				}
-				grades[i] = labels[j];
+				grades[i-1] = labels[j];
 			}
+			
+			System.out.println("Done Grading");
+			System.out.println(Arrays.toString(grades));
 			return grades;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("Done Grading");
 		
-		return new String[] {"Un-Graded"};
+		return new String[] {"F"};
 	}
 	
 	/**
@@ -109,8 +117,12 @@ public class Grader {
 	 */
 	public double cosineSimForSentence(String studentDocument1, String studentDocument2) {
 		Word2Vec vector = new Word2Vec();
-		return Transforms.cosineSim(vector.getWordVectorMatrix(studentDocument1),
-				vector.getWordVectorMatrix(studentDocument2)) * 100;
+		try {
+			return Transforms.cosineSim(vector.getWordVectorMatrix(studentDocument1),
+				vector.getWordVectorMatrix(studentDocument2));
+		} catch(java.lang.NullPointerException e) {
+			return 0.0;
+		}
 	}
 
 	/**
@@ -126,8 +138,13 @@ public class Grader {
 		String copy2 = String.copyValueOf(studentDocument2.toCharArray());
 		copy1.replaceAll(" ", "");
 		copy2.replaceAll(" ", "");
+		int longest = 0;
+		if(copy1.length() > copy2.length()) {
+			longest=copy2.length();
+		} else
+			longest=copy1.length();
 		double percentage = 0;
-		for (int i = 0; i < copy1.length(); i++) {
+		for (int i = 0; i < longest; i++) {
 			if (copy1.charAt(i) == copy2.charAt(i)) {
 				percentage++;
 			}
