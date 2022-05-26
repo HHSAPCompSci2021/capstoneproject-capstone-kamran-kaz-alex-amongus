@@ -1,6 +1,7 @@
 package ServerClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.deeplearning4j.models.word2vec.Word2Vec;
@@ -70,6 +71,7 @@ public class Grader {
 			}
 			
 			System.out.println("Done Grading");
+			System.out.println(Arrays.toString(grades));
 			return grades;
 		} catch (Exception e) {
 			e.printStackTrace();

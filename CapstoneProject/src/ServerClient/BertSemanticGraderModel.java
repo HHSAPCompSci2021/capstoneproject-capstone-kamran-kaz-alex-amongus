@@ -283,6 +283,8 @@ public class BertSemanticGraderModel {
 	 */
 	public String predict(String document, String rubricCategory) {
 		try {
+			System.out.println(rubricCategory);
+			System.out.println(document);
 			Word2Vec vector = new Word2Vec();
 			
 			//double sim = loadedModel.calcRelatednessOfWords(document, rubricCategory);
