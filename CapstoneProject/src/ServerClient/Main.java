@@ -48,7 +48,9 @@ public class Main {
 				HashMap<Submission, String[][]> ungraded = getSubmissions(classroom);
 				for (Map.Entry<Submission, String[][]> submit : ungraded.entrySet()) {
 					String content = submit.getKey().getContent();
-					g.getGrade(content, submit.getValue());
+					String[] grades = g.getGrade(content, submit.getValue());
+					String grade = getGrades(grades);
+					submit.getKey().setGrade(grade);
 				}
 				DatabaseModifier.set(entry.getKey(), classroom);
 			}
@@ -102,9 +104,18 @@ public class Main {
 			}
 			sum += score[match];
 		}
-		sum /= grades.length;
-		Integer grade = (int)sum;
-		return grade.toString();
+		sum = (int)(sum / grades.length);
+		
+		String response = "";
+		
+		for (int i = 0; i < labels.length; i++) {
+			if (score[i] == (int)sum) {
+				response = labels[i];
+			}
+		}
+		
+//		String grade = labels[(int)sum];
+		return response;
 	}
 	
 }

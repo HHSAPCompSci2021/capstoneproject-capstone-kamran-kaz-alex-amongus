@@ -55,19 +55,19 @@ public class Grader {
 		String[] labels = new String[] {"A", "B", "C", "D", "F"};
 		try {
 			String[] grades = new String[rubric.length];
-			for (int i = 0; i < rubric.length; i++) {
+			for (int i = 1; i < rubric.length; i++) {
 				//check this rubric row
 				int j = -1;
 				String match = "";
 				while(!match.equals("corresponding")) {
 					j++;
-					match = model.predict(document, rubric[i][j]);
+					match = model.predict(document, rubric[j][i]);
 					if(j == labels.length-1) {
 						match = "corresponding";
 						break;
 					}
 				}
-				grades[i] = labels[j];
+				grades[i-1] = labels[j];
 			}
 			
 			System.out.println("Done Grading");
