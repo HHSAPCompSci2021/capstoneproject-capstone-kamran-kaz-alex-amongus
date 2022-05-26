@@ -45,25 +45,26 @@ public class Grader {
 	 * @return An array of grades for each rubric category
 	 */
 	public String[] getGrade(String document, String[][] rubric) {
+		System.out.println("Grading...");
+		
 		if(isPlagiarized(document)) {
 			return new String[] {"Plagiarized"};
 		}
-		
-		System.out.println("Grading...");
 		
 		String[] labels = new String[] {"A", "B", "C", "D", "F"};
 		try {
 			String[] grades = new String[rubric.length];
 			for (int i = 0; i < rubric.length; i++) {
 				//check this rubric row
-				int j = 0;
+				int j = -1;
 				String match = "";
 				while(!match.equals("corresponding")) {
+					j++;
 					match = model.predict(document, rubric[i][j]);
 					if(j == labels.length-1) {
 						match = "corresponding";
+						break;
 					}
-					j++;
 				}
 				grades[i] = labels[j];
 			}
@@ -75,7 +76,7 @@ public class Grader {
 		}
 		System.out.println("Done Grading");
 		
-		return new String[] {"Un-Graded"};
+		return new String[] {"F"};
 	}
 	
 	/**

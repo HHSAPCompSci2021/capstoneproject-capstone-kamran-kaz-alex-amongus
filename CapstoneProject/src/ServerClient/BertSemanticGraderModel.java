@@ -295,10 +295,9 @@ public class BertSemanticGraderModel {
 				return "contradicting";
 			
 			
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(NullPointerException e) {
+			return "contradicting";
 		}
-		return "contradicting";
 	}
 
 	/**
