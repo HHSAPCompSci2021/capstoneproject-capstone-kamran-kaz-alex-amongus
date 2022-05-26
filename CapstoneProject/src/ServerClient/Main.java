@@ -3,6 +3,7 @@ package ServerClient;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.ArrayList;
 
 import ai.djl.ModelException;
@@ -11,6 +12,7 @@ import data.Classroom;
 import data.DatabaseModifier;
 import data.Rubric;
 import data.RubricRow;
+import data.Student;
 import data.Submission;
 
 /**
@@ -36,26 +38,19 @@ public class Main {
 		//Get the grade for the assignment from the model, update the grade of the submisson
 		//After going through all of the ungraded assignments in the classroom, updates all the submissions. 
 		
+		ConcurrentLinkedQueue<Map.Entry<String, Classroom>> queue = DatabaseModifier.getQueue();
+		
 		while (true) {
-			//refresh the collection of classrooms
-			HashMap<String, Classroom> classrooms = DatabaseModifier.getClassrooms();
-			System.out.println("Fetching classrooms");
-			for (Map.Entry<String, Classroom> classroom : classrooms.entrySet()) {
-				String key = classroom.getKey();
-				HashMap<Submission, String[][]> submission = getSubmissions(classroom.getValue());
-				System.out.println(submission);
-				//grades
-				for (Map.Entry<Submission, String[][]> entry : submission.entrySet()) {
-					// get grade from grader
-					String[] grade = g.getGrade(entry.getKey().getContent(), entry.getValue());
-					
-					// set grade
-					entry.getKey().setGrade(getGrades(grade));
-					System.out.println("graded: " + entry.getValue());
-					
+			//refresh the collection of classroomsRef
+			if (queue.size() > 0) {
+				Map.Entry<String, Classroom> entry = queue.remove();
+				Classroom classroom = entry.getValue();
+				HashMap<Submission, String[][]> ungraded = getSubmissions(classroom);
+				for (Map.Entry<Submission, String[][]> submit : ungraded.entrySet()) {
+					String content = submit.getKey().getContent();
+					g.getGrade(content, submit.getValue());
 				}
-				//update database
-				DatabaseModifier.set(key, classroom.getValue());
+				DatabaseModifier.set(entry.getKey(), classroom);
 			}
 		}
 		//Updates database if hashmap is empty

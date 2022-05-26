@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.GcpLaunchStage.Deprecated;
@@ -138,6 +139,10 @@ public class DatabaseModifier {
 			}
 		}
 		return "";
+	}
+	
+	public static ConcurrentLinkedQueue<Map.Entry<String, Classroom>> getQueue() {
+		return DBChangeListener.getQueue();
 	}
 	
 }

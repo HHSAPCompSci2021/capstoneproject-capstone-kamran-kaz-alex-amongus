@@ -1,6 +1,8 @@
 package data;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.google.firebase.database.ChildEventListener;
@@ -17,7 +19,7 @@ import com.google.firebase.database.DatabaseError;
  *
  */
 public class DatabaseChangeListener implements ChildEventListener {
-	private ConcurrentLinkedQueue<Runnable> tasks;
+	private ConcurrentLinkedQueue<Map.Entry<String, Classroom>> tasks;
 	private HashMap<String, Classroom> classrooms;
 
 	/**
@@ -25,19 +27,21 @@ public class DatabaseChangeListener implements ChildEventListener {
 	 */
 	public DatabaseChangeListener() { // This threading strategy will work with Processing programs. Just use this
 										// code inside your PApplet.
-		tasks = new ConcurrentLinkedQueue<Runnable>();
+		tasks = new ConcurrentLinkedQueue<Map.Entry<String, Classroom>>();
 		classrooms = new HashMap<String, Classroom>();
 	}
 
 	/**
 	 * Removes tasks from the queue
 	 */
+	/*
 	public void post() {
 		while (!tasks.isEmpty()) {
 			Runnable r = tasks.remove();
 			r.run();
 		}
 	}
+	*/
 
 	@Override
 	public void onCancelled(DatabaseError err) {
@@ -54,7 +58,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 		System.out.println("onChildAdded() called");
 		
 		updateMap(dataSnapshot);
-		
+		updateQueue(dataSnapshot);
 		//Classroom classroom = dataSnapshot.getValue(Classroom.class);
 		//System.out.println("SYNCED, CLASSROOM = " + classroom.toString() + "\nCLASSROOMS: = " + classrooms.toString());
 	}
@@ -64,7 +68,7 @@ public class DatabaseChangeListener implements ChildEventListener {
 		System.out.println("onChildChanged() called");
 		
 		updateMap(dataSnapshot);
-		
+		updateQueue(dataSnapshot);
 		//Classroom classroom = dataSnapshot.getValue(Classroom.class);
 		//System.out.println("SYNCED, PRINT = " + classroom.toString() + "\nCLASSROOMS: = " + classrooms.toString());
 		
@@ -88,6 +92,10 @@ public class DatabaseChangeListener implements ChildEventListener {
 		return classrooms;
 	}
 	
+	public ConcurrentLinkedQueue<Map.Entry<String, Classroom>> getQueue() {
+		return tasks;
+	}
+	
 	/**
 	 * Updates the hashmap upon updates in the server
 	 * @param dataSnapshot The datasnapshot from when the event was triggered in the database
@@ -96,5 +104,21 @@ public class DatabaseChangeListener implements ChildEventListener {
 		String key = dataSnapshot.getKey();
 		Classroom classroom = dataSnapshot.getValue(Classroom.class);
 		classrooms.put(key, classroom);
+	}
+	
+	private void updateQueue(DataSnapshot dataSnapshot) {
+		String key = dataSnapshot.getKey();
+		Classroom classroom = dataSnapshot.getValue(Classroom.class);
+		for (Student s : classroom.getStudents()) {
+			for (Submission submit : s.getSubmissions()) {
+				if (!submit.getGrade().equals(Submission.UNGRADED)) {
+					HashMap<String, Classroom> entry = new HashMap<String, Classroom>();
+					entry.put(key, classroom);
+					for (Map.Entry<String, Classroom> queueEntry : entry.entrySet()) {
+						tasks.add(queueEntry);
+					}
+				}
+			}
+		}
 	}
 }
