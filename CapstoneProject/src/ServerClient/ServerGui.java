@@ -41,6 +41,7 @@ public class ServerGui  {
 			serverGui.setProgressVal(in.nextInt());
 			serverGui.setLossVal(in.nextInt());
 			
+			in.close();
 			// use appendLossData() with time parameter to visualize graph
 		}
 	}

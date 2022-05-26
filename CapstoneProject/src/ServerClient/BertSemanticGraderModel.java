@@ -69,7 +69,6 @@ import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
 import ai.djl.translate.TranslatorContext;
 
-
 /**
  * A BERT Model Version using the Deep Java Library Bi-directional Encoders for
  * Transformers (BERT) Wrapper. This model uses the DistilBERT version of the
@@ -102,7 +101,7 @@ public class BertSemanticGraderModel {
 		System.out.println("You are using: " + Engine.getInstance().getEngineName() + " Engine");
 		try {
 			buildModel();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -264,37 +263,42 @@ public class BertSemanticGraderModel {
 	}
 
 	/**
-	 * Loads the pretrained model from a file save and starts the model entry point server
+	 * Loads the pretrained model from a file save and starts the model entry point
+	 * server
 	 * 
-	 * @throws IOException             If the model directory or server resources cannot be loaded or found.
-	 * @throws UnsupportedKerasConfigurationException 
-	 * @throws InvalidKerasConfigurationException 
+	 * @throws IOException                            If the model directory or
+	 *                                                server resources cannot be
+	 *                                                loaded or found.
+	 * @throws UnsupportedKerasConfigurationException
+	 * @throws InvalidKerasConfigurationException
 	 */
-	public void loadModel() throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
-		//loadedModel = new WuPalmer(db);
+	public void loadModel()
+			throws IOException, InvalidKerasConfigurationException, UnsupportedKerasConfigurationException {
+		// loadedModel = new WuPalmer(db);
 	}
-	
+
 	/**
-	 * Predicts the similarity between the inputted and outputted documents. 
+	 * Predicts the similarity between the inputted and outputted documents.
 	 * 
-	 * @param document The Student essay or other document as a String.
-	 * @param rubricCategory The rubric category phrase to test the students essay against.
-	 * @return A string detailing the semantic relatedness of the two inputs, corresponding, contradiction, or neutral for gibberish
+	 * @param document       The Student essay or other document as a String.
+	 * @param rubricCategory The rubric category phrase to test the students essay
+	 *                       against.
+	 * @return A string detailing the semantic relatedness of the two inputs,
+	 *         corresponding, contradiction, or neutral for gibberish
 	 */
 	public String predict(String document, String rubricCategory) {
 		try {
 			FastText vector = new FastText();
-			//double sim = loadedModel.calcRelatednessOfWords(document, rubricCategory);
+			// double sim = loadedModel.calcRelatednessOfWords(document, rubricCategory);
 			double sim = Transforms.cosineSim(vector.getWordVectorMatrix(document),
 					vector.getWordVectorMatrix(rubricCategory));
 			System.out.println(sim);
-			if(sim > 70)
+			if (sim > 55)
 				return "corresponding";
-			else 
+			else
 				return "contradicting";
-			
-			
-		} catch(NullPointerException e) {
+
+		} catch (NullPointerException e) {
 			return "contradicting";
 		}
 	}

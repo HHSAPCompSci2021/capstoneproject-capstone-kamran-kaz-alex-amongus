@@ -3,10 +3,7 @@ package client;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,7 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import data.Classroom;
 import data.DatabaseModifier;
 import data.Rubric;
-import data.RubricRow;
 import data.Teacher;
 /**
  * Allows a teacher user to view all of the assignments in a classroom or create a new assignment for the classroom.
@@ -32,6 +28,10 @@ import data.Teacher;
  */
 public class AssignmentViewer extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * File separator character used by the OS
 	 */
@@ -126,7 +126,6 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 			choose.setFileFilter(filter);
 			int returnVal = choose.showOpenDialog(null);
 			
-			String input = null;
 			Rubric newAssignment = null;
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				newAssignment = Rubric.makeRubric(choose.getSelectedFile().getPath(), name);

@@ -8,42 +8,43 @@ import java.util.ArrayList;
 
 import ai.djl.ModelException;
 import ai.djl.translate.TranslateException;
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import data.Classroom;
 import data.DatabaseModifier;
 import data.Rubric;
 import data.RubricRow;
-import data.Student;
 import data.Submission;
 
 /**
  * Runs the server side program and initalizes its datacollection
+ * 
  * @author Kamran Hussain
  *
  */
 public class Main {
-	
+
 	public static void main(String[] args) throws IOException, TranslateException, ModelException {
-		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
-	    root.setLevel(ch.qos.logback.classic.Level.ERROR);
-	    Runtime.getRuntime().addShutdownHook(new ForceClosedMessage());
-	    
+		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
+				.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+		root.setLevel(ch.qos.logback.classic.Level.ERROR);
+
 		// Load essays and rubric from database
-		DatabaseModifier.setupDatabase(); //initializes firebase things on machine
-		
-		
-		//Put them into the hashmap
+		DatabaseModifier.setupDatabase(); // initializes firebase things on machine
+
+		// Put them into the hashmap
 		Grader g = new Grader();
-		
+
 		// Goes through each classroom in the database
-		// Finds the ungraded classrooms and collects them as a HashMap of submissions and rubrics as 2D arrays
-		// Get the grade for the assignment from the model, update the grade of the submisson
-		// After going through all of the ungraded assignments in the classroom, updates all the submissions. 
-		
+		// Finds the ungraded classrooms and collects them as a HashMap of submissions
+		// and rubrics as 2D arrays
+		// Get the grade for the assignment from the model, update the grade of the
+		// submisson
+		// After going through all of the ungraded assignments in the classroom, updates
+		// all the submissions.
+
 		ConcurrentLinkedQueue<Map.Entry<String, Classroom>> queue = DatabaseModifier.getQueue();
-		
+
 		while (true) {
-			//refresh the collection of classroomsRef
+			// refresh the collection of classroomsRef
 			if (queue.size() > 0) {
 				Map.Entry<String, Classroom> entry = queue.remove();
 				Classroom classroom = entry.getValue();
@@ -57,19 +58,23 @@ public class Main {
 				DatabaseModifier.set(entry.getKey(), classroom);
 			}
 		}
-		//Updates database if hashmap is empty
+		// Updates database if hashmap is empty
 	}
-	
+
 	/**
-	 * Gets the collection of ungraded submissions along with the rubrics that come along with it.
-	 * @param classroom The classroom from which the ungraded submissions are being called from
-	 * @return A HashMap with a submission object as the key and the rubric as a 2D array as the parameter
+	 * Gets the collection of ungraded submissions along with the rubrics that come
+	 * along with it.
+	 * 
+	 * @param classroom The classroom from which the ungraded submissions are being
+	 *                  called from
+	 * @return A HashMap with a submission object as the key and the rubric as a 2D
+	 *         array as the parameter
 	 */
 	public static HashMap<Submission, String[][]> getSubmissions(Classroom classroom) {
-		
+
 		HashMap<Submission, String[][]> map = new HashMap<Submission, String[][]>();
 		int numAssign = classroom.getAssignments().size();
-		
+
 		for (int i = 0; i < numAssign; i++) {
 			ArrayList<Submission> submissions = classroom.getUngraded(i);
 			Rubric rubric = classroom.getAssignments().get(i);
@@ -82,25 +87,26 @@ public class Main {
 					grades[j][k] = criteria.get(j).getGrades().get(k);
 				}
 			}
-			
+
 			for (Submission s : submissions) {
 				map.put(s, grades);
 			}
-			
+
 		}
-		
+
 		return map;
 	}
-	
+
 	/**
-	 * Finds the average of the grades calculated by the model 
+	 * Finds the average of the grades calculated by the model
 	 * 
-	 * @param grades The string array of grades for each rubric category produced by the model
+	 * @param grades The string array of grades for each rubric category produced by
+	 *               the model
 	 * @return The final, overall grade that is averaged.
 	 */
 	private static String getGrades(String[] grades) {
-		String[] labels = new String[] {"A", "B", "C", "D", "F"};
-		int[] score = new int[] {5, 4, 3, 2, 1};
+		String[] labels = new String[] { "A", "B", "C", "D", "F" };
+		int[] score = new int[] { 5, 4, 3, 2, 1 };
 		float sum = 0;
 		for (int i = 0; i < grades.length; i++) {
 			int match = 0;
@@ -112,18 +118,16 @@ public class Main {
 			}
 			sum += score[match];
 		}
-		sum = (int)(sum / grades.length);
-		
+		sum = (int) (Math.round(sum / grades.length));
+
 		String response = "";
-		
+
 		for (int i = 0; i < labels.length; i++) {
-			if (score[i] == (int)sum) {
+			if (score[i] == (int) sum) {
 				response = labels[i];
 			}
 		}
-		
+
 		return response;
 	}
 }
-
-
