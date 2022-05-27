@@ -288,7 +288,7 @@ public class BertSemanticGraderModel {
 	 */
 	public String predict(String document, String rubricCategory) {
 		try {
-			FastText vector = new FastText();
+			Word2Vec vector = new Word2Vec();
 			// double sim = loadedModel.calcRelatednessOfWords(document, rubricCategory);
 			double sim = Transforms.cosineSim(vector.getWordVectorMatrix(document),
 					vector.getWordVectorMatrix(rubricCategory));
