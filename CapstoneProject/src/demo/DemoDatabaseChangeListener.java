@@ -132,7 +132,7 @@ public class DemoDatabaseChangeListener implements ChildEventListener {
 	}
 	
 	/**
-	 * Determines if a classroom should be updated to the queue. 
+	 * Determines if a classroom should be updated to the queue. Currently only returns true if the name of the classroom is "integration test" and "APCS Capstone Project Demo"
 	 * @param check The classroom to check if it should be added to the classroom
 	 * @return true if the classroom should be added, otherwise false
 	 */
