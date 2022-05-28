@@ -29,6 +29,10 @@ import data.DatabaseModifier;
  */
 public abstract class HomeScreen extends JPanel implements ActionListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4814449720609899301L;
 	private JList<String> list;
 	private JButton refresh, submit;
 	private ArrayList<Classroom> classList;

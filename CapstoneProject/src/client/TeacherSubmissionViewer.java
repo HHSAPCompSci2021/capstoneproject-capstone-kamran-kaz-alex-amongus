@@ -1,8 +1,12 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -13,12 +17,15 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+
+import org.apache.commons.compress.harmony.unpack200.bytecode.forms.ThisFieldRefForm;
 
 import data.Classroom;
 import data.Submission;
 import data.Teacher;
 /**
- * Allows a teacher t0 view all of the submissions that have been made to a particular assignment in a classroom. 
+ * Allows a teacher to view all of the submissions that have been made to a particular assignment in a classroom. 
  * The assignments have been divided into two lists: ungraded and graded.
  * @author Kaz Nakao
  *
@@ -32,6 +39,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	private ArrayList<Submission> ungradedSubmissions;
 	private JList<String> gradedList;
 	private JList<String> ungradedList;
+	private JPanel scrollPanel;
 	
 	private JButton view, back;
 	
@@ -69,7 +77,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		JScrollPane scroll1 = new JScrollPane(ungradedList);
 		JScrollPane scroll2 = new JScrollPane(gradedList);
 		
-		JPanel scrollPanel = new JPanel();
+		scrollPanel = new JPanel();
 		scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
 		scrollPanel.add(scroll1);
 		scrollPanel.add(scroll2);
@@ -91,30 +99,61 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		
 		add(panel);
 		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() { refreshFocusOwner(); }
+		});
+		
 	}
 
+	private void refreshFocusOwner() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				Component component = (Component) evt.getNewValue();
+				if (component != null) {
+					System.out.println("COMPONENT IS " + component);
+				}
+			}
+		});
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(view)) {
+		if (e.getSource().equals(view)) {	
 			int index1 = ungradedList.getSelectedIndex();
 			int index2 = gradedList.getSelectedIndex();
+			
+			System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
+			
+			
 			ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
 			
-			if (index1 > -1) {
+			if (index1 > -1 && index2 <= -1) {
 				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index1), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
-			} else if (index2 > -1) {
-				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
+			}
+			else if (index2 > -1 && index1 <= -1) {
+				JFrame window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
-			}			
+			}
+			else {
+				System.out.println("BOTH SELECTED - NEED TO FIND MOST RECENTLY SELECTED");
+				JFrame window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setIconImage(logo.getImage());
+				window.setResizable(true);
+				window.setVisible(true);
+			}
 		}
 		else if (e.getSource().equals(back)) {
 			this.setVisible(false);
