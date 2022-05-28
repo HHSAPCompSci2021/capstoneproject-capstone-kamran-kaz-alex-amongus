@@ -113,7 +113,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 				window.setVisible(true);
 			}
 			else if (index2 > -1 && index1 <= -1) {
-				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
+				JFrame window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				window.setIconImage(logo.getImage());
@@ -122,7 +122,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 			}
 			else {
 				System.out.println("BOTH SELECTED - NEED TO FIND MOST RECENTLY SELECTED");
-				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
+				JFrame window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				window.setIconImage(logo.getImage());
