@@ -45,7 +45,7 @@ public class TeacherScreen extends HomeScreen implements ActionListener{
 				classroom.addTeacher(teacher);
 				DatabaseModifier.addClassroom(classroom);				
 			}
-			else if (name.equals("")) {
+			else if (name == null || name.equals("")) {
 				String[] options = { "OK" };
 				JOptionPane.showOptionDialog(null, "Classroom name cannot be blank.", 
 			    		"GRADEME", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);

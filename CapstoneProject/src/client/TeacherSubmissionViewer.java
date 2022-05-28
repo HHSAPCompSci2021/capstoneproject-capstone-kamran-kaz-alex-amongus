@@ -19,8 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.compress.harmony.unpack200.bytecode.forms.ThisFieldRefForm;
-
 import data.Classroom;
 import data.Submission;
 import data.Teacher;
@@ -30,7 +28,7 @@ import data.Teacher;
  * @author Kaz Nakao
  *
  */
-public class TeacherSubmissionViewer extends JFrame implements ActionListener{
+public class TeacherSubmissionViewer extends JFrame implements ActionListener {
 
 	
 	private Teacher teacher;
@@ -39,9 +37,10 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	private ArrayList<Submission> ungradedSubmissions;
 	private JList<String> gradedList;
 	private JList<String> ungradedList;
-	private JPanel scrollPanel;
-	
+	private JPanel scrollPanel;	
 	private JButton view, back;
+	
+	private int recentlySelectedList;
 	
 	/**
 	 * 
@@ -50,8 +49,8 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	 * @param teacher Teacher that is accessing the submissions
 	 */
 	public TeacherSubmissionViewer(Classroom classroom, int rubric, Teacher teacher) {
-		
 		this.teacher = teacher;
+		recentlySelectedList = 0;
 		
 		gradedSubmissions = classroom.getGraded(rubric);
 		ungradedSubmissions = classroom.getUngraded(rubric);
@@ -99,23 +98,42 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		
 		add(panel);
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() { refreshFocusOwner(); }
-		});
-		
+		// routinely detects change in user focus		
+		refreshFocusOwner();
 	}
 
 	private void refreshFocusOwner() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				Component component = (Component) evt.getNewValue();
-				if (component != null) {
-					System.out.println("COMPONENT IS " + component);
-				}
+				
+//				System.out.println("COMPONENT SELECTED CURRENT: " + component);
+				
+//				if (component != null && component instanceof JList) {
+////					System.out.println("COMPONENT IS " + component);
+//					recentlySelectedList = 1;
+//				}
+//				else if (component == null) {
+//					recentlySelectedList = 0;
+//				}
+				
+				if (component != null && component.equals(gradedList))
+					recentlySelectedList = 1;
+				else if (component != null && component.equals(ungradedList))
+					recentlySelectedList = 0;
+			
+//				System.out.println(recentlySelectedList);
 			}
 		});
+//		System.out.println("RECENTLY SELECTED: " + recentlySelectedList);
+//		System.out.println(recentlySelectedList);
 	}
 	
 	@Override
@@ -124,12 +142,15 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 			int index1 = ungradedList.getSelectedIndex();
 			int index2 = gradedList.getSelectedIndex();
 			
-			System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
+//			System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
+			
+			System.out.println("CURRENT VARIABLE:" + recentlySelectedList);
 			
 			
 			ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
 			
-			if (index1 > -1 && index2 <= -1) {
+			// ungraded assignment selected
+			if (recentlySelectedList == 0 && index1 > -1) {
 				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index1), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -137,7 +158,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 				window.setResizable(true);
 				window.setVisible(true);
 			}
-			else if (index2 > -1 && index1 <= -1) {
+			else if (recentlySelectedList == 1 && index2 > -1) {
 				JFrame window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -145,15 +166,25 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 				window.setResizable(true);
 				window.setVisible(true);
 			}
-			else {
-				System.out.println("BOTH SELECTED - NEED TO FIND MOST RECENTLY SELECTED");
-				JFrame window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);
-				window.setBounds(100, 100, 800, 600);
-				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				window.setIconImage(logo.getImage());
-				window.setResizable(true);
-				window.setVisible(true);
-			}
+//			else {
+//				System.out.println("BOTH SELECTED - NEED TO FIND MOST RECENTLY SELECTED");
+//				JFrame window = null;
+//				
+//				if (recentlySelectedList == 0) {
+//					window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
+//				}
+//				else if (recentlySelectedList == 1) {
+//					window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);					
+//				}
+//				
+//				
+//				
+//				window.setBounds(100, 100, 800, 600);
+//				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//				window.setIconImage(logo.getImage());
+//				window.setResizable(true);
+//				window.setVisible(true);
+//			}
 		}
 		else if (e.getSource().equals(back)) {
 			this.setVisible(false);
