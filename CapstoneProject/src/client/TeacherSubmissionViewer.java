@@ -1,8 +1,12 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -13,6 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+
+import org.apache.commons.compress.harmony.unpack200.bytecode.forms.ThisFieldRefForm;
 
 import data.Classroom;
 import data.Submission;
@@ -92,15 +99,33 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		
 		add(panel);
 		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() { refreshFocusOwner(); }
+		});
+		
 	}
 
+	private void refreshFocusOwner() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				Component component = (Component) evt.getNewValue();
+				if (component != null) {
+					System.out.println("COMPONENT IS " + component);
+				}
+			}
+		});
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(view)) {
+		if (e.getSource().equals(view)) {	
 			int index1 = ungradedList.getSelectedIndex();
 			int index2 = gradedList.getSelectedIndex();
 			
-//			System.out.println(this.getMostRecentFocusOwner());
+			System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
+			
 			
 			ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
 			
