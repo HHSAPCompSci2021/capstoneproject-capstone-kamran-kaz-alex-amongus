@@ -18,7 +18,7 @@ import data.Classroom;
 import data.Submission;
 import data.Teacher;
 /**
- * Allows a teacher t0 view all of the submissions that have been made to a particular assignment in a classroom. 
+ * Allows a teacher to view all of the submissions that have been made to a particular assignment in a classroom. 
  * The assignments have been divided into two lists: ungraded and graded.
  * @author Kaz Nakao
  *
@@ -32,6 +32,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 	private ArrayList<Submission> ungradedSubmissions;
 	private JList<String> gradedList;
 	private JList<String> ungradedList;
+	private JPanel scrollPanel;
 	
 	private JButton view, back;
 	
@@ -69,7 +70,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		JScrollPane scroll1 = new JScrollPane(ungradedList);
 		JScrollPane scroll2 = new JScrollPane(gradedList);
 		
-		JPanel scrollPanel = new JPanel();
+		scrollPanel = new JPanel();
 		scrollPanel.setLayout(new BoxLayout(scrollPanel, BoxLayout.Y_AXIS));
 		scrollPanel.add(scroll1);
 		scrollPanel.add(scroll2);
@@ -98,23 +99,36 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener{
 		if (e.getSource().equals(view)) {
 			int index1 = ungradedList.getSelectedIndex();
 			int index2 = gradedList.getSelectedIndex();
+			
+//			System.out.println(this.getMostRecentFocusOwner());
+			
 			ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
 			
-			if (index1 > -1) {
+			if (index1 > -1 && index2 <= -1) {
 				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index1), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
-			} else if (index2 > -1) {
+			}
+			else if (index2 > -1 && index1 <= -1) {
 				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
 				window.setBounds(100, 100, 800, 600);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				window.setIconImage(logo.getImage());
 				window.setResizable(true);
 				window.setVisible(true);
-			}			
+			}
+			else {
+				System.out.println("BOTH SELECTED - NEED TO FIND MOST RECENTLY SELECTED");
+				JFrame window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
+				window.setBounds(100, 100, 800, 600);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setIconImage(logo.getImage());
+				window.setResizable(true);
+				window.setVisible(true);
+			}
 		}
 		else if (e.getSource().equals(back)) {
 			this.setVisible(false);
