@@ -25,7 +25,7 @@ import data.Teacher;
 /**
  * Allows a teacher to view all of the submissions that have been made to a particular assignment in a classroom. 
  * The assignments have been divided into two lists: ungraded and graded.
- * @author Kaz Nakao
+ * @author Kaz Nakao, Alex Wang
  *
  */
 public class TeacherSubmissionViewer extends JFrame implements ActionListener {
@@ -97,43 +97,23 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener {
 		panel.add(bottom, BorderLayout.PAGE_END);
 		
 		add(panel);
-		
-		// routinely detects change in user focus		
-		refreshFocusOwner();
+			
+		addFocusListener();
 	}
 
-	private void refreshFocusOwner() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
+	private void addFocusListener() {		
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				Component component = (Component) evt.getNewValue();
 				
-//				System.out.println("COMPONENT SELECTED CURRENT: " + component);
-				
-//				if (component != null && component instanceof JList) {
-////					System.out.println("COMPONENT IS " + component);
-//					recentlySelectedList = 1;
-//				}
-//				else if (component == null) {
-//					recentlySelectedList = 0;
-//				}
-				
+				// keep track of most recently in focus list
 				if (component != null && component.equals(gradedList))
 					recentlySelectedList = 1;
 				else if (component != null && component.equals(ungradedList))
 					recentlySelectedList = 0;
-			
-//				System.out.println(recentlySelectedList);
 			}
 		});
-//		System.out.println("RECENTLY SELECTED: " + recentlySelectedList);
-//		System.out.println(recentlySelectedList);
 	}
 	
 	@Override
@@ -141,12 +121,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener {
 		if (e.getSource().equals(view)) {	
 			int index1 = ungradedList.getSelectedIndex();
 			int index2 = gradedList.getSelectedIndex();
-			
-//			System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
-			
-			System.out.println("CURRENT VARIABLE:" + recentlySelectedList);
-			
-			
+
 			ImageIcon logo = new ImageIcon("resources/GRADEME-logo.png");
 			
 			// ungraded assignment selected
@@ -158,6 +133,7 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener {
 				window.setResizable(true);
 				window.setVisible(true);
 			}
+			// graded assignment selected
 			else if (recentlySelectedList == 1 && index2 > -1) {
 				JFrame window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);
 				window.setBounds(100, 100, 800, 600);
@@ -166,25 +142,6 @@ public class TeacherSubmissionViewer extends JFrame implements ActionListener {
 				window.setResizable(true);
 				window.setVisible(true);
 			}
-//			else {
-//				System.out.println("BOTH SELECTED - NEED TO FIND MOST RECENTLY SELECTED");
-//				JFrame window = null;
-//				
-//				if (recentlySelectedList == 0) {
-//					window = new ViewSubmissionScreen(ungradedSubmissions.get(index2), teacher);
-//				}
-//				else if (recentlySelectedList == 1) {
-//					window = new ViewSubmissionScreen(gradedSubmissions.get(index2), teacher);					
-//				}
-//				
-//				
-//				
-//				window.setBounds(100, 100, 800, 600);
-//				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//				window.setIconImage(logo.getImage());
-//				window.setResizable(true);
-//				window.setVisible(true);
-//			}
 		}
 		else if (e.getSource().equals(back)) {
 			this.setVisible(false);
