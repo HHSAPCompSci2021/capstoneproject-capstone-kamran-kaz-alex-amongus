@@ -128,11 +128,21 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 			
 			Rubric newAssignment = null;
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				newAssignment = Rubric.makeRubric(choose.getSelectedFile().getPath(), name);
-				classroom.addAssignment(newAssignment);
+				String path = choose.getSelectedFile().getPath();
 				
-				String key = DatabaseModifier.getKey(classroom);
-				DatabaseModifier.set(key, classroom);
+				// additional type check
+				if (!path.endsWith("csv")) {
+					this.setVisible(false);
+					JOptionPane.showMessageDialog(this, "Please input a rubric in CSV format.");
+				}
+				else {
+					newAssignment = Rubric.makeRubric(choose.getSelectedFile().getPath(), name);
+					classroom.addAssignment(newAssignment);
+					
+					String key = DatabaseModifier.getKey(classroom);
+					DatabaseModifier.set(key, classroom);					
+				}
+				
 			}	
 		}
 		else if (e.getSource().equals(back)) {
