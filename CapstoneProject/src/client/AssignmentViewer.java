@@ -136,7 +136,7 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(this, "Please input a rubric in CSV format.");
 				}
 				else {
-					newAssignment = Rubric.makeRubric(choose.getSelectedFile().getPath(), name);
+					newAssignment = Rubric.makeRubric(path, name);
 					classroom.addAssignment(newAssignment);
 					
 					String key = DatabaseModifier.getKey(classroom);
