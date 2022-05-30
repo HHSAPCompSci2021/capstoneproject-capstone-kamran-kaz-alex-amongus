@@ -68,7 +68,10 @@ public class AssignmentViewer extends JFrame implements ActionListener {
 		JPanel top = new JPanel();
 		JLabel title = new JLabel ("Select an assignment to view");
 		createAssignment = new JButton("Create a new Assignment");
+		//removes the option to be able to create an assignment
+		//uncomment the line below to re-enable creating assignments
 		createAssignment.addActionListener(this);
+		
 		top.add(title);
 		top.add(createAssignment);
 		panel.add(top, BorderLayout.PAGE_START);
