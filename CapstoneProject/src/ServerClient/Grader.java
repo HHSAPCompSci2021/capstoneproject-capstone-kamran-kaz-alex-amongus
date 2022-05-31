@@ -9,6 +9,7 @@ import org.nd4j.linalg.ops.transforms.Transforms;
 import data.Classroom;
 import data.DatabaseModifier;
 import data.Submission;
+import demo.DemoDatabaseModifier;
 
 /**
  * Automatically grades essays and checks for plagiarism. This loads the model
@@ -89,7 +90,7 @@ public class Grader {
 	 */
 	public boolean isPlagiarized(String stdntDoc) {
 		// get the database essays that have already been graded
-		HashMap<String, Classroom> storedEssays = DatabaseModifier.getClassrooms();
+		HashMap<String, Classroom> storedEssays = DemoDatabaseModifier.getClassrooms();
 
 		ArrayList<Submission> graded = new ArrayList<Submission>();
 
